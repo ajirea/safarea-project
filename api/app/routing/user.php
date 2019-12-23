@@ -22,6 +22,27 @@ $route->get('/user', function(Request $request, Response $response) {
 
 });
 
+// ini teh jang edit
+$route->get('/user', function(Request $request, Response $response) {
+
+    $query = $this->get('db')->prepare("SELECT * FROM users");
+    $query->execute();
+
+    $users = $query->fetchAll(PDO::FETCH_OBJ);
+
+    $results = [
+        'status' => true,
+        'data' => $users
+    ];
+
+    $response->getBody()->write(json_encode($results));
+
+    return $response
+        ->withHeader('Content-Type', 'application/json');
+
+});
+// end ini teh jang edit
+
 $route->get('/user/{username}', function(Request $request, Response $response, $args) {
 
     $query = $this->get('db')->prepare("SELECT * FROM users WHERE username=?");
