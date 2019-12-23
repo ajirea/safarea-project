@@ -1,7 +1,6 @@
 <?php
 
 try {
-	
     // init connection
     $connection = new PDO("mysql:host=localhost;dbname=safarea", "root", "");
     
