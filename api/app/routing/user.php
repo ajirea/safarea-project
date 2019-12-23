@@ -50,48 +50,26 @@ $route->get('/user/{username}', function(Request $request, Response $response, $
 });
 
 //Edit user
-
 $route->put('/user/{username}', function(Request $request, Response $response, $args) {
 
-    $query = "UPDATE users SET username=:username, email=:email, password=:password, phone=:phone, avatar=:avatar";
+    $query = "UPDATE users SET name=:name, username=:username, email=:email, phone=:phone";
     $input = $request->getParsedBody();
-
-    if (!empty(trim($input['password']))) {
-        $query .= ", password=:password";
-    }
 
     if (!empty(trim($input['avatar']))) {
         $query .= ", avatar=:avatar";
     }
 
-    $query = $this->get('db')->prepare($query . "WHERE username = :where_username");
-    $query->bindParam('username', $input['username']);
-    $query-> bindParam('email', $input['email']);
-    
-    if (!empty(trim($input['password']))) {
-        $query = bindParam('password', password_hash($input['password'], PASSWORD_DEFAULT));
-    }
+    $query = $this->get('db')->prepare("$query WHERE username = :where_username");
+    $query->bindValue(':name', $input['name']);
+    $query->bindValue(':username', $input['username']);
+    $query->bindValue(':email', $input['email']);
+    $query->bindValue(':phone', $input['phone']);
 
     if (!empty(trim($input['avatar']))) {
-        $query = bindParam('avatar',($input['avatar']));
+        $query->bindValue(':avatar',$input['avatar']);
     }
 
-    $query->bindParam('where_username', $input['username']);
-    $query->bindParam(':avatar',$input['password']);
-    $query->bindParam(':password',$input['password']);
-    $query->bindParam('email',$input['email']);
-
-    // $query = $this->get('db')->prepare("UPDATE users SET username=?, email=?, name=?, password=?, store_name=?,
-    // phone=?, avatar=? WHERE username = ?");
-
-    // $query->bindParam(1, $input['username']);
-    // $query->bindParam(2, $input['email']);
-    // $query->bindParam(3, $input['name']);
-    // $query->bindParam(4, $password);
-    // $query->bindParam(5, $input['store_name']);
-    // $query->bindParam(6, $input['phone']);
-    // $query->bindParam(7, $input['avatar']);
-    // $query->bindParam(8, $args['username']);
+    $query->bindValue(':where_username', $args['username']);
 
     $user = $query->execute();
 
@@ -108,8 +86,7 @@ $route->put('/user/{username}', function(Request $request, Response $response, $
     $response->getBody()->write(json_encode($result));
 
     return $response
-        ->withHeader('Content-Type', 'application/json');
-        
+        ->withHeader('Content-Type', 'application/json');    
 });
 
 //Tambah user

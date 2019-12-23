@@ -7,20 +7,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+/**
+ * The type Main activity.
+ */
 public class MainActivity extends AppCompatActivity {
-
-    private Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // activate custom toolbar
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        btnLogout = (Button) findViewById(R.id.btnLogout);
+        // get logout button component
+        Button btnLogout = findViewById(R.id.btnLogout);
+        // set on click listener
         btnLogout.setOnClickListener(l -> {
+            // start LoginActivity
             startActivity(new Intent(this, LoginActivity.class));
         });
 

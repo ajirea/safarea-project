@@ -21,6 +21,8 @@ $app->setBasePath("/safarea-api");
 // Add Routing Middleware
 $app->addRoutingMiddleware();
 
+$app->addBodyParsingMiddleware();
+
 // Add Error Middleware
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
