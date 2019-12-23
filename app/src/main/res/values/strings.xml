@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Safarea</string>
+    <string name="text_forgot_password">Lupa Kata sandi?</string>
+    <string name="text_username">Nama Pengguna</string>
+    <string name="text_password">Kata Sandi</string>
+    <string name="text_sign_in">Masuk Akun</string>
 </resources>
