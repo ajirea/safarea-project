@@ -1,0 +1,20 @@
+{
+    "name": "safarea",
+    "description": "WEB & API for Safarea",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Satria Aji Putra",
+            "email": "satmaxt@outlook.com",
+            "homepage": "https://satria.my.id",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^0.6.0",
+        "symfony/var-dumper": "^5.0",
+        "php-di/php-di": "^6.0",
+        "slim/twig-view": "^2.5"
+    }
+}
