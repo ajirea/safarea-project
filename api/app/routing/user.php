@@ -81,3 +81,24 @@ $route->post('/user', function(Request $request, Response $response) {
         ->withHeader('Content-Type', 'application/json');
         
 });
+
+$route->delete('/user/{username}', function(Request $request, Response $response, $args) {
+
+    $query = $this->get('db')->prepare("DELETE FROM users WHERE username=?");
+    $query->bindParam(1, $args['username']);
+
+    $user = $query->execute();
+
+    $result = [
+        'status' => $user,
+        'data' => [
+            'message' => 'User ' . $args['username'] . ' berhasil dihapus'
+        ]
+    ];
+
+    $response->getBody()->write(json_encode($result));
+
+    return $response
+        ->withHeader('Content-Type', 'application/json');
+        
+});
