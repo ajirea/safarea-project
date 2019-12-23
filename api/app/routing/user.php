@@ -30,8 +30,6 @@ $route->get('/user/{username}', function(Request $request, Response $response, $
 
     $user = $query->fetch(PDO::FETCH_OBJ);
 
-    // dd($user);
-
     $result = [
         'status' => !$user ? false : true,
         'data' => []
