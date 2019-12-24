@@ -110,10 +110,21 @@ $route->post('/user', function(Request $request, Response $response) {
         'data' => []
     ];
 
-    if($user)
-        $result['data']['message'] = 'User ' . $input['username'] . ' berhasil ditambahkan';
-    else
+    if(!$user)
         $result['data']['message'] = 'Gagal menambahkan user karena username atau email sudah digunakan';
+    else {
+
+        $userId = $this->get('db')->lastInsertId();
+        $token = $this->get('random_string');
+
+        $query = $this->get('db')->prepare("INSERT INTO api_tokens (user_id, token) VALUES (?,?)");
+        $query->bindParam(1, $userId);
+        $query->bindParam(2, $token);
+        $query->execute();
+
+        $result['data']['message'] = 'Berhasil menambahkan user';
+
+    }
 
     $response->getBody()->write(json_encode($result));
 
