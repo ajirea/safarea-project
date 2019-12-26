@@ -29,6 +29,9 @@ $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 // Set container injection
 require __DIR__ . '/../app/container.php';
 
+// load helpers
+require __DIR__ . '/../app/helpers.php';
+
 // load database connection and routes
 require __DIR__ . '/../app/db.php';
 require __DIR__ . '/../app/routes.php';

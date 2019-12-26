@@ -1,7 +1,6 @@
 <?php
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use Slim\Routing\RouteCollectorProxy;
 
 //Tampil semua user
 $route->get('/user', function(Request $request, Response $response) {
@@ -50,12 +49,13 @@ $route->get('/user/{username}', function(Request $request, Response $response, $
 });
 
 //Edit user
-$route->put('/user/{username}', function(Request $request, Response $response, $args) {
+$route->post('/user/{username}', function(Request $request, Response $response, $args) {
 
-    $query = "UPDATE users SET name=:name, username=:username, email=:email, phone=:phone";
     $input = $request->getParsedBody();
+    $uploadedFiles = $request->getUploadedFiles();
+    $query = "UPDATE users SET name=:name, username=:username, email=:email, phone=:phone";
 
-    if (!empty(trim($input['avatar']))) {
+    if (isset($uploadedFiles['avatar'])) {
         $query .= ", avatar=:avatar";
     }
 
@@ -65,9 +65,17 @@ $route->put('/user/{username}', function(Request $request, Response $response, $
     $query->bindValue(':email', $input['email']);
     $query->bindValue(':phone', $input['phone']);
 
-    if (!empty(trim($input['avatar']))) {
-        $query->bindValue(':avatar',$input['avatar']);
+    // tahap upload gambar avatar
+    if (isset($uploadedFiles['avatar'])) {
+        $avatar = $uploadedFiles['avatar'];
+        if($avatar->getError() === UPLOAD_ERR_OK) {
+
+            // fungsi uploadAvatar ada di dalam file app/helpers.php
+            // file helpers.php di load pada file public/index.php
+            $query->bindValue(':avatar', uploadAvatar($avatar, $input['username']));
+        }
     }
+    // selesai tahap upload gambar avatar
 
     $query->bindValue(':where_username', $args['username']);
 
@@ -92,7 +100,21 @@ $route->put('/user/{username}', function(Request $request, Response $response, $
 //Tambah user
 $route->post('/user', function(Request $request, Response $response) {
     $input = $request->getParsedBody();
+    $uploadedFiles = $request->getUploadedFiles();
     $password = password_hash($input['password'], PASSWORD_DEFAULT);
+
+    // tahap upload gambar avatar
+    $avatar = '';
+    if (isset($uploadedFiles['avatar'])) {
+        $avatar = $uploadedFiles['avatar'];
+        if ($avatar->getError() === UPLOAD_ERR_OK) {
+
+            // fungsi uploadAvatar ada di dalam file app/helpers.php
+            // file helpers.php di load pada file public/index.php
+            $avatar = uploadAvatar($avatar, $input['username']);
+        }
+    }
+    // selesai tahap upload gambar avatar
 
     $query = $this->get('db')->prepare("INSERT INTO users (username, email, name, password, store_name, phone, avatar) VALUES (?,?,?,?,?,?,?)");
     $query->bindParam(1, $input['username']);
@@ -101,7 +123,7 @@ $route->post('/user', function(Request $request, Response $response) {
     $query->bindParam(4, $password);
     $query->bindParam(5, $input['store_name']);
     $query->bindParam(6, $input['phone']);
-    $query->bindParam(7, $input['avatar']);
+    $query->bindParam(7, $avatar);
 
     $user = $query->execute();
 
