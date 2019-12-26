@@ -4,4 +4,7 @@
     <string name="text_username">Nama Pengguna</string>
     <string name="text_password">Kata Sandi</string>
     <string name="text_sign_in">Masuk Akun</string>
+    <string name="text_pengaturan">Pengaturan</string>
+    <string name="text_simpan">Simpan</string>
+    <string name="field_text_name">Nama Lengkap</string>
 </resources>

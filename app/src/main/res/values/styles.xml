@@ -13,6 +13,12 @@
         <item name="android:fontFamily">@font/comfortaa</item>
         <item name="android:textColorPrimary">@color/colorGray2</item>
     </style>
+    
+    <style name="ToolBarTitle" parent="android:Widget.TextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:color">@color/colorWhite</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
     <style name="input_text">
         <item name="android:layout_marginTop">32dp</item>
@@ -28,6 +34,22 @@
         <item name="android:ems">10</item>
         <item name="android:inputType">textPassword</item>
         <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/colorWhite</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
+    </style>
+
+    <style name="label">
+        <item name="android:textColor">@color/colorGray3</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="btn_text">
+        <item name="android:textColor">@color/colorGray2</item>
     </style>
 
 </resources>

@@ -23,10 +23,15 @@ public class MainActivity extends AppCompatActivity {
 
         // get logout button component
         Button btnLogout = findViewById(R.id.btnLogout);
+        Button btnSetting = findViewById(R.id.btnSetting);
         // set on click listener
         btnLogout.setOnClickListener(l -> {
             // start LoginActivity
             startActivity(new Intent(this, LoginActivity.class));
+        });
+        btnSetting.setOnClickListener(l -> {
+            // start SettingActivity
+            startActivity(new Intent(this, SettingActivity.class));
         });
 
     }
