@@ -15,6 +15,7 @@
         "slim/psr7": "^0.6.0",
         "symfony/var-dumper": "^5.0",
         "php-di/php-di": "^6.0",
-        "slim/twig-view": "^2.5"
+        "slim/twig-view": "^2.5",
+        "gregwar/image": "^2.0"
     }
 }
