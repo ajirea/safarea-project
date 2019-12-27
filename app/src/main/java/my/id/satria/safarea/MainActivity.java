@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
         // get logout button component
         Button btnLogout = findViewById(R.id.btnLogout);
         Button btnSetting = findViewById(R.id.btnSetting);
+        Button btnBuyerList = findViewById(R.id.btnBuyerList);
+
         // set on click listener
         btnLogout.setOnClickListener(l -> {
             // start LoginActivity
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
             // start SettingActivity
             startActivity(new Intent(this, SettingActivity.class));
         });
-
+        btnBuyerList.setOnClickListener(l -> {
+            // start SettingActivity
+            startActivity(new Intent(this, BuyerActivity.class));
+        });
     }
 }

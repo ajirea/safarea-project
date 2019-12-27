@@ -2,32 +2,21 @@ package my.id.satria.safarea;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import my.id.satria.safarea.helpers.ToolbarHelper;
 
 import android.os.Bundle;
-import android.widget.TextView;
 
 public class SettingActivity extends AppCompatActivity {
 
-    private Toolbar toolbarMenu;
-    private TextView toolbarTitle;
+    private ToolbarHelper toolbarHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        toolbarMenu = findViewById(R.id.toolbarMenu);
-        setSupportActionBar(toolbarMenu);
-
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-
-        toolbarTitle = toolbarMenu.findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(getString(R.string.text_pengaturan));
+        toolbarHelper = new ToolbarHelper(this);
+        toolbarHelper.initToolbar();
     }
 
     /**
@@ -41,6 +30,6 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     public void setToolbarTitle(String title) {
-        toolbarTitle.setText(title);
+        toolbarHelper.setToolbarTitle(title);
     }
 }
