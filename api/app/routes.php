@@ -17,5 +17,6 @@ $app->group('/api', function(RouteCollectorProxy $route) {
 
     require __DIR__ . '/routing/user.php';
     require __DIR__ . '/routing/auth.php';
+    require __DIR__ . '/routing/product.php';
 
 });
