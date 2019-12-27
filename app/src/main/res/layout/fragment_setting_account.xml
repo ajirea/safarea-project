@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.SettingAccountFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout
+            android:id="@+id/roundKornerFrameLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="105dp"
+            android:layout_marginTop="24dp"
+            app:corner_radius="105dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageAvatar"
+                android:layout_width="105dp"
+                android:layout_height="105dp"
+                app:srcCompat="@drawable/ic_launcher_background"/>
+
+        </com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout>
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/btn_circle_primary"
+            app:layout_constraintBottom_toBottomOf="@+id/roundKornerFrameLayout"
+            app:layout_constraintEnd_toEndOf="@+id/roundKornerFrameLayout"
+            app:layout_constraintTop_toTopOf="@+id/roundKornerFrameLayout"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/ic_add_white_24dp" />
+
+        <EditText
+            android:id="@+id/fieldAddress"
+            style="@style/input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/roundKornerFrameLayout"
+            tools:text="test" />
+
+        <TextView
+            android:id="@+id/labelAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/field_text_name"
+            app:layout_constraintBottom_toTopOf="@+id/fieldAddress"
+            app:layout_constraintStart_toStartOf="@+id/fieldAddress"
+            style="@style/label" />
+
+        <EditText
+            android:id="@+id/fieldDistrict"
+            style="@style/input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fieldAddress"
+            tools:text="test" />
+
+        <TextView
+            android:id="@+id/labelDistrict"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_username"
+            app:layout_constraintBottom_toTopOf="@+id/fieldDistrict"
+            app:layout_constraintStart_toStartOf="@+id/fieldDistrict"
+            style="@style/label" />
+
+        <EditText
+            android:id="@+id/fieldCity"
+            style="@style/input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fieldDistrict"
+            tools:text="test" />
+
+        <TextView
+            android:id="@+id/labelCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_change_email"
+            app:layout_constraintBottom_toTopOf="@+id/fieldCity"
+            app:layout_constraintStart_toStartOf="@+id/fieldCity"
+            style="@style/label" />
+
+        <EditText
+            android:id="@+id/fieldProvince"
+            style="@style/input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            android:inputType="phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fieldCity"
+            tools:text="test" />
+
+        <TextView
+            android:id="@+id/labelProvince"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_change_phone"
+            app:layout_constraintBottom_toTopOf="@+id/fieldProvince"
+            app:layout_constraintStart_toStartOf="@+id/fieldProvince"
+            style="@style/label" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/colorGray5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fieldProvince" />
+
+        <Button
+            android:id="@+id/btnChangeAddress"
+            style="@style/btn_text"
+            android:layout_marginTop="24dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_change_address"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toBottomOf="@+id/view"/>
+
+        <Button
+            android:id="@+id/btnChangePassword"
+            style="@style/btn_text"
+            android:layout_marginTop="16dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_change_password"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toBottomOf="@+id/btnChangeAddress" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="25dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

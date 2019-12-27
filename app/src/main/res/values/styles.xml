@@ -49,7 +49,13 @@
     </style>
 
     <style name="btn_text">
-        <item name="android:textColor">@color/colorGray2</item>
+        <item name="android:minHeight">20dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/btn_text</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
     </style>
 
 </resources>

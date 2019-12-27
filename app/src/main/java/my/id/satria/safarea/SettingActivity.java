@@ -1,15 +1,16 @@
 package my.id.satria.safarea;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.widget.TextView;
 
 public class SettingActivity extends AppCompatActivity {
 
-    Toolbar toolbarMenu;
+    private Toolbar toolbarMenu;
+    private TextView toolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,17 +26,21 @@ public class SettingActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        TextView toolbarTitle = toolbarMenu.findViewById(R.id.toolbar_title);
+        toolbarTitle = toolbarMenu.findViewById(R.id.toolbar_title);
         toolbarTitle.setText(getString(R.string.text_pengaturan));
     }
 
-    private void initToolbarMenu() {
-
+    /**
+     * Handle tombol back pada toolbar ketika di klik
+     * @return boolean
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_edit, menu);
-        return true;
+    public void setToolbarTitle(String title) {
+        toolbarTitle.setText(title);
     }
 }
