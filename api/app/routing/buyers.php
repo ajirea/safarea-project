@@ -57,6 +57,17 @@ $route->post('/buyers', function(Request $request, Response $response) {
     $query->bindParam(1, $input['user_id']);
     $query->bindParam(2, $input['name']);
     $query->bindParam(3, $input['phone']);
+    $query->execute();
+
+    $buyerId = $this->get('db')->lastInsertId();
+    $query .= $this->get('db')->prepare("INSERT INTO address (buyers_id, address, village, district, city, province, postal_code) VALUES (?,?,?,?,?,?,?)");
+    $query->bindParam(1, $buyerId);
+    $query->bindParam(2, $input['address']);
+    $query->bindParam(3, $input['village']);
+    $query->bindParam(4, $input['district']);
+    $query->bindParam(5, $input['city']);
+    $query->bindParam(6, $input['province']);
+    $query->bindParam(7, $input['postal_code']);
 
     $buyer = $query->execute();
 
