@@ -37,7 +37,6 @@ public class ToolbarHelper {
         }
 
         toolbarTitle = toolbarMenu.findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(root.getString(R.string.text_buyer_lists));
     }
 
     public void setToolbarTitle(String title) {
