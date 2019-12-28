@@ -1,35 +1,34 @@
 package my.id.satria.safarea;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import my.id.satria.safarea.helpers.ToolbarHelper;
 
 import android.os.Bundle;
+import android.view.Menu;
 
-public class SettingActivity extends AppCompatActivity {
-
+public class BuyerAddActivity extends AppCompatActivity {
     private ToolbarHelper toolbarHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+        setContentView(R.layout.activity_buyer_add);
 
+        // atur custom toolbar
         toolbarHelper = new ToolbarHelper(this);
         toolbarHelper.initToolbar();
+        toolbarHelper.setToolbarTitle(getString(R.string.text_add_buyer));
     }
 
-    /**
-     * Handle tombol back pada toolbar ketika di klik
-     * @return boolean
-     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
     }
 
-    public void setToolbarTitle(String title) {
-        toolbarHelper.setToolbarTitle(title);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }

@@ -30,7 +30,7 @@ public class SettingPasswordFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_setting_address, container, false);
+        View view = inflater.inflate(R.layout.fragment_setting_password, container, false);
 
         // atur fragment agar memiliki akses ke toolbar
         setHasOptionsMenu(true);

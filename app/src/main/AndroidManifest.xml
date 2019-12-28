@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".BuyerEditActivity"></activity>
+        <activity android:name=".BuyerAddActivity" />
+        <activity android:name=".BuyerActivity" />
+        <activity android:name=".SettingActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

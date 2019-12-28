@@ -16,4 +16,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_buyer_lists">Daftar Pembeli</string>
+    <string name="text_edit_buyer">Ubah Pembeli</string>
+    <string name="text_add_buyer">Tambah Pembeli</string>
 </resources>

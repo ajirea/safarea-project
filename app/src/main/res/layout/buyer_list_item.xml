@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="25dp"
+    android:layout_marginBottom="10dp">
+
+    <TextView
+        android:id="@+id/textBuyerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Tenang Salawasna"
+        style="@style/TextViewTitle" />
+
+    <TextView
+        android:id="@+id/textBuyerPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="+62-858-6733-1231"
+        android:layout_below="@+id/textBuyerName"/>
+
+    <ImageButton
+        android:id="@+id/btnEdit"
+        android:contentDescription="@string/text_edit_buyer"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/btn_icon"
+        app:srcCompat="@drawable/ic_edit_gray_17dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorGray5"
+        android:layout_below="@+id/textBuyerPhoneNumber"/>
+</RelativeLayout>
