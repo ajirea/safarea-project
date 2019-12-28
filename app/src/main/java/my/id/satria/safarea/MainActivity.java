@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnLogout = findViewById(R.id.btnLogout);
         Button btnSetting = findViewById(R.id.btnSetting);
         Button btnBuyerList = findViewById(R.id.btnBuyerList);
+        Button btnStockList = findViewById(R.id.btnStockList);
 
         // set on click listener
         btnLogout.setOnClickListener(l -> {
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         btnBuyerList.setOnClickListener(l -> {
             // start SettingActivity
             startActivity(new Intent(this, BuyerActivity.class));
+        });
+        btnStockList.setOnClickListener(l -> {
+            // start SettingActivity
+            startActivity(new Intent(this, StockActivity.class));
         });
     }
 }

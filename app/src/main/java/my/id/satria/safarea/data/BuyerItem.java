@@ -6,31 +6,31 @@ import java.sql.Date;
  * Kelas data untuk pembeli item
  */
 public class BuyerItem {
-    private Integer id, user_id;
+    private Integer id, userId;
     private String name, phone;
-    private Date created_at, deleted_at;
+    private Date createdAt, deletedAt;
 
-    public BuyerItem(Integer id, Integer user_id, String name, String phone) {
+    public BuyerItem(Integer id, Integer userId, String name, String phone) {
         this.id = id;
-        this.user_id = id;
+        this.userId = userId;
         this.name = name;
         this.phone = phone;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -49,19 +49,19 @@ public class BuyerItem {
         this.phone = phone;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Date getDeleted_at() {
-        return deleted_at;
+    public Date getDeletedAt() {
+        return deletedAt;
     }
 
-    public void setDeleted_at(Date deleted_at) {
-        this.deleted_at = deleted_at;
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }

@@ -7,6 +7,8 @@
     <string name="text_pengaturan">Pengaturan</string>
     <string name="text_simpan">Simpan</string>
     <string name="field_text_name">Nama Lengkap</string>
+    <string name="text_stock_available">%1$d Stok Tersedia</string>
+    <string name="text_profit_price">%1$s Keuntungan</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="text_change_password">Ubah Kata Sandi</string>
@@ -19,4 +21,8 @@
     <string name="text_buyer_lists">Daftar Pembeli</string>
     <string name="text_edit_buyer">Ubah Pembeli</string>
     <string name="text_add_buyer">Tambah Pembeli</string>
+    <string name="text_delete_stock">Hapus Stok</string>
+    <string name="text_stock_product">Stok Barang</string>
+    <string name="text_alert_stock_delete_title">Yakin Akan Menghapus Stok?</string>
+    <string name="text_alert_stock_delete_desc">Silahkan mengembalikan barang jika sudah diambil.</string>
 </resources>
