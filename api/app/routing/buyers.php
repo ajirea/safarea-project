@@ -108,23 +108,19 @@ $route->post('/buyers/{id}', function(Request $request, Response $response, $arg
 //'Delete' buyer
 $route->post('/buyers/delete/{id}', function(Request $request, Response $response, $args) {
 
-   $input = $request->getParsedBody();
-   $query = "UPDATE buyers SET deleted_at";
-   $query = $this->get('db')->prepare("$query WHERE id = :id");
-    $query->bindValue(':deleted_at', $input['deleted_at']);
-    //$query->bindValue(':id', $args['id']);
-
+    $date = date('Y-m-d H:i:s');
+    $query = "UPDATE buyers SET deleted_at=? WHERE id=?";
+    $query = $this->get('db')->prepare($query);
+    $query->bindValue(1, $date);
+    $query->bindValue(2, $args['id']);
     $buyer = $query->execute();
 
     $result = [
         'status' => $buyer,
-        'data' => []
+        'data' => [
+            'message' => 'Pembeli dengan ID :  ' . $args['id'] . ', berhasil dihapus'
+        ]
     ];
-
-    if($buyer)
-        $result['data']['message'] = 'Pembeli dengan ID :  ' . $args['id'] . ', berhasil dihapus';
-    else
-        $result['data']['message'] = 'ID pembeli tidak ada';
 
     $response->getBody()->write(json_encode($result));
 
