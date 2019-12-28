@@ -81,11 +81,25 @@ $route->post('/buyers', function(Request $request, Response $response) {
 $route->post('/buyers/{id}', function(Request $request, Response $response, $args) {
 
    $input = $request->getParsedBody();
+
+   $query = $this->get('db')->prepare("SELECT id FROM buyers WHERE id=? AND deleted_at is null");
+   $query->bindParam(1, $args['id']);
+   $query->execute();
+
+   if($query->rowCount() < 1) {
+        $result['status'] = false;
+        $result['data']['message'] = 'Pembeli tidak ditemukan';
+
+        $response->getBody()->write(json_encode($result));
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
    $query = "UPDATE buyers SET name=:name, phone=:phone";
    $query = $this->get('db')->prepare("$query WHERE id = :id");
     $query->bindValue(':name', $input['name']);
     $query->bindValue(':phone', $input['phone']);
-    //$query->bindValue(':id', $args['id']);
+    $query->bindValue(':id', $args['id']);
 
     $buyer = $query->execute();
 
