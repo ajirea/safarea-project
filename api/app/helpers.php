@@ -38,3 +38,22 @@ function uploadAvatar($avatar, $username) {
 
     return '/uploads/avatar/' . $username . '.jpg';
 }
+
+/**
+ * Fungsi untuk mendapatkan data user berdasarkan id atau username
+ *
+ * @param string $id (Bisa berupa username atau api_token)
+ * @return mixed
+ */
+function getUser($token) {
+    global $container;
+    $db = $container->get('db');
+    $query = $db->prepare("SELECT A.*, B.token FROM user AS A INNER JOIN api_tokens AS B ON B.user_id=A.id WHERE A.username=? OR B.token=?");
+    $query->bindParam(1, $token);
+    $query->bindParam(2, $token);
+    $query->execute();
+
+    if($query->rowCount() < 1) return false;
+
+    return $query->fetch(PDO::FETCH_OBJ);
+}

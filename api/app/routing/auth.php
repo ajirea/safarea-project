@@ -1,7 +1,6 @@
 <?php
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use Slim\Routing\RouteCollectorProxy;
 
 //Login User
 $route->post('/auth/login', function(Request $request, Response $response) {
@@ -22,7 +21,7 @@ $route->post('/auth/login', function(Request $request, Response $response) {
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    $query = $this->get('db')->prepare("SELECT A.*, B.token FROM users AS A LEFT JOIN api_tokens AS B ON B.user_id=A.id WHERE A.username=?");
+    $query = $this->get('db')->prepare("SELECT A.*, B.token, C.address, C.village, C.district, C.city, C.province, C.postal_code FROM users AS A LEFT JOIN api_tokens AS B ON B.user_id=A.id LEFT JOIN addresses AS C ON C.user_id=A.id WHERE A.username=?");
     $query->bindParam(1, $input['username']);
     $query->execute();
 

@@ -25,7 +25,7 @@ $route->get('/user', function(Request $request, Response $response) {
 //Tampil user berdasarkan username
 $route->get('/user/{username}', function(Request $request, Response $response, $args) {
 
-    $query = $this->get('db')->prepare("SELECT * FROM users WHERE username=?");
+    $query = $this->get('db')->prepare("SELECT U.*, A.address, A.village, A.district, A.city, A.province, A.postal_code FROM users AS U LEFT JOIN addresses AS A ON A.user_id=U.id WHERE U.username=?");
     $query->bindParam(1, $args['username']);
     $query->execute();
 
@@ -81,8 +81,21 @@ $route->post('/user/{username}', function(Request $request, Response $response, 
 
     $user = $query->execute();
 
+    // tahap update alamat buyers
+    $query = $this->get('db')->prepare("UPDATE addresses SET address=?, village=?, district=?, city=?, province=?, postal_code=? WHERE buyer_id=?");
+    $query->bindParam(1, $input['address']);
+    $query->bindParam(2, $input['village']);
+    $query->bindParam(3, $input['district']);
+    $query->bindParam(4, $input['city']);
+    $query->bindParam(5, $input['province']);
+    $query->bindParam(6, $input['postal_code']);
+    $query->bindParam(7, $args['id']);
+    $address = $query->execute();
+    // tahap end update alamat buyers 
+
+
     $result = [
-        'status' => $user,
+        'status' => ($user && $address),
         'data' => []
     ];
 
@@ -116,6 +129,7 @@ $route->post('/user', function(Request $request, Response $response) {
     }
     // selesai tahap upload gambar avatar
 
+    // tahap menambahkan data user
     $query = $this->get('db')->prepare("INSERT INTO users (username, email, name, password, store_name, phone, avatar) VALUES (?,?,?,?,?,?,?)");
     $query->bindParam(1, $input['username']);
     $query->bindParam(2, $input['email']);
@@ -124,28 +138,36 @@ $route->post('/user', function(Request $request, Response $response) {
     $query->bindParam(5, $input['store_name']);
     $query->bindParam(6, $input['phone']);
     $query->bindParam(7, $avatar);
-
     $user = $query->execute();
+    // selesai tahap menambahkan user
 
     $result = [
         'status' => $user,
         'data' => []
     ];
 
-    if(!$user)
-        $result['data']['message'] = 'Gagal menambahkan user karena username atau email sudah digunakan';
-    else {
-
+    // tahap menambahkan data alamat dan API token jika user berhasil ditambahkan
+    if($user) {
         $userId = $this->get('db')->lastInsertId();
-        $token = $this->get('random_string');
+        $query = $this->get('db')->prepare("INSERT INTO addresses (user_id, address, village, district, city, province, postal_code) VALUES (?,?,?,?,?,?,?)");
+        $query->bindParam(1, $userId);
+        $query->bindParam(2, $input['address']);
+        $query->bindParam(3, $input['village']);
+        $query->bindParam(4, $input['district']);
+        $query->bindParam(5, $input['city']);
+        $query->bindParam(6, $input['province']);
+        $query->bindParam(7, $input['postal_code']);
+        $query->execute();
 
+        $token = $this->get('random_string');
         $query = $this->get('db')->prepare("INSERT INTO api_tokens (user_id, token) VALUES (?,?)");
         $query->bindParam(1, $userId);
         $query->bindParam(2, $token);
         $query->execute();
 
         $result['data']['message'] = 'Berhasil menambahkan user';
-
+    } else {
+        $result['data']['message'] = 'Gagal menambahkan user karena username atau email sudah digunakan';
     }
 
     $response->getBody()->write(json_encode($result));
