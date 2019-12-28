@@ -1,5 +1,6 @@
 package my.id.satria.safarea.adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import my.id.satria.safarea.BuyerEditActivity;
 import my.id.satria.safarea.R;
 import my.id.satria.safarea.data.BuyerItem;
 
@@ -51,6 +53,12 @@ public class BuyerListAdapter extends RecyclerView.Adapter<BuyerListAdapter.Buye
         BuyerItem buyer = buyerList.get(holder.getAdapterPosition());
         holder.textBuyerName.setText(buyer.getName());
         holder.textBuyerPhoneNumber.setText(buyer.getPhone());
+        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.getContext().startActivity(new Intent(v.getContext(), BuyerEditActivity.class));
+            }
+        });
     }
 
     @Override
