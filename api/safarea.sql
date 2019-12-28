@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 26, 2019 at 02:22 AM
--- Server version: 10.4.10-MariaDB
--- PHP Version: 7.3.12
+-- Generation Time: Dec 28, 2019 at 05:33 PM
+-- Server version: 10.4.11-MariaDB-1:10.4.11+maria~bionic-log
+-- PHP Version: 7.2.25-1+ubuntu18.04.1+deb.sury.org+1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `addresses` (
   `id` int(10) UNSIGNED NOT NULL,
-  `users_id` int(10) UNSIGNED DEFAULT NULL,
-  `buyers_id` int(10) UNSIGNED DEFAULT NULL,
+  `user_id` int(10) UNSIGNED DEFAULT NULL,
+  `buyer_id` int(10) UNSIGNED DEFAULT NULL,
   `address` varchar(255) NOT NULL COMMENT 'Address line 1',
   `village` varchar(30) NOT NULL,
   `district` varchar(30) NOT NULL,
@@ -39,6 +39,13 @@ CREATE TABLE `addresses` (
   `province` varchar(30) NOT NULL,
   `postal_code` varchar(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `addresses`
+--
+
+INSERT INTO `addresses` (`id`, `user_id`, `buyer_id`, `address`, `village`, `district`, `city`, `province`, `postal_code`) VALUES
+(1, NULL, 6, 'Kp Selakopi RT 02 RW 11', 'Cijengkol', 'Caringin', 'Sukabumi', 'Jawa Barat', '43154');
 
 -- --------------------------------------------------------
 
@@ -58,7 +65,10 @@ CREATE TABLE `api_tokens` (
 --
 
 INSERT INTO `api_tokens` (`id`, `user_id`, `token`, `created_at`) VALUES
-(4, 13, '3Ogvk5Y26ZYIygPY', '2019-12-24 10:04:01');
+(4, 13, '3Ogvk5Y26ZYIygPY', '2019-12-24 10:04:01'),
+(5, 14, '0IBuk4jHQJ2M33YU', '2019-12-26 07:48:42'),
+(6, 16, 'p8V0f4xwDmsr6VWX', '2019-12-26 08:32:46'),
+(7, 17, 'xaknALxc4gv6G12C', '2019-12-26 08:33:15');
 
 -- --------------------------------------------------------
 
@@ -74,6 +84,14 @@ CREATE TABLE `buyers` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `buyers`
+--
+
+INSERT INTO `buyers` (`id`, `user_id`, `name`, `phone`, `deleted_at`, `created_at`) VALUES
+(1, 14, 'John Terkapar', '085863331766', NULL, '2019-12-28 02:43:18'),
+(6, 14, 'Barian Ogo', '0872373473622', NULL, '2019-12-28 10:29:18');
 
 -- --------------------------------------------------------
 
@@ -110,6 +128,13 @@ CREATE TABLE `products` (
   `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `slug`, `thumbnail`, `price`, `stock`, `description`, `created_at`) VALUES
+(1, 'Kids Pajama Short Sleeves', 'kids-pajama-1', 'pajama.png', '80000.00', 30, 'Lorem ipsum...', '2019-12-27 13:37:06');
+
 -- --------------------------------------------------------
 
 --
@@ -123,6 +148,13 @@ CREATE TABLE `product_images` (
   `path` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `product_images`
+--
+
+INSERT INTO `product_images` (`id`, `product_id`, `name`, `path`, `created_at`) VALUES
+(1, 1, 'pajama-1.png', '/uploads/products/pajama-1.png', '2019-12-27 13:38:51');
 
 -- --------------------------------------------------------
 
@@ -149,7 +181,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `email`, `name`, `password`, `store_name`, `phone`, `avatar`, `is_admin`, `created_at`) VALUES
 (8, 'asha', 'ashanaufal1@gmail.com', 'Naufal', '$2y$10$2ht0Z4gw3nTkydDde6.1ge0/iEFmhms029MtYRZL2X0Fqa7nQ4izS', 'Naufal Store 2', '088899922222', 'aang1.png', 0, '2019-12-24 04:37:20'),
-(13, 'ashar', 'ashanaufal12@gmail.com', 'NaufalA!', '$2y$10$0WeIn2Bes0rLZFm5WleN0.Qmm3kTeB484U9EZAAHgw2z2v.nE/gKi', 'Naufal Store 2', '088899922222', 'aang1.png', 0, '2019-12-24 10:04:01');
+(13, 'ashar', 'ashanaufal12@gmail.com', 'NaufalA!', '$2y$10$0WeIn2Bes0rLZFm5WleN0.Qmm3kTeB484U9EZAAHgw2z2v.nE/gKi', 'Naufal Store 2', '088899922222', 'aang1.png', 0, '2019-12-24 10:04:01'),
+(14, 'satmaxt', 'satriamaxt@gmail.co', 'Satria Aji Putra', '$2y$10$lktkIvFMA98TzvIBwA1ri.r04n90LCM.wtkNMZa0qYMP.sgkExB8W', 'Stdev', '0872373473622', '/uploads/avatar/satmaxt.jpg', 0, '2019-12-26 07:48:42'),
+(16, 'satmaxt2', 'satriamaxt@gmail.com2', 'Satria Aji Putra', '$2y$10$Hgk4OgM61UI1Xjkv1QIKHOeG4KVgumuDsu8zqPiU1hXycclFv5XtK', 'Stdev', '08723734736', '', 0, '2019-12-26 08:32:46'),
+(17, 'satmaxt3', 'satriamaxt@gmail.com3', 'Satria Aji Putra', '$2y$10$3lzpa22OfB8ZowbS7qrZMewu/qLU9kXVVDC1yiGMMm.I7gflb.Us.', 'Stdev', '08723734736', '/uploads/avatar/satmaxt3.jpg', 0, '2019-12-26 08:33:15');
 
 -- --------------------------------------------------------
 
@@ -175,8 +210,8 @@ CREATE TABLE `user_products` (
 --
 ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `addresses_buyers` (`buyers_id`),
-  ADD KEY `addresses_users` (`users_id`);
+  ADD KEY `addresses_buyers` (`buyer_id`),
+  ADD KEY `addresses_users` (`user_id`);
 
 --
 -- Indexes for table `api_tokens`
@@ -238,19 +273,19 @@ ALTER TABLE `user_products`
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `api_tokens`
 --
 ALTER TABLE `api_tokens`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `buyers`
 --
 ALTER TABLE `buyers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -262,19 +297,19 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `user_products`
@@ -290,8 +325,8 @@ ALTER TABLE `user_products`
 -- Constraints for table `addresses`
 --
 ALTER TABLE `addresses`
-  ADD CONSTRAINT `addresses_buyers` FOREIGN KEY (`buyers_id`) REFERENCES `buyers` (`id`),
-  ADD CONSTRAINT `addresses_users` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `addresses_buyers` FOREIGN KEY (`buyer_id`) REFERENCES `buyers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `addresses_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `api_tokens`
