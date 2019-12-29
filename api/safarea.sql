@@ -109,6 +109,7 @@ CREATE TABLE `orders` (
   `profit_price` decimal(12,2) NOT NULL,
   `qty` int(11) NOT NULL,
   `total` decimal(12,2) NOT NULL COMMENT '(price+profit_price)*qty',
+  `description` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
