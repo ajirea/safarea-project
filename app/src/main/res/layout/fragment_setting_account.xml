@@ -146,7 +146,7 @@
             style="@style/label" />
 
         <View
-            android:id="@+id/view"
+            android:id="@+id/screen_viewpager"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="24dp"
@@ -163,7 +163,7 @@
             android:layout_height="wrap_content"
             android:text="@string/text_change_address"
             app:layout_constraintStart_toStartOf="@+id/guideline4"
-            app:layout_constraintTop_toBottomOf="@+id/view"/>
+            app:layout_constraintTop_toBottomOf="@+id/screen_viewpager"/>
 
         <Button
             android:id="@+id/btnChangePassword"
