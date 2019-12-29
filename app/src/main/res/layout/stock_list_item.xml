@@ -64,12 +64,12 @@
     <ImageButton
         android:id="@+id/btnRemove"
         android:contentDescription="@string/text_delete_stock"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/btn_icon"
+        android:background="?attr/actionBarItemBackground"
         app:srcCompat="@drawable/ic_delete_black_17dp" />
 
     <View

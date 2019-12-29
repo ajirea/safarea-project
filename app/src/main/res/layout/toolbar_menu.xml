@@ -7,8 +7,7 @@
     app:titleTextColor="@color/colorWhite"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    android:elevation="10dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     style="@style/ToolbarTheme">
 
     <TextView
