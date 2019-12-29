@@ -48,12 +48,53 @@ $route->get('/user/{username}', function(Request $request, Response $response, $
         
 });
 
+// api untuk mengubah password berdasarkan user yang login
+$route->post('/user/change-password', function (Request $request, Response $response) {
+    $input = $request->getParsedBody();
+
+    // data user diambil dari $request yang sebelumnya sudah di masukkan ke atribut melalui middleware
+    // di file index.php line 35-57
+    $user = $request->getAttribute('user');
+    $result = [
+        'status' => false,
+        'data' => []
+    ];
+
+    if (!$user) {
+
+        $result['data']['message'] = 'User tidak ditemukan';
+    } elseif (empty($input['password']) || empty($input['password_confirmation']) || empty($input['old_password'])) {
+
+        $result['data']['message'] = 'Password lama dan Password baru harus diisi';
+    } elseif ($input['password'] != $input['password_confirmation']) {
+
+        $result['data']['message'] = 'Password konfirmasi salah';
+    } elseif (!password_verify($input['old_password'], $user->password)) {
+
+        $result['data']['message'] = 'Password lama yang dimasukan salah';
+    } else {
+
+        $password = password_hash($input['password'], PASSWORD_DEFAULT);
+        $query = $this->get('db')->prepare("UPDATE users SET password=? WHERE id=?");
+        $query->bindParam(1, $password);
+        $query->bindParam(2, $user->id);
+
+        if ($query->execute()) {
+            $result['status'] = true;
+            $result['data']['message'] = 'Password berhasil diubah';
+        }
+    }
+
+    $response->getBody()->write(json_encode($result));
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
 //Edit user
 $route->post('/user/{username}', function(Request $request, Response $response, $args) {
 
     $input = $request->getParsedBody();
     $uploadedFiles = $request->getUploadedFiles();
-    $query = "UPDATE users SET name=:name, username=:username, email=:email, phone=:phone";
+    $query = "UPDATE users SET name=:name, store_name=:store_name, phone=:phone";
 
     if (isset($uploadedFiles['avatar'])) {
         $query .= ", avatar=:avatar";
@@ -61,8 +102,7 @@ $route->post('/user/{username}', function(Request $request, Response $response, 
 
     $query = $this->get('db')->prepare("$query WHERE username = :where_username");
     $query->bindValue(':name', $input['name']);
-    $query->bindValue(':username', $input['username']);
-    $query->bindValue(':email', $input['email']);
+    $query->bindValue(':store_name', $input['store_name']);
     $query->bindValue(':phone', $input['phone']);
 
     // tahap upload gambar avatar
@@ -72,7 +112,7 @@ $route->post('/user/{username}', function(Request $request, Response $response, 
 
             // fungsi uploadAvatar ada di dalam file app/helpers.php
             // file helpers.php di load pada file public/index.php
-            $query->bindValue(':avatar', uploadAvatar($avatar, $input['username']));
+            $query->bindValue(':avatar', uploadAvatar($avatar, $args['username']));
         }
     }
     // selesai tahap upload gambar avatar
@@ -81,21 +121,8 @@ $route->post('/user/{username}', function(Request $request, Response $response, 
 
     $user = $query->execute();
 
-    // tahap update alamat buyers
-    $query = $this->get('db')->prepare("UPDATE addresses SET address=?, village=?, district=?, city=?, province=?, postal_code=? WHERE buyer_id=?");
-    $query->bindParam(1, $input['address']);
-    $query->bindParam(2, $input['village']);
-    $query->bindParam(3, $input['district']);
-    $query->bindParam(4, $input['city']);
-    $query->bindParam(5, $input['province']);
-    $query->bindParam(6, $input['postal_code']);
-    $query->bindParam(7, $args['id']);
-    $address = $query->execute();
-    // tahap end update alamat buyers 
-
-
     $result = [
-        'status' => ($user && $address),
+        'status' => $user,
         'data' => []
     ];
 
@@ -108,6 +135,45 @@ $route->post('/user/{username}', function(Request $request, Response $response, 
 
     return $response
         ->withHeader('Content-Type', 'application/json');    
+});
+
+// Edit alamat user
+$route->post('/user/{username}/address', function(Request $request, Response $response, $args) {
+    $input = $request->getParsedBody();
+    $user = getUser($args['username']);
+
+    $result = [
+        'status' => true,
+        'data' => [
+            'message' => 'Alamat berhasil diubah'
+        ]
+    ];
+
+    if(!$user) {
+        $result['status'] = false;
+        $result['data']['message'] = 'User tidak ditemukan';
+        $response->getBody()->write(json_encode($result));
+
+        return $response
+            ->withHeader('Content-Type', 'application/json');
+    }
+
+    // tahap update alamat user
+    $query = $this->get('db')->prepare("UPDATE addresses SET address=?, village=?, district=?, city=?, province=?, postal_code=? WHERE user_id=?");
+    $query->bindParam(1, $input['address']);
+    $query->bindParam(2, $input['village']);
+    $query->bindParam(3, $input['district']);
+    $query->bindParam(4, $input['city']);
+    $query->bindParam(5, $input['province']);
+    $query->bindParam(6, $input['postal_code']);
+    $query->bindParam(7, $user->id);
+    $address = $query->execute();
+    // tahap end update alamat user 
+
+    $response->getBody()->write(json_encode($result));
+
+    return $response
+        ->withHeader('Content-Type', 'application/json');
 });
 
 //Tambah user

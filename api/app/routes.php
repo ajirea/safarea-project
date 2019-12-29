@@ -14,7 +14,7 @@ $app->group('/api', function(RouteCollectorProxy $route) {
 	    $response->getBody()->write(json_encode([
             'version' => '1.0.0',
             'company' => 'Safarea',
-            'team' => 'The Perjalanan Team'
+            'team' => 'The Perjalanan Team',
         ]));
 	    return $response->WithHeader('Content-Type', 'application/json');
 	});

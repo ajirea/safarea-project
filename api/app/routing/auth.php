@@ -4,7 +4,6 @@ use Slim\Psr7\Response;
 
 //Login User
 $route->post('/auth/login', function(Request $request, Response $response) {
-    
     $input = $request->getParsedBody();
 
     $result = [

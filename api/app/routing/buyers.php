@@ -3,10 +3,11 @@
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
-//Tampil semua buyers
-$route->get('/buyers', function (Request $request, Response $response) {
+//Tampil semua buyers berdasarkan dropshipper
+$route->get('/buyers/{dropshipper_id}', function (Request $request, Response $response, $args) {
 
-    $query = $this->get('db')->prepare("SELECT * FROM buyers WHERE deleted_at is null");
+    $query = $this->get('db')->prepare("SELECT * FROM buyers WHERE user_id=? AND deleted_at is null");
+    $query->bindParam(1, $args['dropshipper_id']);
     $query->execute();
 
     $buyers = $query->fetchAll(PDO::FETCH_OBJ);
@@ -23,11 +24,11 @@ $route->get('/buyers', function (Request $request, Response $response) {
 
 });
 
-//Tampil buyers berdasarkan ID
-$route->get('/buyers/{id}', function(Request $request, Response $response, $args) {
-
-    $query = $this->get('db')->prepare("SELECT B.*, A.address, A.village, A.district, A.city, A.province, A.postal_code FROM buyers AS B INNER JOIN addresses AS A ON A.buyer_id=B.id WHERE B.id=? AND B.deleted_at is null");
+//Tampil buyers berdasarkan ID dan id dropshipper
+$route->get('/buyers/{id}/{dropshipper_id}', function(Request $request, Response $response, $args) {
+    $query = $this->get('db')->prepare("SELECT B.*, A.address, A.village, A.district, A.city, A.province, A.postal_code FROM buyers AS B LEFT JOIN addresses AS A ON A.buyer_id=B.id WHERE B.id=? AND B.user_id=? AND B.deleted_at is null");
     $query->bindParam(1, $args['id']);
+    $query->bindParam(2, $args['dropshipper_id']);
     $query->execute();
 
     $buyer = $query->fetch(PDO::FETCH_OBJ);
@@ -89,15 +90,16 @@ $route->post('/buyers', function(Request $request, Response $response) {
         
 });
 
-//Edit buyers berdasarkan ID buyer
-$route->post('/buyers/{id}', function(Request $request, Response $response, $args) {
+//Edit buyers berdasarkan ID buyer dan ID dropshippernya
+$route->post('/buyers/{id}/{dropshipper_id}', function(Request $request, Response $response, $args) {
 
    $input = $request->getParsedBody();
 
-   // tahap cek keberadaan buyer
-   $query = $this->get('db')->prepare("SELECT id FROM buyers WHERE id=? AND deleted_at is null");
-   $query->bindParam(1, $args['id']);
-   $query->execute();
+    // tahap cek keberadaan buyer
+    $query = $this->get('db')->prepare("SELECT id FROM buyers WHERE id=? AND user_id=? AND deleted_at is null");
+    $query->bindParam(1, $args['id']);
+    $query->bindParam(2, $args['dropshipper_id']);
+    $query->execute();
 
    if($query->rowCount() < 1) {
         $result['status'] = false;
@@ -146,14 +148,15 @@ $route->post('/buyers/{id}', function(Request $request, Response $response, $arg
         ->withHeader('Content-Type', 'application/json');
 });
 
-//'Delete' buyer
-$route->delete('/buyers/{id}', function(Request $request, Response $response, $args) {
+//'Delete' buyer berdasarkan ID dan ID dropshippernya
+$route->delete('/buyers/{id}/{dropshipper_id}', function(Request $request, Response $response, $args) {
 
     $date = date('Y-m-d H:i:s');
-    $query = "UPDATE buyers SET deleted_at=? WHERE id=?";
+    $query = "UPDATE buyers SET deleted_at=? WHERE id=? AND user_id=?";
     $query = $this->get('db')->prepare($query);
     $query->bindValue(1, $date);
     $query->bindValue(2, $args['id']);
+    $query->bindValue(3, $args['dropshipper_id']);
     $buyer = $query->execute();
 
     $result = [
