@@ -11,8 +11,12 @@ $app->get('/', function (Request $request, Response $response, $args) {
 $app->group('/api', function(RouteCollectorProxy $route) {
 
 	$route->get('', function (Request $request, Response $response, $args) {
-	    $response->getBody()->write("API");
-	    return $response;
+	    $response->getBody()->write(json_encode([
+            'version' => '1.0.0',
+            'company' => 'Safarea',
+            'team' => 'The Perjalanan Team',
+        ]));
+	    return $response->WithHeader('Content-Type', 'application/json');
 	});
 
     require __DIR__ . '/routing/user.php';
