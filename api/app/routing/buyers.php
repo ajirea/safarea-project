@@ -60,7 +60,7 @@ $route->post('/buyers', function(Request $request, Response $response) {
     $query->execute();
 
     $buyerId = $this->get('db')->lastInsertId();
-    $query .= $this->get('db')->prepare("INSERT INTO address (buyers_id, address, village, district, city, province, postal_code) VALUES (?,?,?,?,?,?,?)");
+    $query = $this->get('db')->prepare("INSERT INTO addresses (buyers_id, address, village, district, city, province, postal_code) VALUES (?,?,?,?,?,?,?)");
     $query->bindParam(1, $buyerId);
     $query->bindParam(2, $input['address']);
     $query->bindParam(3, $input['village']);
