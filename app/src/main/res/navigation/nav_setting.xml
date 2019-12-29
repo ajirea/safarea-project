@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_setting"
+    app:startDestination="@id/settingAccountFragment">
+
+    <fragment
+        android:id="@+id/settingAccountFragment"
+        android:name="my.id.satria.safarea.fragments.SettingAccountFragment"
+        android:label="Pengaturan"
+        tools:layout="@layout/fragment_setting_account">
+        <action
+            android:id="@+id/action_settingAccountFragment_to_settingAddressFragment"
+            app:destination="@id/settingAddressFragment" />
+        <action
+            android:id="@+id/action_settingAccountFragment_to_settingPasswordFragment"
+            app:destination="@id/settingPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingAddressFragment"
+        android:name="my.id.satria.safarea.fragments.SettingAddressFragment"
+        android:label="Atur Alamat"
+        tools:layout="@layout/fragment_setting_address" />
+    <fragment
+        android:id="@+id/settingPasswordFragment"
+        android:name="my.id.satria.safarea.fragments.SettingPasswordFragment"
+        android:label="Ubah Kata Sandi"
+        tools:layout="@layout/fragment_setting_password" />
+</navigation>
