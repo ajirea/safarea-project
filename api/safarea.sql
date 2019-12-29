@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 29, 2019 at 12:55 PM
--- Server version: 10.4.10-MariaDB
--- PHP Version: 7.3.12
+-- Generation Time: Dec 30, 2019 at 04:02 AM
+-- Server version: 10.4.11-MariaDB-1:10.4.11+maria~bionic-log
+-- PHP Version: 7.2.25-1+ubuntu18.04.1+deb.sury.org+1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -104,7 +104,6 @@ CREATE TABLE `orders` (
   `user_id` int(10) UNSIGNED NOT NULL,
   `buyer_id` int(10) UNSIGNED NOT NULL,
   `product_id` int(10) UNSIGNED NOT NULL,
-  `order_number` varchar(50) NOT NULL,
   `price` decimal(12,2) NOT NULL,
   `profit_price` decimal(12,2) NOT NULL,
   `qty` int(11) NOT NULL,
@@ -112,6 +111,14 @@ CREATE TABLE `orders` (
   `description` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `buyer_id`, `product_id`, `price`, `profit_price`, `qty`, `total`, `description`, `created_at`) VALUES
+(7, 14, 1, 1, '80000.00', '30000.00', 2, '220000.00', 'Ukuran L warna hitam', '2019-12-29 20:57:00'),
+(8, 14, 1, 1, '80000.00', '30000.00', 2, '220000.00', 'Ukuran L warna putih', '2019-12-29 20:57:00');
 
 -- --------------------------------------------------------
 
@@ -204,6 +211,13 @@ CREATE TABLE `user_products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `user_products`
+--
+
+INSERT INTO `user_products` (`id`, `product_id`, `user_id`, `profit_price`, `qty`, `status`) VALUES
+(1, 1, 14, '30000.00', 15, 'take');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -234,7 +248,6 @@ ALTER TABLE `buyers`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `orders_ak_1` (`order_number`),
   ADD KEY `orders_buyers` (`buyer_id`),
   ADD KEY `orders_users` (`user_id`),
   ADD KEY `product_id` (`product_id`);
@@ -294,7 +307,7 @@ ALTER TABLE `buyers`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -318,7 +331,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_products`
 --
 ALTER TABLE `user_products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
