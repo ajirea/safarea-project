@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2019 at 05:33 PM
--- Server version: 10.4.11-MariaDB-1:10.4.11+maria~bionic-log
--- PHP Version: 7.2.25-1+ubuntu18.04.1+deb.sury.org+1
+-- Generation Time: Dec 29, 2019 at 12:55 PM
+-- Server version: 10.4.10-MariaDB
+-- PHP Version: 7.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -103,6 +103,7 @@ CREATE TABLE `orders` (
   `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
   `buyer_id` int(10) UNSIGNED NOT NULL,
+  `product_id` int(10) UNSIGNED NOT NULL,
   `order_number` varchar(50) NOT NULL,
   `price` decimal(12,2) NOT NULL,
   `profit_price` decimal(12,2) NOT NULL,
@@ -234,7 +235,8 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `orders_ak_1` (`order_number`),
   ADD KEY `orders_buyers` (`buyer_id`),
-  ADD KEY `orders_users` (`user_id`);
+  ADD KEY `orders_users` (`user_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `products`
@@ -344,8 +346,9 @@ ALTER TABLE `buyers`
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_buyers` FOREIGN KEY (`buyer_id`) REFERENCES `buyers` (`id`),
-  ADD CONSTRAINT `orders_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `orders_buyers` FOREIGN KEY (`buyer_id`) REFERENCES `buyers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orders_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `product_images`
