@@ -44,5 +44,10 @@ public class MainActivity extends AppCompatActivity {
             // start SettingActivity
             startActivity(new Intent(this, StockActivity.class));
         });
+
+        btnStockList.setOnClickListener(l -> {
+            // start SettingActivity
+            startActivity(new Intent(this, OnboardingActivity.class));
+        });
     }
 }

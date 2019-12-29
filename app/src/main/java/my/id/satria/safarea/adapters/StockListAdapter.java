@@ -21,6 +21,7 @@ import my.id.satria.safarea.data.StockItem;
 public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.StockItemViewHolder> {
 
     private ArrayList<StockItem> stockList;
+    private Boolean openedDialog = false;
 
     public static class StockItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -71,7 +72,8 @@ public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.Stoc
         holder.btnRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDeleteDialog(context, position);
+                if(!openedDialog)
+                    showDeleteDialog(context, position);
             }
         });
     }
@@ -102,9 +104,11 @@ public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.Stoc
         btnAccept.setOnClickListener(l -> {
             ((StockActivity) context).removeItem(position);
             alertDialog.dismiss();
+            openedDialog = false;
         });
         btnDecline.setOnClickListener(l -> {
             alertDialog.dismiss();
+            openedDialog = false;
         });
     }
 
