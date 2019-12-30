@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
+
 public class SupplierCatalogDetailActivity extends AppCompatActivity
         implements AddStockDialog.AddStockDialogListener,
         SuccessAddStockDialog.SuccessAddStockDialogListener {
@@ -48,9 +50,11 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
                 "Tiga"
         });
 
+        TabLayout dottedIndicator = findViewById(R.id.dottedIndicator);
         ViewPager imagePager = findViewById(R.id.productDetailImage);
         CatalogImageAdapter imageAdapter = new CatalogImageAdapter(this, catalogItem.getImages());
         imagePager.setAdapter(imageAdapter);
+        dottedIndicator.setupWithViewPager(imagePager);
 
         TextView titleCatalog = findViewById(R.id.titleCatalog);
         TextView textPrice = findViewById(R.id.textPrice);

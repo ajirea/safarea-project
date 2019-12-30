@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="@color/colorGray6"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -22,8 +23,7 @@
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/productDetailImage"
                 android:layout_width="wrap_content"
-                android:layout_height="300dp"
-                />
+                android:layout_height="300dp" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -31,8 +31,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:title="Produk Detail"
-                app:layout_collapseMode="pin"
-                />
+                app:layout_collapseMode="pin" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -48,6 +47,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/dottedIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                app:tabIndicatorHeight="0dp"
+                app:tabPaddingStart="7dp"
+                app:tabPaddingEnd="7dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabBackground="@drawable/indicator_selector" />
+
             <TextView
                 android:id="@+id/titleCatalog"
                 style="@style/TextViewTitle"
@@ -55,10 +70,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
-                android:layout_marginTop="16dp"
-                tools:text="Kids Pajama Short Sleeves"
+                android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/dottedIndicator"
+                tools:text="Kids Pajama Short Sleeves" />
 
             <TextView
                 android:id="@+id/textDescription"
