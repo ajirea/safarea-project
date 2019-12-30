@@ -88,7 +88,7 @@ public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.Stoc
         View layoutView = LayoutInflater.from(context).inflate(R.layout.dialog_confirmation, null, false);
 
         // ambil komponen yang ada di dalam layout dialog_confirmation.xml
-        Button btnAccept = layoutView.findViewById(R.id.btnAccept);
+        Button btnAccept = layoutView.findViewById(R.id.btnAddStock);
         Button btnDecline = layoutView.findViewById(R.id.btnDecline);
         TextView textTitle = layoutView.findViewById(R.id.textTitle);
         TextView textDesc = layoutView.findViewById(R.id.textDescription);

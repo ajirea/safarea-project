@@ -44,6 +44,7 @@ public class SupplierCatalogActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Integer position) {
                 Intent intent = new Intent(SupplierCatalogActivity.this, SupplierCatalogDetailActivity.class);
+                intent.putExtra("Catalog Item", catalogList.get(position));
                 startActivity(intent);
             }
         });

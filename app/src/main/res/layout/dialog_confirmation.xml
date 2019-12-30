@@ -63,11 +63,11 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnAccept"
+        app:layout_constraintStart_toEndOf="@+id/btnAddStock"
         app:layout_constraintTop_toBottomOf="@+id/borderDesc" />
 
     <Button
-        android:id="@+id/btnAccept"
+        android:id="@+id/btnAddStock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_primary"
