@@ -36,11 +36,15 @@ public class ToolbarHelper {
             root.getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        toolbarTitle = toolbarMenu.findViewById(R.id.toolbar_title);
+        try {
+            toolbarTitle = toolbarMenu.findViewById(R.id.toolbar_title);
+        } catch (NullPointerException e) {}
     }
 
     public void setToolbarTitle(String title) {
-        toolbarTitle.setText(title);
+        try {
+            toolbarTitle.setText(title);
+        } catch (NullPointerException e) {}
     }
 
 

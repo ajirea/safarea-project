@@ -25,4 +25,5 @@
     <string name="text_stock_product">Stok Barang</string>
     <string name="text_alert_stock_delete_title">Yakin Akan Menghapus Stok?</string>
     <string name="text_alert_stock_delete_desc">Silahkan mengembalikan barang jika sudah diambil.</string>
+    <string name="text_add_stock">Tambah Stock</string>
 </resources>
