@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DropshipperCatalogDetailActivity" android:screenOrientation="portrait" />
         <activity android:name=".DropshipperCatalogActivity" android:screenOrientation="portrait" />
         <activity android:name=".SupplierCatalogDetailActivity" android:screenOrientation="portrait" />
         <activity android:name=".SupplierCatalogActivity" android:screenOrientation="portrait" />
