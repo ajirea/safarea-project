@@ -11,10 +11,10 @@
 
     <TextView
         android:id="@+id/textBuyerName"
+        style="@style/TextViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Tenang Salawasna"
-        style="@style/TextViewTitle" />
+        tools:text="Tenang Salawasna" />
 
     <TextView
         android:id="@+id/textBuyerPhoneNumber"

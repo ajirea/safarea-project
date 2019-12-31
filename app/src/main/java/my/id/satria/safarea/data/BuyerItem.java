@@ -1,5 +1,7 @@
 package my.id.satria.safarea.data;
 
+import android.media.Image;
+
 import java.sql.Date;
 
 /**

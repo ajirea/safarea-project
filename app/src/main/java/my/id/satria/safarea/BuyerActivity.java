@@ -9,7 +9,6 @@ import my.id.satria.safarea.helpers.ToolbarHelper;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,7 +32,7 @@ public class BuyerActivity extends AppCompatActivity {
         toolbarHelper.setToolbarTitle(getString(R.string.text_buyer_lists));
 
         // recyclerview buyer
-        mRecyclerView = findViewById(R.id.buyerListRecyclerView);
+        mRecyclerView = findViewById(R.id.transactionListRecyclerView);
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new BuyerListAdapter(exampleBuyerData());
 
@@ -41,7 +40,7 @@ public class BuyerActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         // event
-        FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
+        FloatingActionButton btnAdd = findViewById(R.id.btnDetails);
         btnAdd.setOnClickListener(l -> {
             startActivity(new Intent(this, BuyerAddActivity.class));
         });
