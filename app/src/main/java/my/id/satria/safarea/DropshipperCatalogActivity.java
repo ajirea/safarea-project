@@ -1,30 +1,30 @@
 package my.id.satria.safarea;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import my.id.satria.safarea.adapters.SupplierCatalogListAdapter;
+import java.util.ArrayList;
+
+import my.id.satria.safarea.adapters.DropshipperCatalogListAdapter;
 import my.id.satria.safarea.data.CatalogItem;
 import my.id.satria.safarea.helpers.ToolbarHelper;
 
-import android.content.Intent;
-import android.os.Bundle;
-
-import java.util.ArrayList;
-
-public class SupplierCatalogActivity extends AppCompatActivity {
+public class DropshipperCatalogActivity extends AppCompatActivity {
 
     private ToolbarHelper toolbarHelper;
     private ArrayList<CatalogItem> catalogList;
     private RecyclerView mRecyclerView;
-    private SupplierCatalogListAdapter mAdapter;
+    private DropshipperCatalogListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_supplier_catalog);
+        setContentView(R.layout.activity_dropshipper_catalog);
 
         toolbarHelper = new ToolbarHelper(this);
         toolbarHelper.initToolbar();
@@ -34,16 +34,16 @@ public class SupplierCatalogActivity extends AppCompatActivity {
         catalogList = exampleCatalogData();
         mRecyclerView = findViewById(R.id.dropshipperCatalogRecyclerView);
         mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
-        mAdapter = new SupplierCatalogListAdapter(catalogList);
+        mAdapter = new DropshipperCatalogListAdapter(catalogList);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new GridItemDecoration(2, 30, true));
 
-        mAdapter.setOnItemClickListener(new SupplierCatalogListAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new DropshipperCatalogListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Integer position) {
-                Intent intent = new Intent(SupplierCatalogActivity.this, SupplierCatalogDetailActivity.class);
+                Intent intent = new Intent(DropshipperCatalogActivity.this, DropshipperCatalogDetailActivity.class);
                 intent.putExtra("Catalog Item", catalogList.get(position));
                 startActivity(intent);
             }

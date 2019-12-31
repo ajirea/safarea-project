@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnStockList = findViewById(R.id.btnStockList);
         Button btnOnboarding = findViewById(R.id.bntOnboarding);
         Button btnCatalogSupplier = findViewById(R.id.btnCatalogSupplier);
+        Button btnCatalogDropshipper = findViewById(R.id.btnCatalogDropshipper);
 
         // set on click listener
         btnLogout.setOnClickListener(l -> {
@@ -55,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
         btnCatalogSupplier.setOnClickListener(l -> {
             // start SettingActivity
             startActivity(new Intent(this, SupplierCatalogActivity.class));
+        });
+        btnCatalogDropshipper.setOnClickListener(l -> {
+            // start SettingActivity
+            startActivity(new Intent(this, DropshipperCatalogActivity.class));
         });
     }
 }

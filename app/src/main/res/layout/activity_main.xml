@@ -35,7 +35,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/text_stock_product"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnBuyerList" />
 
@@ -68,10 +68,10 @@
         android:text="Onboarding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnStockList"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.034" />
 
     <Button
         android:id="@+id/btnCatalogSupplier"
@@ -83,6 +83,17 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bntOnboarding"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.04" />
+
+    <Button
+        android:id="@+id/btnCatalogDropshipper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DROPSHIPPER CATALOG"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCatalogSupplier"
+        app:layout_constraintVertical_bias="0.042" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
