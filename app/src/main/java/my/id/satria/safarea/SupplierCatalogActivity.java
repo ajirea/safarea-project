@@ -27,7 +27,7 @@ public class SupplierCatalogActivity extends AppCompatActivity {
         setContentView(R.layout.activity_supplier_catalog);
 
         toolbarHelper = new ToolbarHelper(this);
-        toolbarHelper.initToolbar();
+        toolbarHelper.initToolbar(true);
         toolbarHelper.setToolbarTitle("Katalog Produk");
 
         // recycler view

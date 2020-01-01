@@ -27,7 +27,7 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dropshipper_catalog);
 
         toolbarHelper = new ToolbarHelper(this);
-        toolbarHelper.initToolbar();
+        toolbarHelper.initToolbar(true);
         toolbarHelper.setToolbarTitle("Katalog Produk");
 
         // recycler view

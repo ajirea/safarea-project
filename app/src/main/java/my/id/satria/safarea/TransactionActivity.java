@@ -24,7 +24,7 @@ public class TransactionActivity extends AppCompatActivity {
 
         //Custom Toolbarrrrrrrrrrrr
         toolbarHelper = new ToolbarHelper(this);
-        toolbarHelper.initToolbar();
+        toolbarHelper.initToolbar(true);
         toolbarHelper.setToolbarTitle(getString(R.string.text_buyer_lists));
 
         //Recycle view
