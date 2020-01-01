@@ -71,15 +71,17 @@ public class SupplierCatalogActivity extends AppCompatActivity {
                 1,
                 R.drawable.sample_product,
                 "Kids Pajama Short Sleeves",
-                80000F
+                80000D
         );
+        item1.setStock(5);
 
         CatalogItem item2 = new CatalogItem(
                 2,
                 R.drawable.sample_product,
                 "Kids Pajama Long Sleeves",
-                90000F
+                90000D
         );
+        item2.setStock(20);
 
         exCatalog.add(item1);
         exCatalog.add(item2);

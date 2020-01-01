@@ -63,7 +63,7 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
 
         toolbar.setTitle(catalogItem.getTitle());
         titleCatalog.setText(catalogItem.getTitle());
-        textStock.setText("2 Stock tersedia");
+        textStock.setText(getString(R.string.text_stock_available, catalogItem.getStock()));
         textDesc.setText(catalogItem.getDescription());
         textPrice.setText(catalogItem.getPrice().toString());
 

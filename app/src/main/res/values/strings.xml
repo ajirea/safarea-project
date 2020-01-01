@@ -9,14 +9,10 @@
     <string name="field_text_name">Nama Lengkap</string>
     <string name="text_stock_available">%1$d Stok Tersedia</string>
     <string name="text_profit_price">%1$s Keuntungan</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="text_change_password">Ubah Kata Sandi</string>
     <string name="text_change_address">Ubah Alamat</string>
     <string name="text_change_phone">Nomor Telepon</string>
     <string name="text_change_email">Alamat Email</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_buyer_lists">Daftar Pembeli</string>
     <string name="text_edit_buyer">Ubah Pembeli</string>
@@ -29,4 +25,12 @@
     <string name="text_look_stock">Lihat Stok Barang</string>
     <string name="text_stock_message_take">Silahkan ambil barang anda di supplier terdekat</string>
     <string name="text_stock_message_send">Supplier akan mengirim barang ke alamat anda. Silahkan konfirmasi penerimaan barang di halaman stok barang</string>
+
+    <!-- String alert -->
+    <string name="alert_signing_in_title">Sedang Masuk</string>
+    <string name="alert_please_wait_message">Silahkan tunggu&#8230;</string>
+    <string name="alert_failed_connect_server">Gagal, terjadi kesalahan pada server</string>
+
+    <!-- String validation -->
+    <string name="validation_required_uname_passwd">Nama pengguna dan Kata Sandi harus di isi.</string>
 </resources>

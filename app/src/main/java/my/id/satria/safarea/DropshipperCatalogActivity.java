@@ -71,14 +71,14 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
                 1,
                 R.drawable.sample_product,
                 "Kids Pajama Short Sleeves",
-                80000F
+                80000D
         );
 
         CatalogItem item2 = new CatalogItem(
                 2,
                 R.drawable.sample_product,
                 "Kids Pajama Long Sleeves",
-                90000F
+                90000D
         );
 
         exCatalog.add(item1);

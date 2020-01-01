@@ -10,10 +10,10 @@ public class CatalogItem implements Parcelable {
 
     private Integer id, thumbnail, stock;
     private String title, description;
-    private Float price;
+    private Double price;
     private ArrayList<String[]> images;
 
-    public CatalogItem(Integer id, Integer thumbnail, String title, Float price) {
+    public CatalogItem(Integer id, Integer thumbnail, String title, Double price) {
         this.id = id;
         this.thumbnail = thumbnail;
         this.title = title;
@@ -42,7 +42,7 @@ public class CatalogItem implements Parcelable {
         if (in.readByte() == 0) {
             price = null;
         } else {
-            price = in.readFloat();
+            price = in.readDouble();
         }
     }
 
@@ -87,7 +87,7 @@ public class CatalogItem implements Parcelable {
         return title;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -128,7 +128,7 @@ public class CatalogItem implements Parcelable {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
-            dest.writeFloat(price);
+            dest.writeDouble(price);
         }
     }
 }
