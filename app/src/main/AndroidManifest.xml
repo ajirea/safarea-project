@@ -15,20 +15,20 @@
         <activity android:name=".DropshipperCatalogActivity" android:screenOrientation="portrait" />
         <activity android:name=".SupplierCatalogDetailActivity" android:screenOrientation="portrait" />
         <activity android:name=".SupplierCatalogActivity" android:screenOrientation="portrait" />
-        <activity android:name=".OnboardingActivity" android:screenOrientation="portrait" />
-        <activity android:name=".StockActivity" android:screenOrientation="portrait" />
-        <activity android:name=".BuyerEditActivity" android:screenOrientation="portrait" />
-        <activity android:name=".BuyerAddActivity" android:screenOrientation="portrait" />
-        <activity android:name=".BuyerActivity" android:screenOrientation="portrait" />
-        <activity android:name=".SettingActivity" android:screenOrientation="portrait" />
-        <activity android:name=".LoginActivity" android:screenOrientation="portrait" />
-        <activity android:name=".MainActivity" android:screenOrientation="portrait">
+        <activity android:name=".OnboardingActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".StockActivity" android:screenOrientation="portrait" />
+        <activity android:name=".BuyerEditActivity" android:screenOrientation="portrait" />
+        <activity android:name=".BuyerAddActivity" android:screenOrientation="portrait" />
+        <activity android:name=".BuyerActivity" android:screenOrientation="portrait" />
+        <activity android:name=".SettingActivity" android:screenOrientation="portrait" />
+        <activity android:name=".LoginActivity" android:screenOrientation="portrait" />
+        <activity android:name=".MainActivity" android:screenOrientation="portrait" />
     </application>
 
 </manifest>

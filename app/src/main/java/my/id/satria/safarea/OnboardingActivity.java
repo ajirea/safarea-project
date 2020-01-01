@@ -20,11 +20,13 @@ import java.util.List;
 import my.id.satria.safarea.R;
 import my.id.satria.safarea.adapters.OnboardingViewPagerAdapter;
 import my.id.satria.safarea.data.OnboardingItem;
+import my.id.satria.safarea.repositories.OnboardingLocalStore;
 
 public class OnboardingActivity extends AppCompatActivity {
 
     private ViewPager screenPager;
     private OnboardingViewPagerAdapter onboardingViewPagerAdapter;
+    private OnboardingLocalStore onboardingLocalStore;
     TabLayout tabIndicator;
     Button btnNext;
     Button btnGetStarted;
@@ -35,10 +37,12 @@ public class OnboardingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Checking if onboarding activity's been opened before
-        if(restorePrefData()){
+        onboardingLocalStore = new OnboardingLocalStore(this);
 
-            Intent mainActivity = new Intent(getApplicationContext(),MainActivity.class);
+        //Checking if onboarding activity's been opened before
+        if(onboardingLocalStore.isOpenedOnboarding()){
+
+            Intent mainActivity = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(mainActivity);
             finish();
 
@@ -144,32 +148,15 @@ public class OnboardingActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //Open Main Activity
-                Intent mainActivity = new Intent(getApplicationContext(),MainActivity.class);
+                Intent mainActivity = new Intent(getApplicationContext(),LoginActivity.class);
                 startActivity(mainActivity);
 
                 //Saving boolean value so the onboarding screen only shows once
-                savePrefsData();
+                onboardingLocalStore.setOpenedOnboarding(true);
                 finish();
 
             }
         });
-    }
-
-    private boolean restorePrefData() {
-
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
-        Boolean isOnboardingOpenedBefore = pref.getBoolean("isOnboardingOpened",false);
-        return  isOnboardingOpenedBefore;
-
-    }
-
-    private void savePrefsData() {
-
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("isOnboardingOpened",true);
-        editor.commit();
-
     }
 
     //Method to show the get started button

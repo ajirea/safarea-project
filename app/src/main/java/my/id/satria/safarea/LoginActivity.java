@@ -36,16 +36,16 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        userLocalStore = new UserLocalStore(this);
+        if (userLocalStore.isUserLoggedIn()) startMainActivity();
+
         setContentView(R.layout.activity_login);
 
         fieldUsername = findViewById(R.id.fieldUsernameLogin);
         fieldPassword = findViewById(R.id.fieldPasswordLogin);
         alertText = findViewById(R.id.alertText);
-
-        userLocalStore = new UserLocalStore(this);
         Button btnSignIn = findViewById(R.id.btnSignIn);
-
-        userLocalStore = new UserLocalStore(this);
 
         // instansiasi progress dialig
         progressDialog = new ProgressDialog(this);
