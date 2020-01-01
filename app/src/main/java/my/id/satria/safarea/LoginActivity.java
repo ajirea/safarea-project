@@ -40,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
         userLocalStore = new UserLocalStore(this);
         if (userLocalStore.isUserLoggedIn()) startMainActivity();
 
+        System.out.println(userLocalStore.getLoggedInUser().getAvatar());
+
         setContentView(R.layout.activity_login);
 
         fieldUsername = findViewById(R.id.fieldUsernameLogin);

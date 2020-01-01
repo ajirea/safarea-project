@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menuHome"
+        android:title="@string/menu_home"
+        android:icon="@drawable/ic_icons8_home_3"
+        />
+    <item android:id="@+id/menuSupplier"
+        android:title="@string/menu_supplier"
+        android:icon="@drawable/ic_icons8_box_4"/>
+    <item android:id="@+id/menuDropshipper"
+        android:title="@string/menu_dropshipper"
+        android:icon="@drawable/ic_icons8_tags_4"/>
+    <item android:id="@+id/menuStock"
+        android:title="@string/menu_stock"
+        android:icon="@drawable/ic_icons8_empty_box_2"/>
+    <item android:id="@+id/menuBuyer"
+        android:title="@string/menu_buyer"
+        android:icon="@drawable/ic_icons8_rent_2"/>
+    <item android:id="@+id/menuTransaction"
+        android:title="@string/menu_transaction"
+        android:icon="@drawable/ic_icons8_money_2"/>
+    <item android:id="@+id/menuSetting"
+        android:title="@string/menu_setting"
+        android:icon="@drawable/ic_icons8_settings_3"/>
+    <item android:id="@+id/menuLogout"
+        android:title="@string/menu_sign_out"
+        android:icon="@drawable/ic_icons8_exit_2"/>
+</menu>

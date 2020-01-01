@@ -2,8 +2,9 @@ package my.id.satria.safarea.data;
 
 import java.util.Date;
 
-public class User {
+import my.id.satria.safarea.repositories.ServerAPI;
 
+public class User {
     private Integer id;
     private String username, email, name, password, storeName, phone, avatar, token, address,
             village, district, city, province, postalCode, createdAt;

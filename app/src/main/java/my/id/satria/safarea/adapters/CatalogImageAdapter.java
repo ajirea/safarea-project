@@ -5,9 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -32,9 +31,8 @@ public class CatalogImageAdapter extends PagerAdapter {
         View view = inflater.inflate(R.layout.image_gallery_item, null);
 
         ImageView imageItem = view.findViewById(R.id.imageItem);
-        Picasso.get().load(images.get(position)[0])
-                .resize(420, 300)
-                .centerCrop()
+        Glide.with(imageItem.getContext())
+                .load(images.get(position)[0])
                 .into(imageItem);
 
         container.addView(view);

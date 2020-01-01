@@ -80,4 +80,8 @@
         <item name="android:lineSpacingExtra">7dp</item>
     </style>
 
+    <style name="NavigationItemNoRipple">
+        <item name="colorControlHighlight">@android:color/transparent</item>
+    </style>
+
 </resources>

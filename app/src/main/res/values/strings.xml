@@ -30,7 +30,21 @@
     <string name="alert_signing_in_title">Sedang Masuk</string>
     <string name="alert_please_wait_message">Silahkan tunggu&#8230;</string>
     <string name="alert_failed_connect_server">Gagal, terjadi kesalahan pada server</string>
+    <string name="alert_yes_btn">Ya</string>
+    <string name="alert_no_btn">Tidak</string>
 
     <!-- String validation -->
     <string name="validation_required_uname_passwd">Nama pengguna dan Kata Sandi harus di isi.</string>
+
+    <!-- String drawer menu -->
+    <string name="menu_open">Buka</string>
+    <string name="menu_close">Tutup</string>
+    <string name="menu_home">Beranda</string>
+    <string name="menu_sign_out">Keluar</string>
+    <string name="menu_supplier">Katalog Pemasok</string>
+    <string name="menu_dropshipper">Katalog Dropshipper</string>
+    <string name="menu_setting">Pengaturan</string>
+    <string name="menu_transaction">Transaksi</string>
+    <string name="menu_buyer">Data Pembeli</string>
+    <string name="menu_stock">Stok Barang</string>
 </resources>
