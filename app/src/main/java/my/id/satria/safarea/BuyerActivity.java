@@ -28,7 +28,7 @@ public class BuyerActivity extends AppCompatActivity {
 
         // atur custom toolbar
         toolbarHelper = new ToolbarHelper(this);
-        toolbarHelper.initToolbar();
+        toolbarHelper.initToolbar(true);
         toolbarHelper.setToolbarTitle(getString(R.string.text_buyer_lists));
 
         // recyclerview buyer

@@ -48,4 +48,5 @@
     <string name="menu_transaction">Transaksi</string>
     <string name="menu_buyer">Data Pembeli</string>
     <string name="menu_stock">Stok Barang</string>
+    <string name="alert_no_transaction">Belum ada transaksi</string>
 </resources>

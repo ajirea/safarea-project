@@ -11,6 +11,7 @@ import my.id.satria.safarea.R;
  */
 public class ToolbarHelper {
 
+    private Integer icon;
     private Toolbar toolbarMenu;
     private TextView toolbarTitle;
     private AppCompatActivity root;
@@ -21,6 +22,7 @@ public class ToolbarHelper {
      */
     public ToolbarHelper(AppCompatActivity root) {
         this.root = root;
+        icon = R.drawable.ic_close_black_24dp;
     }
 
     /**
@@ -31,7 +33,8 @@ public class ToolbarHelper {
         root.setSupportActionBar(toolbarMenu);
 
         if(root.getSupportActionBar() != null) {
-            root.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
+            if(icon != null)
+                root.getSupportActionBar().setHomeAsUpIndicator(icon);
             root.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             root.getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
@@ -39,6 +42,12 @@ public class ToolbarHelper {
         try {
             toolbarTitle = toolbarMenu.findViewById(R.id.toolbar_title);
         } catch (NullPointerException e) {}
+    }
+
+    public void initToolbar(Boolean back) {
+        if(back)
+            icon = null;
+        initToolbar();
     }
 
     public void setToolbarTitle(String title) {

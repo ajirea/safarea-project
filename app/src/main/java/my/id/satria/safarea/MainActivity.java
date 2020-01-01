@@ -1,6 +1,7 @@
 package my.id.satria.safarea;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import my.id.satria.safarea.data.User;
 import my.id.satria.safarea.repositories.ServerAPI;
 import my.id.satria.safarea.repositories.UserLocalStore;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +28,7 @@ import com.google.android.material.navigation.NavigationView;
 /**
  * The type Main activity.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -41,7 +43,32 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()) {
+        eventListener(item, null);
+        return false;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        userLocalStore = new UserLocalStore(this);
+        user = userLocalStore.getLoggedInUser();
+
+        initNavigationAndDrawer();
+        initMainBtnEvent();
+    }
+
+    private void eventListener(@Nullable MenuItem menuItem, @Nullable View v) {
+        Integer id = null;
+
+        if(menuItem != null) {
+            id = menuItem.getItemId();
+        } else if(v != null) {
+            id = v.getId();
+        }
+
+        switch(id) {
             case R.id.menuHome: {
                 runActivity(MainActivity.class);
                 break;
@@ -75,19 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
-
-        return false;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        userLocalStore = new UserLocalStore(this);
-        user = userLocalStore.getLoggedInUser();
-
-        initNavigationAndDrawer();
     }
 
     private void runActivity(Class cls) {
@@ -150,6 +164,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void initMainBtnEvent() {
+        findViewById(R.id.menuSupplier).setOnClickListener(this);
+        findViewById(R.id.menuDropshipper).setOnClickListener(this);
+        findViewById(R.id.menuStock).setOnClickListener(this);
+        findViewById(R.id.menuBuyer).setOnClickListener(this);
+        findViewById(R.id.menuTransaction).setOnClickListener(this);
+        findViewById(R.id.menuSetting).setOnClickListener(this);
+    }
+
     private void logoutDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setCancelable(true);
@@ -173,5 +196,10 @@ public class MainActivity extends AppCompatActivity {
         });
         alertDialog.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        eventListener(null, v);
     }
 }

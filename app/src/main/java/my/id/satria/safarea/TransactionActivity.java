@@ -1,6 +1,5 @@
 package my.id.satria.safarea;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -29,8 +28,13 @@ public class TransactionActivity extends AppCompatActivity {
 
         //Custom Toolbar
         toolbarHelper = new ToolbarHelper(this);
+
         toolbarHelper.initToolbar();
         toolbarHelper.setToolbarTitle(getString(R.string.text_transaction_list));
+
+        toolbarHelper.initToolbar(true);
+        toolbarHelper.setToolbarTitle(getString(R.string.text_transaction_list));
+
 
         //Recycle view
         mRecyclerView = findViewById(R.id.transactionListRecyclerView);
