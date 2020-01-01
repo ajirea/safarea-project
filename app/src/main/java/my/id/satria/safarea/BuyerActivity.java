@@ -32,7 +32,7 @@ public class BuyerActivity extends AppCompatActivity {
         toolbarHelper.setToolbarTitle(getString(R.string.text_buyer_lists));
 
         // recyclerview buyer
-        mRecyclerView = findViewById(R.id.transactionListRecyclerView);
+        mRecyclerView = findViewById(R.id.buyerListRecyclerView);
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new BuyerListAdapter(exampleBuyerData());
 

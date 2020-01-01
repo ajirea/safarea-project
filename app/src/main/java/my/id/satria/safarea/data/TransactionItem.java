@@ -1,29 +1,60 @@
 package my.id.satria.safarea.data;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class TransactionItem {
+public class TransactionItem implements Parcelable {
 
     private int image, id, userid, qty;
     private String name, product, phone, orderedAt, orderDesc;
     private double price, totalPrice;
 
-
-    public TransactionItem(Integer image, Integer id, Integer userid, double price, double totalPrice, Integer qty,
-                           String product, String name, String phone, String orderDesc)
+    public TransactionItem(int image, int id, int userid, int qty, String name, String product,
+                           String phone, String orderedAt, String orderDesc, double price,
+                           double totalPrice)
     {
+        this.image = image;
         this.id = id;
         this.userid = userid;
-        this.price = price;
-        this.totalPrice = totalPrice;
         this.qty = qty;
         this.name = name;
-        this.phone = phone;
-        this.orderDesc = orderDesc;
         this.product = product;
-        this.image = image;
+        this.phone = phone;
+        this.orderedAt = orderedAt;
+        this.orderDesc = orderDesc;
+        this.price = price;
+        this.totalPrice = totalPrice;
     }
+
+
+    protected TransactionItem(Parcel in) {
+        image = in.readInt();
+        id = in.readInt();
+        userid = in.readInt();
+        qty = in.readInt();
+        name = in.readString();
+        product = in.readString();
+        phone = in.readString();
+        orderedAt = in.readString();
+        orderDesc = in.readString();
+        price = in.readDouble();
+        totalPrice = in.readDouble();
+    }
+
+    public static final Creator<TransactionItem> CREATOR = new Creator<TransactionItem>() {
+        @Override
+        public TransactionItem createFromParcel(Parcel in) {
+            return new TransactionItem(in);
+        }
+
+        @Override
+        public TransactionItem[] newArray(int size) {
+            return new TransactionItem[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -111,5 +142,25 @@ public class TransactionItem {
 
     public void setProduct(String product) {
         this.product = product;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(image);
+        dest.writeInt(id);
+        dest.writeInt(userid);
+        dest.writeInt(qty);
+        dest.writeString(name);
+        dest.writeString(product);
+        dest.writeString(phone);
+        dest.writeString(orderedAt);
+        dest.writeString(orderDesc);
+        dest.writeDouble(price);
+        dest.writeDouble(totalPrice);
     }
 }
