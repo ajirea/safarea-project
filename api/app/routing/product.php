@@ -3,6 +3,54 @@
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
+//Tambah products
+$route->post('/product', function (Request $request, Response $response) {
+
+    $input = $request->getParsedBody();
+    $thumbnail = '/noimage.png';
+
+    // unggah thumbnail
+    if(isset($input['images'])) {
+        $thumbnail = uploadProductImage($input['images'][0], 'thumbnail');
+    }
+
+    // tambah ke tabel products
+    $query = $this->get('db')->prepare("INSERT INTO products (name, slug, thumbnail, price, stock, description) VALUES (?,?,?,?,?,?)");
+    $query->bindParam(1, $input['name']);
+    $query->bindParam(2, $input['slug']);
+    $query->bindParam(3, $thumbnail);
+    $query->bindParam(4, $input['price']);
+    $query->bindParam(5, $input['stock']);
+    $query->bindParam(6, $input['description']);
+    $query->execute();
+
+    $productId = $this->get('db')->lastInsertId();
+
+    if(isset($input['images'])) {
+        foreach($input['images'] as $image) {
+            $path = uploadProductImage($image, 'image');
+            $name = basename($path);
+            $query = $this->get('db')->prepare("INSERT INTO product_images (product_id, name, path) VALUES (?,?,?)");
+            $query->bindParam(1, $productId);
+            $query->bindParam(2, $name);
+            $query->bindParam(3, $path);
+            $query->execute();
+        } 
+    }
+
+    $results = [
+        'status' => true,
+        'data' => [
+            'message' => 'Berhasil menambahkan produk'
+        ]
+    ];
+
+    $response->getBody()->write(json_encode($results));
+
+    return $response
+        ->withHeader('Content-Type', 'application/json');
+});
+
 //Tampil semua products
 $route->get('/product', function (Request $request, Response $response) {
 

@@ -1,5 +1,7 @@
 <?php
 
+use Gregwar\Image\Image;
+
 function uploadAvatar($avatar, $username) {
     global $container;
 
@@ -30,13 +32,60 @@ function uploadAvatar($avatar, $username) {
         // atur ukuran gambar menjadi 180 x 180 px
         // save dengan format jpg dan kualitas gambar 85%
         // dokumentasi Gregwar\Image\Image: https://github.com/Gregwar/Image
-        Gregwar\Image\Image::open($tmpName)
+        Image::open($tmpName)
             ->zoomCrop(180, 180, 0xffffff)
             ->save($uploadLocation, 'jpg', 85);
 
     }
 
     return '/uploads/avatar/' . $username . '.jpg';
+}
+
+/**
+ * Fungsi untuk upload gambar produk
+ *
+ * @param string  $file example: http://site.com/image.jpg
+ * @param string  $type ["thumbnail", "image"]
+ *
+ * @return string
+ */
+function uploadProductImage($file, $type = 'thumbnail')
+{
+    global $container;
+
+    $width = 200;
+    $height = 210;
+
+    if($type == 'image') {
+        $width = 700;
+        $height = 583;
+    }
+
+    $filename = pathinfo($file, PATHINFO_FILENAME);
+    $uploadDir = '/uploads/products/'. $type .'-' . $filename . '.jpg';
+    $tempDir = 'uploads/temp/' . basename($file);
+
+    file_put_contents($tempDir, file_get_contents($file));
+
+    // atur lokasi penyimpanan gambar
+    // $this->get('upload_path') sudah di atur di dalam container di file app/container.php
+    $uploadLocation = $container->get('upload_path') . '/products/'.$type.'-' . $filename . '.jpg';
+    // cek apakah sudah ada file yang sama
+    // jika ya, maka hapus terlebih dahulu
+    if (file_exists($uploadLocation))
+        unlink($uploadLocation);
+
+    // atur ukuran gambar menggunakan depedensi \Gregwar\Image\Image
+    // atur ukuran gambar menjadi 180 x 180 px
+    // save dengan format jpg dan kualitas gambar 85%
+    // dokumentasi Gregwar\Image\Image: https://github.com/Gregwar/Image
+    Image::open($tempDir)
+        ->zoomCrop($width, $height, 0xffffff)
+        ->save($uploadLocation, 'jpg', 85);
+
+    unlink($tempDir);
+
+    return $uploadDir;
 }
 
 /**
