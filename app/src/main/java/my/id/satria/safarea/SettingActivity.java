@@ -2,6 +2,7 @@ package my.id.satria.safarea;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import my.id.satria.safarea.helpers.ToolbarHelper;
 
 import android.os.Bundle;
@@ -31,5 +32,9 @@ public class SettingActivity extends AppCompatActivity {
 
     public void setToolbarTitle(String title) {
         toolbarHelper.setToolbarTitle(title);
+    }
+
+    public Toolbar getToolbar() {
+        return toolbarHelper.getToolbar();
     }
 }

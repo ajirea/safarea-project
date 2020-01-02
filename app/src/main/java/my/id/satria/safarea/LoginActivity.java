@@ -2,6 +2,7 @@ package my.id.satria.safarea;
 
 import androidx.appcompat.app.AppCompatActivity;
 import my.id.satria.safarea.data.User;
+import my.id.satria.safarea.helpers.ProgressDialogHelper;
 import my.id.satria.safarea.repositories.ServerAPI;
 import my.id.satria.safarea.repositories.UserLocalStore;
 
@@ -27,7 +28,7 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private ProgressDialog progressDialog;
+    private ProgressDialogHelper progressDialog;
     private EditText fieldUsername, fieldPassword;
     private TextView alertText;
     private UserLocalStore userLocalStore;
@@ -50,10 +51,9 @@ public class LoginActivity extends AppCompatActivity {
         Button btnSignIn = findViewById(R.id.btnSignIn);
 
         // instansiasi progress dialig
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setTitle(getString(R.string.alert_signing_in_title));
-        progressDialog.setMessage(getString(R.string.alert_please_wait_message));
+        progressDialog = new ProgressDialogHelper(this,
+                getString(R.string.alert_signing_in_title),
+                getString(R.string.alert_please_wait_message));
 
         // instansiasi request menggunakan volley
         requestQueue = Volley.newRequestQueue(this);

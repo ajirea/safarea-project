@@ -30,6 +30,7 @@ public class ToolbarHelper {
      */
     public void initToolbar() {
         toolbarMenu = root.findViewById(R.id.toolbarMenu);
+
         root.setSupportActionBar(toolbarMenu);
 
         if(root.getSupportActionBar() != null) {
@@ -56,6 +57,8 @@ public class ToolbarHelper {
         } catch (NullPointerException e) {}
     }
 
-
+    public Toolbar getToolbar() {
+        return toolbarMenu;
+    }
 
 }

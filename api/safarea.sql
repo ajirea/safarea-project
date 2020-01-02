@@ -354,7 +354,9 @@ ALTER TABLE `api_tokens`
 -- Constraints for table `buyers`
 --
 ALTER TABLE `buyers`
-  ADD CONSTRAINT `buyers_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `buyers_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON
+DELETE CASCADE ON
+UPDATE CASCADE;
 
 --
 -- Constraints for table `orders`
@@ -368,14 +370,20 @@ ALTER TABLE `orders`
 -- Constraints for table `product_images`
 --
 ALTER TABLE `product_images`
-  ADD CONSTRAINT `product_images_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+  ADD CONSTRAINT `product_images_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON
+DELETE CASCADE ON
+UPDATE CASCADE;
 
 --
 -- Constraints for table `user_products`
 --
 ALTER TABLE `user_products`
-  ADD CONSTRAINT `user_products_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
-  ADD CONSTRAINT `user_products_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `user_products_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON
+DELETE CASCADE ON
+UPDATE CASCADE,
+  ADD CONSTRAINT `user_products_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON
+DELETE CASCADE ON
+UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

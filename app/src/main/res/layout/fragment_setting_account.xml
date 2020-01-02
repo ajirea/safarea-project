@@ -49,6 +49,7 @@
         <EditText
             android:id="@+id/fieldName"
             style="@style/input_text"
+            android:inputType="textImeMultiLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
@@ -80,7 +81,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="25dp"
             android:layout_marginRight="25dp"
-            android:inputType="text"
+            android:inputType="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fieldName"
@@ -106,6 +107,7 @@
             android:layout_marginEnd="25dp"
             android:layout_marginRight="25dp"
             android:inputType="textEmailAddress"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fieldUsername"
@@ -148,6 +150,7 @@
         <EditText
             android:id="@+id/fieldStoreName"
             style="@style/input_text"
+            android:inputType="textImeMultiLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
