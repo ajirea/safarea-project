@@ -1,7 +1,6 @@
 package my.id.satria.safarea;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,21 +9,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import org.w3c.dom.Text;
-
 import my.id.satria.safarea.data.TransactionItem;
+import my.id.satria.safarea.helpers.ToolbarHelper;
 
 public class TransactionDetaiActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
+    private ToolbarHelper toolbarHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_detail);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        toolbarHelper = new ToolbarHelper(this);
+        toolbarHelper.initToolbar(true);
+        toolbarHelper.setToolbarTitle("Detail Transaksi");
 
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -48,8 +47,9 @@ public class TransactionDetaiActivity extends AppCompatActivity {
         double totPrice = transactionItem.getTotalPrice();
 
         ImageView imageView = findViewById(R.id.imageView);
-        TextView buyer = findViewById(R.id.txtPemesan);
-        TextView notel = findViewById(R.id.txtNotel);
+        TextView labelBuyer = findViewById(R.id.lblPemesan);
+        TextView labelPhoneNumber = findViewById(R.id.lblNotel);
+        TextView labelTransactionNumber = findViewById(R.id.lblTransactionNumber);
         TextView prodName = findViewById(R.id.txtProduct);
         TextView ordDesc = findViewById(R.id.txtDesc);
         TextView ordDate = findViewById(R.id.txtDate);

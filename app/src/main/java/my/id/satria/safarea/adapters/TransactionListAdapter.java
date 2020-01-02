@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import my.id.satria.safarea.R;
+import my.id.satria.safarea.TransactionActivity;
 import my.id.satria.safarea.data.TransactionItem;
 
 public class TransactionListAdapter extends RecyclerView.Adapter<TransactionListAdapter.TransactionItemViewHolder>{
@@ -37,13 +38,15 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
 
     public static class TransactionItemViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView pemesan, product, qty, tglDipesan, harga, totHarga;
+        public TextView pemesan, transactionNumber, product, qty, tglDipesan, harga, totHarga;
         public ImageView images;
         public ImageButton btnDetails;
 
         public TransactionItemViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
-            pemesan = itemView.findViewById(R.id.txtPemesan);
+
+            transactionNumber = itemView.findViewById(R.id.lblTransactionNumber);
+            pemesan = itemView.findViewById(R.id.lblPemesan);
             product = itemView.findViewById(R.id.txtProduct);
             qty = itemView.findViewById(R.id.txtQty);
             tglDipesan = itemView.findViewById(R.id.txtDate);
@@ -80,14 +83,15 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
     @Override
     public void onBindViewHolder(@NonNull TransactionListAdapter.TransactionItemViewHolder holder, int position) {
         TransactionItem transaction = transactionList.get(holder.getAdapterPosition());
-        holder.pemesan.setText(transaction.getName());
+        holder.pemesan.setText(
+                context.getString(R.string.text_buyer_name, transaction.getName())
+        );
         holder.images.setImageDrawable(context.getResources().getDrawable(transaction.getImage()));
         holder.product.setText(transaction.getProduct());
         holder.qty.setText(String.valueOf(transaction.getQty()));
         holder.tglDipesan.setText(transaction.getOrderedAt());
         holder.harga.setText(String.valueOf(transaction.getPrice()));
         holder.totHarga.setText(String.valueOf(transaction.getTotalPrice()));
-
     }
 
 

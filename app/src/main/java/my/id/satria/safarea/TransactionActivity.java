@@ -3,6 +3,8 @@ package my.id.satria.safarea;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,12 +30,12 @@ public class TransactionActivity extends AppCompatActivity {
 
         //Custom Toolbar
         toolbarHelper = new ToolbarHelper(this);
-
-        toolbarHelper.initToolbar();
-        toolbarHelper.setToolbarTitle(getString(R.string.text_transaction_list));
-
         toolbarHelper.initToolbar(true);
         toolbarHelper.setToolbarTitle(getString(R.string.text_transaction_list));
+
+        // Comps
+        FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
+        btnAdd.bringToFront();
 
 
         //Recycle view

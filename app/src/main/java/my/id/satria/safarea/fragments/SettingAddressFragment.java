@@ -11,20 +11,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import my.id.satria.safarea.R;
 import my.id.satria.safarea.SettingActivity;
+import my.id.satria.safarea.data.User;
+import my.id.satria.safarea.repositories.UserLocalStore;
 
 /**
  * Fragment untuk menampilkan pengaturan alamat dropshipper
  */
 public class SettingAddressFragment extends Fragment {
 
-
-    public SettingAddressFragment() {
-        // Required empty public constructor
-    }
-
+    private User user;
+    private UserLocalStore userLocalStore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,6 +34,25 @@ public class SettingAddressFragment extends Fragment {
 
         // atur fragment agar memiliki akses ke toolbar
         setHasOptionsMenu(true);
+
+        // load data
+        userLocalStore = new UserLocalStore(container.getContext());
+        user = userLocalStore.getLoggedInUser();
+
+        EditText fieldAddress = view.findViewById(R.id.fieldAddress);
+        EditText fieldVillage = view.findViewById(R.id.fieldVillage);
+        EditText fieldDistrict = view.findViewById(R.id.fieldDistrict);
+        EditText fieldCity = view.findViewById(R.id.fieldCity);
+        EditText fieldProvince = view.findViewById(R.id.fieldProvince);
+        EditText fieldPos = view.findViewById(R.id.fieldPos);
+
+        // set text
+        fieldAddress.setText(user.getAddress());
+        fieldVillage.setText(user.getVillage());
+        fieldDistrict.setText(user.getDistrict());
+        fieldCity.setText(user.getCity());
+        fieldProvince.setText(user.getProvince());
+        fieldPos.setText(user.getPostalCode());
 
         // atur toolbar title
         try {

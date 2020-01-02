@@ -23,13 +23,15 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnDetails"
+        android:id="@+id/btnAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="30dp"
+        android:clickable="true"
+        android:focusable="true"
         android:background="?attr/colorBackgroundFloating"
         app:srcCompat="@drawable/ic_add_white_24dp" />
 

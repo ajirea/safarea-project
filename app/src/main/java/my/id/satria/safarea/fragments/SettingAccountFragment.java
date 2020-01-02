@@ -11,10 +11,17 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import androidx.navigation.Navigation;
 import my.id.satria.safarea.R;
 import my.id.satria.safarea.SettingActivity;
+import my.id.satria.safarea.data.User;
+import my.id.satria.safarea.repositories.ServerAPI;
+import my.id.satria.safarea.repositories.UserLocalStore;
 
 /**
  * Fragment pengaturan akun
@@ -23,6 +30,8 @@ import my.id.satria.safarea.SettingActivity;
  */
 public class SettingAccountFragment extends Fragment {
 
+    private UserLocalStore userLocalStore;
+    private User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,8 +42,32 @@ public class SettingAccountFragment extends Fragment {
         // atur fragment agar memiliki akses ke toolbar
         setHasOptionsMenu(true);
 
+        // load data dropshipper yg login
+        userLocalStore = new UserLocalStore(container.getContext());
+        user = userLocalStore.getLoggedInUser();
+
+        ImageView imageAvatar = view.findViewById(R.id.imageAvatar);
+        EditText fieldName = view.findViewById(R.id.fieldName);
+        EditText fieldUsername = view.findViewById(R.id.fieldUsername);
+        EditText fieldPhoneNumber = view.findViewById(R.id.fieldPhoneNumber);
+        EditText fieldEmail = view.findViewById(R.id.fieldEmail);
+        EditText fieldStoreName = view.findViewById(R.id.fieldStoreName);
         Button btnChangeAddress = view.findViewById(R.id.btnChangeAddress);
         Button btnChangePassword = view.findViewById(R.id.btnChangePassword);
+
+        // set avatar
+        Glide.with(imageAvatar.getContext())
+                .load(ServerAPI.BASE_URL + user.getAvatar())
+                .into(imageAvatar);
+
+        // set text
+        fieldName.setText(user.getName());
+        fieldUsername.setText(user.getUsername());
+        fieldPhoneNumber.setText(user.getPhone());
+        fieldEmail.setText(user.getEmail());
+        fieldStoreName.setText(user.getStoreName());
+
+        // event handling
         btnChangeAddress.setOnClickListener(
                 Navigation.createNavigateOnClickListener(R.id.action_settingAccountFragment_to_settingAddressFragment)
         );
