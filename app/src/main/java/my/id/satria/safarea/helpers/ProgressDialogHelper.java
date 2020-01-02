@@ -3,6 +3,9 @@ package my.id.satria.safarea.helpers;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+/**
+ * Kelas untuk membuat progress dialog
+ */
 public class ProgressDialogHelper {
 
     private ProgressDialog progressDialog;
