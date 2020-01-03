@@ -16,9 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -64,14 +62,16 @@ public class SettingAccountFragment extends Fragment {
         // atur fragment agar memiliki akses ke toolbar
         setHasOptionsMenu(true);
 
-        // load data dropshipper yg login
         context = container.getContext();
+
+        // load data dropshipper yg login
         userLocalStore = new UserLocalStore(context);
         user = userLocalStore.getLoggedInUser();
 
         // start request queue volley
         requestQueue = Volley.newRequestQueue(container.getContext());
 
+        // components
         imageAvatar = view.findViewById(R.id.imageAvatar);
         fieldName = view.findViewById(R.id.fieldName);
         fieldUsername = view.findViewById(R.id.fieldUsername);
@@ -120,8 +120,8 @@ public class SettingAccountFragment extends Fragment {
 
     /**
      * Menambahkan menu item ke toolbar (menu item di sini adalah tombol centang)
-     * @param menu
-     * @param inflater
+     * @param menu menu
+     * @param inflater menu inflater
      */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -134,10 +134,17 @@ public class SettingAccountFragment extends Fragment {
         // atur ulang toolbar title
         try {
             ((SettingActivity) getActivity()).setToolbarTitle(getString(R.string.text_pengaturan));
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+            e.getStackTrace();
+        }
         super.onResume();
     }
 
+    /**
+     * Menu untuk memeriksa apakah komponen edit teks kosong atau tidak
+     * @param item EditText
+     * @return Boolean
+     */
     private Boolean isEmpty(EditText item) {
         return fieldStoreName.getText().toString().trim().equals("");
     }
@@ -145,21 +152,19 @@ public class SettingAccountFragment extends Fragment {
     /**
      * Fungsi untuk menyimpan informasi akun yang sudah di edit
      */
-    private Boolean saveAccount() {
+    private void saveAccount() {
         // membuat alert dialog untuk request yang selesai
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
         alert.setCancelable(true);
         alert.setTitle("Error!");
-        alert.setPositiveButton(R.string.alert_yes_btn, (dialog, which) -> {
-            dialog.dismiss();
-        });
+        alert.setPositiveButton(R.string.alert_yes_btn, (dialog, which) -> dialog.dismiss());
 
         // cek apakah ada yang kosong
         if(isEmpty(fieldName) || isEmpty(fieldPhoneNumber) || isEmpty(fieldStoreName)) {
             alert.setTitle("Error!");
             alert.setMessage("Nama, nama toko, dan nomor telepon tidak boleh kosong");
             alert.show();
-            return false;
+            return;
         }
 
         // membuat progress dialog
@@ -179,6 +184,13 @@ public class SettingAccountFragment extends Fragment {
                     alert.setTitle("Sukses!");
                     alert.setMessage("Berhasil menyimpan pengaturan");
                     alert.show();
+
+                    User user = userLocalStore.getLoggedInUser();
+                    user.setName(fieldName.getText().toString());
+                    user.setStoreName(fieldStoreName.getText().toString());
+                    user.setPhone(fieldPhoneNumber.getText().toString());
+
+                    userLocalStore.storeUserData(user);
                 } else {
                     alert.setMessage(resp.getJSONObject("data").getString("message"));
                     alert.show();
@@ -196,31 +208,23 @@ public class SettingAccountFragment extends Fragment {
             pdh.dismiss();
         }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 // mengambil global header
                 return RequestGlobalHeaders.get(context);
             }
 
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 // membuat body data untuk request
                 Map<String, String> params = new HashMap<>();
                 params.put("name", fieldName.getText().toString());
                 params.put("store_name", fieldStoreName.getText().toString());
                 params.put("phone", fieldPhoneNumber.getText().toString());
 
-                User user = userLocalStore.getLoggedInUser();
-                user.setName(fieldName.getText().toString());
-                user.setStoreName(fieldStoreName.getText().toString());
-                user.setPhone(fieldPhoneNumber.getText().toString());
-
-                userLocalStore.storeUserData(user);
-
                 return params;
             }
         };
 
         requestQueue.add(postRequest);
-        return true;
     }
 }

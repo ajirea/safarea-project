@@ -26,6 +26,7 @@
     <string name="text_look_stock">Lihat Stok Barang</string>
     <string name="text_stock_message_take">Silahkan ambil barang anda di supplier terdekat</string>
     <string name="text_stock_message_send">Supplier akan mengirim barang ke alamat anda. Silahkan konfirmasi penerimaan barang di halaman stok barang</string>
+    <string name="text_saving">Menyimpan</string>
 
     <!-- String transaction -->
     <string name="text_buyer_name">Pemesan : %s</string>
@@ -40,6 +41,7 @@
     <string name="alert_failed_connect_server">Gagal, terjadi kesalahan pada server</string>
     <string name="alert_yes_btn">Ya</string>
     <string name="alert_no_btn">Tidak</string>
+    <string name="alert_saving_password">Sedang mengganti password&#8230;</string>
 
     <!-- String validation -->
     <string name="validation_required_uname_passwd">Nama pengguna dan Kata Sandi harus di isi.</string>

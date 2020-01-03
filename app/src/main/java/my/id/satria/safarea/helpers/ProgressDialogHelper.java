@@ -19,6 +19,7 @@ public class ProgressDialogHelper {
 
     public ProgressDialogHelper(Context context) {
         progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
     }
 
     public ProgressDialog getProgressDialog() {

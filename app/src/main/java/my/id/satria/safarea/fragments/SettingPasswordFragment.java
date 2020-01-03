@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -63,7 +62,9 @@ public class SettingPasswordFragment extends Fragment {
 
                 return false;
             });
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+            e.getStackTrace();
+        }
 
         requestQueue = Volley.newRequestQueue(container.getContext());
 
@@ -72,8 +73,8 @@ public class SettingPasswordFragment extends Fragment {
 
     /**
      * Menambahkan menu item ke toolbar (menu item di sini adalah tombol centang)
-     * @param menu
-     * @param inflater
+     * @param menu actionbar
+     * @param inflater menu inflater
      */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -83,14 +84,13 @@ public class SettingPasswordFragment extends Fragment {
 
     private void changePassword() {
         // membuat progress dialog
-        ProgressDialogHelper pdh = new ProgressDialogHelper(context, "Menyimpan", "Sedang mengganti password...");
+        ProgressDialogHelper pdh = new ProgressDialogHelper(context,
+                getString(R.string.text_saving), getString(R.string.alert_saving_password));
 
         // membuat alert
         AlertDialog.Builder alert = new AlertDialog.Builder(context)
                 .setTitle("Error!")
-                .setPositiveButton(R.string.alert_yes_btn, (dialog, which) -> {
-                    dialog.dismiss();
-                });
+                .setPositiveButton(R.string.alert_yes_btn, (dialog, which) -> dialog.dismiss());
 
         // components
         EditText fieldOldPassword = view.findViewById(R.id.fieldOldPassword);
@@ -123,16 +123,14 @@ public class SettingPasswordFragment extends Fragment {
                 alert.setMessage(e.getMessage()).show();
                 e.printStackTrace();
             }
-        }, error -> {
-            pdh.dismiss();
-        }) {
+        }, error -> pdh.dismiss()) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 return RequestGlobalHeaders.get(context);
             }
 
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("old_password", fieldOldPassword.getText().toString());
                 params.put("password", fieldNewPassword.getText().toString());
