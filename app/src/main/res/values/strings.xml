@@ -17,6 +17,7 @@
     <string name="text_buyer_lists">Daftar Pembeli</string>
     <string name="text_edit_buyer">Ubah Pembeli</string>
     <string name="text_add_buyer">Tambah Pembeli</string>
+    <string name="text_add_transaction">Tambah Pesanan</string>
     <string name="text_transaction_list">Daftar Transaksi</string>
     <string name="text_delete_stock">Hapus Stok</string>
     <string name="text_stock_product">Stok Barang</string>

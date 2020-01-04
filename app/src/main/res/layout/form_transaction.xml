@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/fieldDate"
+            android:inputType="date"
+            style="@style/input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="test" />
+
+
+        <TextView
+            android:id="@+id/labelDate"
+            style="@style/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tanggal Transaksi"
+            app:layout_constraintBottom_toTopOf="@+id/fieldDate"
+            app:layout_constraintStart_toStartOf="@+id/fieldDate" />
+
+        <EditText
+            android:id="@+id/fieldNameItem"
+            android:inputType="text"
+            style="@style/input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fieldDate"
+            tools:text="test" />
+
+        <TextView
+            android:id="@+id/labelNameItem"
+            style="@style/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Barang"
+            app:layout_constraintBottom_toTopOf="@+id/fieldNameItem"
+            app:layout_constraintStart_toStartOf="@+id/fieldNameItem" />
+
+        <EditText
+            android:id="@+id/fieldQty"
+            android:inputType="number"
+            style="@style/input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fieldNameItem"
+            tools:text="test" />
+
+        <TextView
+            android:id="@+id/labelQty"
+            style="@style/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quantity"
+            app:layout_constraintBottom_toTopOf="@+id/fieldQty"
+            app:layout_constraintStart_toStartOf="@+id/fieldQty" />
+
+        <EditText
+            android:id="@+id/fieldDesc"
+            android:inputType="textMultiLine"
+            style="@style/input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fieldQty"
+            tools:text="test" />
+
+        <TextView
+            android:id="@+id/labelDesc"
+            style="@style/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deskripsi Pesanan"
+            app:layout_constraintBottom_toTopOf="@+id/fieldDesc"
+            app:layout_constraintStart_toStartOf="@+id/fieldDesc" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

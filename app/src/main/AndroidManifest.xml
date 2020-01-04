@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".TransactionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".TransactionAddActivity" android:screenOrientation="portrait"/>
         <activity android:name=".TransactionDetaiActivity" android:screenOrientation="portrait"/>
         <activity android:name=".DropshipperCatalogDetailActivity" android:screenOrientation="portrait" />
         <activity android:name=".DropshipperCatalogActivity" android:screenOrientation="portrait" />
