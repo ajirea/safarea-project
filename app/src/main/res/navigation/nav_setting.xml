@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/settingAccountFragment"
-        android:name="my.id.satria.safarea.fragments.SettingAccountFragment"
+        android:name="com.perjalanan.safarea.fragments.SettingAccountFragment"
         android:label="Pengaturan"
         tools:layout="@layout/fragment_setting_account">
         <action
@@ -19,12 +19,12 @@
     </fragment>
     <fragment
         android:id="@+id/settingAddressFragment"
-        android:name="my.id.satria.safarea.fragments.SettingAddressFragment"
+        android:name="com.perjalanan.safarea.fragments.SettingAddressFragment"
         android:label="Atur Alamat"
         tools:layout="@layout/fragment_setting_address" />
     <fragment
         android:id="@+id/settingPasswordFragment"
-        android:name="my.id.satria.safarea.fragments.SettingPasswordFragment"
+        android:name="com.perjalanan.safarea.fragments.SettingPasswordFragment"
         android:label="Ubah Kata Sandi"
         tools:layout="@layout/fragment_setting_password" />
 </navigation>
