@@ -89,6 +89,48 @@ $route->post('/user/change-password', function (Request $request, Response $resp
     return $response->withHeader('Content-Type', 'application/json');
 });
 
+// Edit alamat user
+$route->post('/user/address', function (Request $request, Response $response) {
+    $input = $request->getParsedBody();
+
+    // data user diambil dari $request yang sebelumnya sudah di masukkan ke atribut melalui middleware
+    // di file index.php line 35-57
+    $user = $request->getAttribute('user');
+
+    $result = [
+        'status' => true,
+        'data' => [
+            'message' => 'Alamat berhasil diubah'
+        ]
+    ];
+
+    if (!$user) {
+        $result['status'] = false;
+        $result['data']['message'] = 'User tidak ditemukan';
+        $response->getBody()->write(json_encode($result));
+
+        return $response
+            ->withHeader('Content-Type', 'application/json');
+    }
+
+    // tahap update alamat user
+    $query = $this->get('db')->prepare("UPDATE addresses SET address=?, village=?, district=?, city=?, province=?, postal_code=? WHERE user_id=?");
+    $query->bindParam(1, $input['address']);
+    $query->bindParam(2, $input['village']);
+    $query->bindParam(3, $input['district']);
+    $query->bindParam(4, $input['city']);
+    $query->bindParam(5, $input['province']);
+    $query->bindParam(6, $input['postal_code']);
+    $query->bindParam(7, $user->id);
+    $address = $query->execute();
+    // tahap end update alamat user 
+
+    $response->getBody()->write(json_encode($result));
+
+    return $response
+        ->withHeader('Content-Type', 'application/json');
+});
+
 //Edit user
 $route->post('/user/{username}', function(Request $request, Response $response, $args) {
 
@@ -135,45 +177,6 @@ $route->post('/user/{username}', function(Request $request, Response $response, 
 
     return $response
         ->withHeader('Content-Type', 'application/json');    
-});
-
-// Edit alamat user
-$route->post('/user/{username}/address', function(Request $request, Response $response, $args) {
-    $input = $request->getParsedBody();
-    $user = getUser($args['username']);
-
-    $result = [
-        'status' => true,
-        'data' => [
-            'message' => 'Alamat berhasil diubah'
-        ]
-    ];
-
-    if(!$user) {
-        $result['status'] = false;
-        $result['data']['message'] = 'User tidak ditemukan';
-        $response->getBody()->write(json_encode($result));
-
-        return $response
-            ->withHeader('Content-Type', 'application/json');
-    }
-
-    // tahap update alamat user
-    $query = $this->get('db')->prepare("UPDATE addresses SET address=?, village=?, district=?, city=?, province=?, postal_code=? WHERE user_id=?");
-    $query->bindParam(1, $input['address']);
-    $query->bindParam(2, $input['village']);
-    $query->bindParam(3, $input['district']);
-    $query->bindParam(4, $input['city']);
-    $query->bindParam(5, $input['province']);
-    $query->bindParam(6, $input['postal_code']);
-    $query->bindParam(7, $user->id);
-    $address = $query->execute();
-    // tahap end update alamat user 
-
-    $response->getBody()->write(json_encode($result));
-
-    return $response
-        ->withHeader('Content-Type', 'application/json');
 });
 
 //Tambah user
