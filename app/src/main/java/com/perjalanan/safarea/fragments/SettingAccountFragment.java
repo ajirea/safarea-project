@@ -146,7 +146,7 @@ public class SettingAccountFragment extends Fragment {
      * @return Boolean
      */
     private Boolean isEmpty(EditText item) {
-        return fieldStoreName.getText().toString().trim().equals("");
+        return item.getText().toString().trim().equals("");
     }
 
     /**
