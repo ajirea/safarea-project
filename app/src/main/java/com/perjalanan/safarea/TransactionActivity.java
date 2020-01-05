@@ -33,10 +33,6 @@ public class TransactionActivity extends AppCompatActivity {
         toolbarHelper.initToolbar(true);
         toolbarHelper.setToolbarTitle(getString(R.string.text_transaction_list));
 
-        // Comps
-        FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
-        btnAdd.bringToFront();
-
 
         //Recycle view
         mRecyclerView = findViewById(R.id.transactionListRecyclerView);
@@ -52,6 +48,11 @@ public class TransactionActivity extends AppCompatActivity {
                 intent.putExtra("Detail Transaksi",exampleTransactionData().get(position));
                 startActivity(intent);
             }
+        });
+        // event
+        FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(l -> {
+            startActivity(new Intent(this, TransactionAddActivity.class));
         });
 
     }
