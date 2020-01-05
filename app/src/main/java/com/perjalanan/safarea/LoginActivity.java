@@ -1,6 +1,8 @@
 package com.perjalanan.safarea;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
 import com.perjalanan.safarea.data.User;
 import com.perjalanan.safarea.helpers.ProgressDialogHelper;
 import com.perjalanan.safarea.repositories.ServerAPI;
@@ -13,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -138,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
         }, error -> {
             alertText.setText(getString(R.string.alert_failed_connect_server));
             progressDialog.dismiss();
-        }) {
+        })  {
             /**
              * Data yang akan di kirim melalui request
              * @return Map

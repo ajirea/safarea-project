@@ -14,6 +14,7 @@ import com.perjalanan.safarea.repositories.UserLocalStore;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onSupportNavigateUp() {
-        drawerLayout.openDrawer(navigationView);
+        drawerLayout.openDrawer(navigationView, true);
         return super.onSupportNavigateUp();
     }
 
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void runActivity(Class cls) {
         startActivity(new Intent(this, cls));
+        drawerLayout.closeDrawer(navigationView, true);
     }
 
     private void initNavigationAndDrawer() {

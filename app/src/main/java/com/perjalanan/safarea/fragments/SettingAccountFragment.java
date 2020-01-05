@@ -2,12 +2,16 @@ package com.perjalanan.safarea.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,17 +19,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,10 +40,13 @@ import androidx.navigation.Navigation;
 import com.perjalanan.safarea.R;
 import com.perjalanan.safarea.SettingActivity;
 import com.perjalanan.safarea.data.User;
+import com.perjalanan.safarea.helpers.MultipartRequest;
 import com.perjalanan.safarea.helpers.ProgressDialogHelper;
 import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
 import com.perjalanan.safarea.repositories.ServerAPI;
 import com.perjalanan.safarea.repositories.UserLocalStore;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Fragment pengaturan akun
@@ -45,11 +55,12 @@ import com.perjalanan.safarea.repositories.UserLocalStore;
  */
 public class SettingAccountFragment extends Fragment {
 
+    private static final int PICK_IMAGE_REQUEST = 1;
     private UserLocalStore userLocalStore;
     private User user;
-    private Toolbar toolbar;
     private ImageView imageAvatar;
     private EditText fieldName, fieldUsername, fieldPhoneNumber, fieldEmail, fieldStoreName;
+    private Uri imageUri;
     private RequestQueue requestQueue;
     private Context context;
 
@@ -78,8 +89,10 @@ public class SettingAccountFragment extends Fragment {
         fieldPhoneNumber = view.findViewById(R.id.fieldPhoneNumber);
         fieldEmail = view.findViewById(R.id.fieldEmail);
         fieldStoreName = view.findViewById(R.id.fieldStoreName);
+
         Button btnChangeAddress = view.findViewById(R.id.btnChangeAddress);
         Button btnChangePassword = view.findViewById(R.id.btnChangePassword);
+        ImageButton btnPickImage = view.findViewById(R.id.btnPickImage);
 
         // set avatar
         Glide.with(imageAvatar.getContext())
@@ -102,6 +115,8 @@ public class SettingAccountFragment extends Fragment {
         btnChangePassword.setOnClickListener(
                 Navigation.createNavigateOnClickListener(R.id.action_settingAccountFragment_to_settingPasswordFragment)
         );
+
+        btnPickImage.setOnClickListener(l -> openFileChooser());
 
         // toolbar handler
         try {
@@ -150,6 +165,33 @@ public class SettingAccountFragment extends Fragment {
     }
 
     /**
+     * Method untuk mengambil file dari storage smartphone
+     */
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+            && data != null && data.getData() != null) {
+            imageUri = data.getData();
+
+            // set avatar
+            Glide.with(imageAvatar.getContext())
+                    .load(imageUri)
+                    .centerCrop()
+                    .into(imageAvatar);
+        }
+
+    }
+
+    /**
      * Fungsi untuk menyimpan informasi akun yang sudah di edit
      */
     private void saveAccount() {
@@ -174,10 +216,10 @@ public class SettingAccountFragment extends Fragment {
 
         // request simpan data user
         String url = ServerAPI.EDIT_ACCOUNT.concat(userLocalStore.getLoggedInUser().getUsername());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url, response -> {
+        MultipartRequest postRequest = new MultipartRequest(Request.Method.POST, url, response -> {
             try {
                 // parsing json string ke object
-                JSONObject resp = new JSONObject(response);
+                JSONObject resp = new JSONObject(new String(response.data));
 
                 // cek apakah status true or false
                 if(resp.getBoolean("status")) {
@@ -189,6 +231,9 @@ public class SettingAccountFragment extends Fragment {
                     user.setName(fieldName.getText().toString());
                     user.setStoreName(fieldStoreName.getText().toString());
                     user.setPhone(fieldPhoneNumber.getText().toString());
+
+                    // ambil avatar baru
+                    user.setAvatar(resp.getJSONObject("data").getJSONObject("user").getString("avatar"));
 
                     userLocalStore.storeUserData(user);
                 } else {
@@ -207,9 +252,9 @@ public class SettingAccountFragment extends Fragment {
             alert.show();
             pdh.dismiss();
         }) {
+
             @Override
-            public Map<String, String> getHeaders() {
-                // mengambil global header
+            public Map<String, String> getHeaders() throws AuthFailureError {
                 return RequestGlobalHeaders.get(context);
             }
 
@@ -223,8 +268,36 @@ public class SettingAccountFragment extends Fragment {
 
                 return params;
             }
+
+            /**
+             * Tambahkan gambar avatar ke request body
+             * @return
+             * @throws AuthFailureError
+             */
+            @Override
+            protected Map<String, DataPart> getByteData() throws AuthFailureError {
+                Map<String, DataPart> params = new HashMap<>();
+
+                // cek apakah imageUri kosong atau tidak
+                if(imageUri == null) return params;
+
+                try {
+                    // Ubah imageUri ke dalam bentuk bitmap
+                    Bitmap image = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    image.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+
+                    // Tambahkan ke request body
+                    params.put("avatar", new DataPart("avatar_image.jpg", byteArrayOutputStream.toByteArray(), "image/jpeg"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return params;
+            }
         };
 
         requestQueue.add(postRequest);
+        requestQueue.start();
     }
 }
