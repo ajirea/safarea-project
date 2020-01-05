@@ -7,6 +7,7 @@ function uploadAvatar($avatar, $username) {
 
     // mengambil temporary name file yang di upload dari sistem I/O php
     $tmpName = $avatar->getStream()->getMetaData('uri');
+    $fileName = $container->get('random_string'); 
 
     // mendapatkan informasi ukuran dimensi gambar
     $imagesize = getimagesize($tmpName);
@@ -21,7 +22,7 @@ function uploadAvatar($avatar, $username) {
 
         // atur lokasi penyimpanan gambar
         // $this->get('upload_path') sudah di atur di dalam container di file app/container.php
-        $uploadLocation = $container->get('upload_path') . '/avatar/' . $username . '.jpg';
+        $uploadLocation = $container->get('upload_path') . '/avatar/' . $fileName . '.jpg';
 
         // cek apakah sudah ada file yang sama
         // jika ya, maka hapus terlebih dahulu
@@ -38,7 +39,7 @@ function uploadAvatar($avatar, $username) {
 
     }
 
-    return '/uploads/avatar/' . $username . '.jpg';
+    return '/uploads/avatar/' . $fileName . '.jpg';
 }
 
 /**

@@ -45,7 +45,7 @@ $route->get('/user/{username}', function(Request $request, Response $response, $
 
     return $response
         ->withHeader('Content-Type', 'application/json');
-        
+
 });
 
 // api untuk mengubah password berdasarkan user yang login
@@ -123,7 +123,7 @@ $route->post('/user/address', function (Request $request, Response $response) {
     $query->bindParam(6, $input['postal_code']);
     $query->bindParam(7, $user->id);
     $address = $query->execute();
-    // tahap end update alamat user 
+    // tahap end update alamat user
 
     $response->getBody()->write(json_encode($result));
 
@@ -168,15 +168,17 @@ $route->post('/user/{username}', function(Request $request, Response $response, 
         'data' => []
     ];
 
-    if($user)
-        $result['data']['message'] = 'User ' . $args['username'] . ' berhasil diperbarui';
+    if($user) {
+        $result['data']['message'] = 'User ' . $args['username'] . ' berhasil diperbarui';  
+        $result['data']['user'] = getUser($args['username']);
+    }
     else
         $result['data']['message'] = 'Username tidak ada';
 
     $response->getBody()->write(json_encode($result));
 
     return $response
-        ->withHeader('Content-Type', 'application/json');    
+        ->withHeader('Content-Type', 'application/json');
 });
 
 //Tambah user
@@ -243,7 +245,7 @@ $route->post('/user', function(Request $request, Response $response) {
 
     return $response
         ->withHeader('Content-Type', 'application/json');
-        
+
 });
 
 //Hapus user
@@ -265,5 +267,5 @@ $route->delete('/user/{username}', function(Request $request, Response $response
 
     return $response
         ->withHeader('Content-Type', 'application/json');
-        
+
 });

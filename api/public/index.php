@@ -17,7 +17,7 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 
 // set base path of app
-$app->setBasePath("/safarea-api");
+$app->setBasePath("/safarea");
 
 // Add Routing Middleware
 $app->addRoutingMiddleware();
