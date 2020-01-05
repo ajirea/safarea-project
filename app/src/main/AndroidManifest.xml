@@ -3,6 +3,7 @@
     package="com.perjalanan.safarea">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".TransactionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".TransactionAddActivity" android:screenOrientation="portrait"/>
         <activity android:name=".TransactionDetaiActivity" android:screenOrientation="portrait"/>
         <activity android:name=".DropshipperCatalogDetailActivity" android:screenOrientation="portrait" />
         <activity android:name=".DropshipperCatalogActivity" android:screenOrientation="portrait" />

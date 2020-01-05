@@ -18,8 +18,7 @@ public class RequestGlobalHeaders {
     public static Map<String, String> get(Context context) {
         RequestGlobalHeaders rgh = new RequestGlobalHeaders(context);
         rgh.getHeaders().put("Accept", "application/json");
-        rgh.getHeaders().put("Content-Type", "application/x-www-form-urlencoded");
-
+//        rgh.getHeaders().put("Content-Type", "application/x-www-form-urlencoded");
         if(rgh.getUserLocalStore().isUserLoggedIn())
             rgh.getHeaders().put("api_token", rgh.getUserLocalStore().getLoggedInUser().getToken());
 
