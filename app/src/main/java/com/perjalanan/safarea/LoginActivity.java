@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         alertText = findViewById(R.id.alertText);
         Button btnSignIn = findViewById(R.id.btnSignIn);
 
-        // instansiasi progress dialig
+        // instansiasi progress dialog
         progressDialog = new ProgressDialogHelper(this,
                 getString(R.string.alert_signing_in_title),
                 getString(R.string.alert_please_wait_message));
