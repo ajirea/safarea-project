@@ -10,4 +10,6 @@ public class ServerAPI {
     public static final String CHANGE_ADDRESS_ACCOUNT = API_URL.concat("user/address");
     public static final String SUPPLIER_CATALOGUE = API_URL.concat("/product");
 
+    public static final String BUYER_ALL_DATA = API_URL.concat("buyers");
+
 }

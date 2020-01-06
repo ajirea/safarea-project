@@ -8,7 +8,7 @@ import java.sql.Date;
 public class BuyerItem {
     private Integer id, userId;
     private String name, phone;
-    private Date createdAt, deletedAt;
+    private String createdAt, deletedAt;
 
     public BuyerItem(Integer id, Integer userId, String name, String phone) {
         this.id = id;
@@ -49,19 +49,19 @@ public class BuyerItem {
         this.phone = phone;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getDeletedAt() {
+    public String getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Date deletedAt) {
+    public void setDeletedAt(String deletedAt) {
         this.deletedAt = deletedAt;
     }
 }
