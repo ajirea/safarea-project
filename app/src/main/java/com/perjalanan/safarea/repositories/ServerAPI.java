@@ -9,4 +9,6 @@ public class ServerAPI {
     public static final String CHANGE_PASSWORD_ACCOUNT = API_URL.concat("user/change-password");
     public static final String CHANGE_ADDRESS_ACCOUNT = API_URL.concat("user/address");
 
+    public static final String BUYER_ALL_DATA = API_URL.concat("buyers");
+
 }
