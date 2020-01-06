@@ -7,12 +7,12 @@ import java.util.ArrayList;
 
 public class CatalogItem implements Parcelable {
 
-    private Integer id, thumbnail, stock;
-    private String title, description;
+    private Integer id, stock;
+    private String title, thumbnail, description;
     private Double price;
     private ArrayList<String[]> images;
 
-    public CatalogItem(Integer id, Integer thumbnail, String title, Double price) {
+    public CatalogItem(Integer id, String thumbnail, String title, Double price) {
         this.id = id;
         this.thumbnail = thumbnail;
         this.title = title;
@@ -29,7 +29,7 @@ public class CatalogItem implements Parcelable {
         if (in.readByte() == 0) {
             thumbnail = null;
         } else {
-            thumbnail = in.readInt();
+            thumbnail = in.readString();
         }
         if (in.readByte() == 0) {
             stock = null;
@@ -78,7 +78,7 @@ public class CatalogItem implements Parcelable {
         return id;
     }
 
-    public Integer getThumbnail() {
+    public String getThumbnail() {
         return thumbnail;
     }
 
@@ -113,7 +113,7 @@ public class CatalogItem implements Parcelable {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
-            dest.writeInt(thumbnail);
+            dest.writeString(thumbnail);
         }
         if (stock == null) {
             dest.writeByte((byte) 0);

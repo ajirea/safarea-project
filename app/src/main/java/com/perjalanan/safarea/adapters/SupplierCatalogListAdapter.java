@@ -45,7 +45,7 @@ public class SupplierCatalogListAdapter extends RecyclerView.Adapter<SupplierCat
     @Override
     public void onBindViewHolder(@NonNull SupplierCatalogItem holder, int position) {
         CatalogItem item = catalogList.get(holder.getAdapterPosition());
-        holder.thumbnailCatalog.setImageResource(item.getThumbnail());
+        //holder.thumbnailCatalog.setImageResource(item.getThumbnail());
         holder.titleCatalog.setText(item.getTitle());
         holder.priceCatalog.setText(item.getPrice().toString());
     }

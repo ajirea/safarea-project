@@ -45,7 +45,7 @@ public class DropshipperCatalogListAdapter extends RecyclerView.Adapter<Dropship
     @Override
     public void onBindViewHolder(@NonNull DropshipperCatalogListAdapter.DropshipperCatalogItem holder, int position) {
         CatalogItem item = catalogList.get(holder.getAdapterPosition());
-        holder.thumbnailCatalog.setImageResource(item.getThumbnail());
+        holder.thumbnailCatalog.setImageResource(Integer.parseInt(item.getThumbnail()));
         holder.titleCatalog.setText(item.getTitle());
         holder.priceCatalog.setText(item.getPrice().toString());
     }

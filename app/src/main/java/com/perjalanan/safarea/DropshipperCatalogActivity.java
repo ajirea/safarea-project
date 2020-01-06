@@ -31,7 +31,7 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
         toolbarHelper.setToolbarTitle("Katalog Produk");
 
         // recycler view
-        catalogList = exampleCatalogData();
+        //catalogList = exampleCatalogData();
         mRecyclerView = findViewById(R.id.dropshipperCatalogRecyclerView);
         mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         mAdapter = new DropshipperCatalogListAdapter(catalogList);
@@ -64,26 +64,26 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
      * Contoh data untuk catalog items
      * @return ArrayList<CatalogItem>
      */
-    private ArrayList<CatalogItem> exampleCatalogData() {
-        ArrayList<CatalogItem> exCatalog = new ArrayList<>();
-
-        CatalogItem item1 = new CatalogItem(
-                1,
-                R.drawable.sample_product,
-                "Kids Pajama Short Sleeves",
-                80000D
-        );
-
-        CatalogItem item2 = new CatalogItem(
-                2,
-                R.drawable.sample_product,
-                "Kids Pajama Long Sleeves",
-                90000D
-        );
-
-        exCatalog.add(item1);
-        exCatalog.add(item2);
-
-        return exCatalog;
-    }
+//    private ArrayList<CatalogItem> exampleCatalogData() {
+//        ArrayList<CatalogItem> exCatalog = new ArrayList<>();
+//
+//        CatalogItem item1 = new CatalogItem(
+//                1,
+//                R.drawable.sample_product,
+//                "Kids Pajama Short Sleeves",
+//                80000D
+//        );
+//
+//        CatalogItem item2 = new CatalogItem(
+//                2,
+//                R.drawable.sample_product,
+//                "Kids Pajama Long Sleeves",
+//                90000D
+//        );
+//
+//        exCatalog.add(item1);
+//        exCatalog.add(item2);
+//
+//        return exCatalog;
+//    }
 }
