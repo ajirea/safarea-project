@@ -1,5 +1,6 @@
 package com.perjalanan.safarea.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.perjalanan.safarea.R;
 import com.perjalanan.safarea.data.CatalogItem;
 
@@ -45,7 +48,11 @@ public class SupplierCatalogListAdapter extends RecyclerView.Adapter<SupplierCat
     @Override
     public void onBindViewHolder(@NonNull SupplierCatalogItem holder, int position) {
         CatalogItem item = catalogList.get(holder.getAdapterPosition());
-        //holder.thumbnailCatalog.setImageResource(item.getThumbnail());
+
+        Glide.with(holder.context).load(item.getThumbnail())
+                .centerCrop()
+                .into(holder.thumbnailCatalog);
+
         holder.titleCatalog.setText(item.getTitle());
         holder.priceCatalog.setText(item.getPrice().toString());
     }
@@ -60,12 +67,14 @@ public class SupplierCatalogListAdapter extends RecyclerView.Adapter<SupplierCat
         ImageView thumbnailCatalog;
         TextView titleCatalog;
         TextView priceCatalog;
+        Context context;
 
         public SupplierCatalogItem(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             thumbnailCatalog = itemView.findViewById(R.id.thumbnailCatalog);
             titleCatalog = itemView.findViewById(R.id.titleCatalog);
             priceCatalog = itemView.findViewById(R.id.priceCatalog);
+            context = itemView.getContext();
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

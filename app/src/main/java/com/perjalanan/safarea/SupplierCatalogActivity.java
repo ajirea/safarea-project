@@ -42,7 +42,7 @@ public class SupplierCatalogActivity extends AppCompatActivity {
     private SupplierCatalogListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private RequestQueue requestQueue;
-    private CatalogItem catalogItem;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +64,11 @@ public class SupplierCatalogActivity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(this::getSupCatalog);
-
+        progressBar = findViewById(R.id.progress_circular);
 
         // recycler view
-        //catalogList = exampleCatalogData();
+        catalogList = new ArrayList<>();
+        getSupCatalog();
         mRecyclerView = findViewById(R.id.dropshipperCatalogRecyclerView);
         mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         mAdapter = new SupplierCatalogListAdapter(catalogList);
@@ -98,34 +99,6 @@ public class SupplierCatalogActivity extends AppCompatActivity {
         return super.onSupportNavigateUp();
     }
 
-//    /**
-//     * Contoh data untuk catalog items
-//     * @return ArrayList<CatalogItem>
-//     */
-//    private ArrayList<CatalogItem> exampleCatalogData() {
-//        ArrayList<CatalogItem> exCatalog = new ArrayList<>();
-//
-//        CatalogItem item1 = new CatalogItem(
-//                1,
-//                R.drawable.sample_product,
-//                "Kids Pajama Short Sleeves",
-//                80000D
-//        );
-//        item1.setStock(5);
-//
-//        CatalogItem item2 = new CatalogItem(
-//                2,
-//                R.drawable.sample_product,
-//                "Kids Pajama Long Sleeves",
-//                90000D
-//        );
-//        item2.setStock(20);
-//
-//        exCatalog.add(item1);
-//        exCatalog.add(item2);
-//
-//        return exCatalog;
-//    }
     private void getSupCatalog () {
         AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
 
@@ -141,7 +114,7 @@ public class SupplierCatalogActivity extends AppCompatActivity {
                                 (
 
                                     Integer.parseInt(item.getString("id")),
-                                    item.getString(ServerAPI.BASE_URL + catalogItem.getThumbnail()),
+                                    ServerAPI.BASE_URL + item.getString("thumbnail"),
                                     item.getString("name"),
                                     Double.parseDouble(item.getString("price"))
                                 );
@@ -152,6 +125,7 @@ public class SupplierCatalogActivity extends AppCompatActivity {
                             alert.setMessage(response.getJSONObject("data")
                                     .getString("message")).show();
                         }
+                        progressBar.setVisibility(View.INVISIBLE);
                         swipeRefreshLayout.setRefreshing(false);
                     } catch (JSONException e) {
                         e.printStackTrace();
