@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import com.perjalanan.safarea.R;
 import com.perjalanan.safarea.data.CatalogItem;
 
+import org.jetbrains.annotations.NotNull;
+
 public class DropshipperCatalogListAdapter extends RecyclerView.Adapter<DropshipperCatalogListAdapter.DropshipperCatalogItem> {
 
     private ArrayList<CatalogItem> catalogList;
@@ -32,20 +34,18 @@ public class DropshipperCatalogListAdapter extends RecyclerView.Adapter<Dropship
     }
 
 
+    @NotNull
     public DropshipperCatalogListAdapter.DropshipperCatalogItem onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.catalog_item, parent, false
         );
 
-        DropshipperCatalogListAdapter.DropshipperCatalogItem sci = new DropshipperCatalogListAdapter.DropshipperCatalogItem(view, mListener);
-
-        return sci;
-    }
+        return new DropshipperCatalogListAdapter.DropshipperCatalogItem(view, mListener);    }
 
     @Override
     public void onBindViewHolder(@NonNull DropshipperCatalogListAdapter.DropshipperCatalogItem holder, int position) {
         CatalogItem item = catalogList.get(holder.getAdapterPosition());
-        holder.thumbnailCatalog.setImageResource(Integer.parseInt(item.getThumbnail()));
+        holder.thumbnailCatalog.setImageResource(R.drawable.sample_product);
         holder.titleCatalog.setText(item.getTitle());
         holder.priceCatalog.setText(item.getPrice().toString());
     }

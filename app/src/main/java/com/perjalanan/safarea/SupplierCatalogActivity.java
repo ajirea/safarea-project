@@ -9,15 +9,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.perjalanan.safarea.adapters.SupplierCatalogListAdapter;
 import com.perjalanan.safarea.data.CatalogItem;
-import com.perjalanan.safarea.helpers.ProgressDialogHelper;
 import com.perjalanan.safarea.helpers.ToolbarHelper;
 import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
 import com.perjalanan.safarea.repositories.ServerAPI;
@@ -35,36 +30,34 @@ import java.util.Map;
 
 public class SupplierCatalogActivity extends AppCompatActivity {
 
-    private ToolbarHelper toolbarHelper;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ArrayList<CatalogItem> catalogList;
     private RecyclerView mRecyclerView;
     private SupplierCatalogListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private RequestQueue requestQueue;
-    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supplier_catalog);
 
-        toolbarHelper = new ToolbarHelper(this);
+        ToolbarHelper toolbarHelper = new ToolbarHelper(this);
         toolbarHelper.initToolbar(true);
         toolbarHelper.setToolbarTitle("Katalog Produk");
 
         //Inisiasi request volley
         requestQueue = Volley.newRequestQueue(this);
 
-        //Inisiasi Data
-        catalogList = new ArrayList<>();
-        getSupCatalog();
-
         //component
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this::getSupCatalog);
-        progressBar = findViewById(R.id.progress_circular);
+
+        //Inisiasi Data
+        catalogList = new ArrayList<>();
+        getSupCatalog();
 
         // recycler view
         catalogList = new ArrayList<>();
@@ -79,13 +72,10 @@ public class SupplierCatalogActivity extends AppCompatActivity {
 
 
         //Event handling
-        mAdapter.setOnItemClickListener(new SupplierCatalogListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Integer position) {
-                Intent intent = new Intent(SupplierCatalogActivity.this, SupplierCatalogDetailActivity.class);
-                intent.putExtra("Catalog Item", catalogList.get(position));
-                startActivity(intent);
-            }
+        mAdapter.setOnItemClickListener(position -> {
+            Intent intent = new Intent(SupplierCatalogActivity.this, SupplierCatalogDetailActivity.class);
+            intent.putExtra("Catalog Item", catalogList.get(position));
+            startActivity(intent);
         });
     }
 
@@ -125,15 +115,12 @@ public class SupplierCatalogActivity extends AppCompatActivity {
                             alert.setMessage(response.getJSONObject("data")
                                     .getString("message")).show();
                         }
-                        progressBar.setVisibility(View.INVISIBLE);
                         swipeRefreshLayout.setRefreshing(false);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         alert.setMessage(e.getMessage()).show();
                     }
-                },error ->  {
-            alert.setMessage(error.getMessage()).show();
-        }){
+                },error -> alert.setMessage(error.getMessage()).show()){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 return RequestGlobalHeaders.get(getApplicationContext());

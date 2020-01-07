@@ -1,7 +1,9 @@
 package com.perjalanan.safarea;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -18,10 +20,10 @@ import com.perjalanan.safarea.helpers.ToolbarHelper;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
 import com.perjalanan.safarea.repositories.ServerAPI;
 import com.perjalanan.safarea.repositories.UserLocalStore;
@@ -41,7 +43,7 @@ public class BuyerActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private UserLocalStore userLocalStore;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private BuyerListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
@@ -63,11 +65,11 @@ public class BuyerActivity extends AppCompatActivity {
 
         // inisiasi data
         buyerList = new ArrayList<>();
-        getBuyers();
 
         // component
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this::getBuyers);
 
         // recyclerview buyer
@@ -77,19 +79,51 @@ public class BuyerActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+    }
 
-        // event
-        FloatingActionButton btnAdd = findViewById(R.id.btnDetails);
-        btnAdd.setOnClickListener(l -> {
-            startActivity(new Intent(this, BuyerAddActivity.class));
-        });
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("lifecycle", "onResume");
+        getBuyers();
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.add_item)
+            startActivity(new Intent(this, BuyerAddActivity.class));
+
+        return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        getMenuInflater().inflate(R.menu.menu_add, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search_item);
+
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     /**
@@ -133,8 +167,6 @@ public class BuyerActivity extends AppCompatActivity {
                                 buyer.setDeletedAt(item.getString("deleted_at"));
                                 buyerList.add(buyer);
                             }
-                            ProgressBar progress = findViewById(R.id.progress_circular);
-                            progress.setVisibility(View.INVISIBLE);
                             mAdapter.notifyDataSetChanged();
 
                         } else {
@@ -146,9 +178,7 @@ public class BuyerActivity extends AppCompatActivity {
                         e.printStackTrace();
                         alert.setMessage(e.getMessage()).show();
                     }
-                }, error -> {
-            alert.setMessage(error.getMessage()).show();
-        }) {
+                }, error -> alert.setMessage(error.getMessage()).show()) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 return RequestGlobalHeaders.get(getApplicationContext());

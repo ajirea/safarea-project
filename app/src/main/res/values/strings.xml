@@ -28,6 +28,7 @@
     <string name="text_stock_message_take">Silahkan ambil barang anda di supplier terdekat</string>
     <string name="text_stock_message_send">Supplier akan mengirim barang ke alamat anda. Silahkan konfirmasi penerimaan barang di halaman stok barang</string>
     <string name="text_saving">Menyimpan</string>
+    <string name="text_search">Cari</string>
 
     <!-- String transaction -->
     <string name="text_buyer_name">Pemesan : %s</string>
@@ -48,6 +49,7 @@
 
     <!-- String validation -->
     <string name="validation_required_uname_passwd">Nama pengguna dan Kata Sandi harus di isi.</string>
+    <string name="validation_required">%s harus di isi.</string>
 
     <!-- String drawer menu -->
     <string name="menu_open">Buka</string>
