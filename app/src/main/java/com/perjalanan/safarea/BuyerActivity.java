@@ -71,8 +71,9 @@ public class BuyerActivity extends AppCompatActivity {
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this::getBuyers);
+    }
 
-        // recyclerview buyer
+    private void initRecyclerView() {
         mRecyclerView = findViewById(R.id.buyerListRecyclerView);
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new BuyerListAdapter(buyerList);
@@ -84,7 +85,6 @@ public class BuyerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("lifecycle", "onResume");
         getBuyers();
     }
 
@@ -167,6 +167,7 @@ public class BuyerActivity extends AppCompatActivity {
                                 buyer.setDeletedAt(item.getString("deleted_at"));
                                 buyerList.add(buyer);
                             }
+                            initRecyclerView();
                             mAdapter.notifyDataSetChanged();
 
                         } else {
