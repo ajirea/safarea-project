@@ -2,14 +2,15 @@ package com.perjalanan.safarea.repositories;
 
 public interface ServerAPI {
 
-    String BASE_URL = "https://api.satmaxt.xyz/safarea";
-    String API_URL = BASE_URL.concat("/api/");
-    String AUTH_LOGIN = API_URL.concat("auth/login");
-    String EDIT_ACCOUNT = API_URL.concat("user/");
-    String CHANGE_PASSWORD_ACCOUNT = API_URL.concat("user/change-password");
-    String CHANGE_ADDRESS_ACCOUNT = API_URL.concat("user/address");
-    String SUPPLIER_CATALOG = API_URL.concat("product");
+    public static final String BASE_URL = "https://api.satmaxt.xyz/safarea";
+    public static final String API_URL = BASE_URL.concat("/api/");
+    public static final String AUTH_LOGIN = API_URL.concat("auth/login");
+    public static final String EDIT_ACCOUNT = API_URL.concat("user/");
+    public static final String CHANGE_PASSWORD_ACCOUNT = API_URL.concat("user/change-password");
+    public static final String CHANGE_ADDRESS_ACCOUNT = API_URL.concat("user/address");
+    public static final String SUPPLIER_CATALOG = API_URL.concat("product");
+    public static final String DROPSHIPPER_CATALOG = API_URL.concat("product/dropshipper/");
 
-    String BUYER_ALL_DATA = API_URL.concat("buyers");
+    public static final String BUYER_ALL_DATA = API_URL.concat("buyers");
 
 }

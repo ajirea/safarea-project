@@ -19,8 +19,6 @@ import com.perjalanan.safarea.repositories.ServerAPI;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +34,7 @@ public class SupplierCatalogActivity extends AppCompatActivity {
     private SupplierCatalogListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private RequestQueue requestQueue;
+    private ArrayList<String[]> images;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +107,17 @@ public class SupplierCatalogActivity extends AppCompatActivity {
                                     item.getString("name"),
                                     Double.parseDouble(item.getString("price"))
                                 );
+                                catalog.setStock(Integer.parseInt(item.getString("stock")));
+                                catalog.setDescription(item.getString("description"));
+                                images = new ArrayList<>();
+                                for(int j = 0; j < item.getJSONArray("images").length(); j++) {
+                                    JSONObject image = item.getJSONArray("images").getJSONObject(j);
+                                    images.add(new String[]{
+                                            ServerAPI.BASE_URL + image.getString("path"),
+                                            image.getString("name")
+                                    });
+                                }
+                                catalog.setImages(images);
                                 catalogList.add(catalog);
                             }
                             mAdapter.notifyDataSetChanged();

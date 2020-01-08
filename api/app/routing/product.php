@@ -142,6 +142,38 @@ $route->get('/product/dropshipper/{dropshipper_id}', function (Request $request,
     return $response->withHeader('Content-Type', 'application/json');
 });
 
+// Tampil semua stock berdasarkan dropshipper id
+$route->get('/product/dropshipper/{dropshipper_id}/stock', function (Request $request, Response $response, $args) {
+    // masih kosong
+    $dropshipper = getUser($args['dropshipper_id']);
+
+    if (!$dropshipper)
+        return dropshipperNotFound($response);
+
+    $query = $this->get('db')->prepare("SELECT A.*, B.name, B.price, B.thumbnail FROM user_products AS A INNER JOIN products AS B ON B.id = A.product_id WHERE A.user_id = ? ORDER BY A.status DESC");
+
+    $query->bindParam(1, $dropshipper->id);
+    $query->execute();
+
+    $results = [
+        'status' => true,
+        'data' => []
+    ];
+
+    $products = $query->fetchAll(PDO::FETCH_OBJ);
+
+    foreach ($products as $idx => $product) {
+        $product->status_description = getStockStatus($product->status);
+        $products[$idx] = $product;
+    }
+
+    $results['data'] = $products;
+
+    $response->getBody()->write(json_encode($results));
+
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
 //Tampil product berdsarkan slug/id dan dropshipper id
 $route->get('/product/dropshipper/{dropshipper_id}/{slug}', function (Request $request, Response $response, $args) {
     // masih kosong

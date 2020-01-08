@@ -108,3 +108,41 @@ function getUser($token) {
 
     return $query->fetch(PDO::FETCH_OBJ);
 }
+
+/**
+ * Fungsi untuk mendapatkan status pada barang yang di stok
+ *
+ * @param string $status [take, sent, active, non-active, etc]
+ *
+ * @return string
+ */
+function getStockStatus($status)
+{
+    $result = '';
+    switch ($status) {
+        case 'take':
+            $result = 'Menunggu diambil';
+            break;
+
+        case 'sending':
+            $result = 'Sedang dikirim';
+            break;
+
+        case 'active':
+            $result = 'Stok atif';
+            break;
+
+        case 'non-active':
+            $result = 'Stok tidak aktif';
+            break;
+
+        case 'returning':
+            $result = 'Menunggu dikembalikan';
+            
+        default:
+            $result = '';
+            break;
+    }
+
+    return $result;
+}

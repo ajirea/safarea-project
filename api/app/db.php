@@ -2,7 +2,7 @@
 
 try {
     // init connection
-    $connection = new PDO("mysql:host=localhost;dbname=admin_safarea", "admin_safarea", "safareaok@!!");
+    $connection = new PDO("mysql:host=localhost;dbname=safarea", "root", "");
 
     // add to container
     $container->set('db', $connection);

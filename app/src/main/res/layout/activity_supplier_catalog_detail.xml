@@ -45,7 +45,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="50dp"
+            >
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/dottedIndicator"
@@ -83,11 +85,11 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
                 android:lineSpacingExtra="7dp"
-                tools:text="In ultrices facilisis finibus. Quisque semper nibh eu ultrices lacinia. Sed vel lobortis leo, ac congue urna. Integer et dignissim nulla. Duis sapien erat, vulputate id velit quis, rhoncus fringilla nulla. Sed dapibus libero at turpis porttitor, nec tristique ligula posuere. Mauris suscipit imperdiet laoreet. Pellentesque iaculis eu tortor malesuada hendrerit. Suspendisse mi enim, laoreet non vehicula vitae, volutpat ac nulla. Proin eu aliquet urna, ac venenatis dui. Sed nec pellentesque augue, sed venenatis dolor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/textStock"
-                app:layout_constraintTop_toBottomOf="@+id/textStock" />
+                app:layout_constraintTop_toBottomOf="@+id/textStock"
+                tools:text="In ultrices facilisis finibus. Quisque semper nibh eu ultrices lacinia. Sed vel lobortis leo, ac congue urna. Integer et dignissim nulla. Duis sapien erat, vulputate id velit quis, rhoncus fringilla nulla. Sed dapibus libero at turpis porttitor, nec tristique ligula posuere. Mauris suscipit imperdiet laoreet. Pellentesque iaculis eu tortor malesuada hendrerit. Suspendisse mi enim, laoreet non vehicula vitae, volutpat ac nulla. Proin eu aliquet urna, ac venenatis dui. Sed nec pellentesque augue, sed venenatis dolor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus." />
 
             <TextView
                 android:id="@+id/textPrice"
@@ -121,7 +123,7 @@
         android:background="@android:color/white"
         app:elevation="4dp"
         app:cardCornerRadius="7dp"
-        android:layout_gravity="bottom|center_horizontal|end">
+        android:layout_gravity="center_horizontal|bottom|end">
 
         <Button
             android:id="@+id/btnAddStock"

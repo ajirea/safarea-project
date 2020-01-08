@@ -20,6 +20,7 @@ public class CatalogItem implements Parcelable {
     }
 
     // parcelable implementation constructor
+    @SuppressWarnings("unchecked")
     protected CatalogItem(Parcel in) {
         if (in.readByte() == 0) {
             id = null;
@@ -43,6 +44,8 @@ public class CatalogItem implements Parcelable {
         } else {
             price = in.readDouble();
         }
+
+        images = in.readArrayList(null);
     }
 
     // parcelable implementation
@@ -96,6 +99,10 @@ public class CatalogItem implements Parcelable {
         return images;
     }
 
+    public void setImages(ArrayList<String[]> images) {
+        this.images = images;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -129,5 +136,7 @@ public class CatalogItem implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeDouble(price);
         }
+
+        dest.writeList(images);
     }
 }
