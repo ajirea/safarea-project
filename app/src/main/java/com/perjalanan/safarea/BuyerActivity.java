@@ -20,7 +20,6 @@ import com.perjalanan.safarea.helpers.ToolbarHelper;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -36,12 +35,10 @@ import java.util.Map;
 
 public class BuyerActivity extends AppCompatActivity {
 
-    private ToolbarHelper toolbarHelper;
     private SwipeRefreshLayout swipeRefreshLayout;
     private User user;
     private ArrayList<BuyerItem> buyerList;
     private RequestQueue requestQueue;
-    private UserLocalStore userLocalStore;
     private RecyclerView mRecyclerView;
     private BuyerListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -52,12 +49,12 @@ public class BuyerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_buyer);
 
         // atur custom toolbar
-        toolbarHelper = new ToolbarHelper(this);
+        ToolbarHelper toolbarHelper = new ToolbarHelper(this);
         toolbarHelper.initToolbar(true);
         toolbarHelper.setToolbarTitle(getString(R.string.text_buyer_lists));
 
         // mengambil data user yang login
-        userLocalStore = new UserLocalStore(this);
+        UserLocalStore userLocalStore = new UserLocalStore(this);
         user = userLocalStore.getLoggedInUser();
 
         // inisiasi request queue
@@ -73,6 +70,10 @@ public class BuyerActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(this::getBuyers);
     }
 
+    /**
+     * Method untuk memulai recycler view
+     * di panggil ketika proses request data dari api selesai
+     */
     private void initRecyclerView() {
         mRecyclerView = findViewById(R.id.buyerListRecyclerView);
         mLayoutManager = new LinearLayoutManager(this);
@@ -85,6 +86,7 @@ public class BuyerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // ambil data buyer ketika resume activity
         getBuyers();
     }
 
@@ -107,15 +109,23 @@ public class BuyerActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_search, menu);
         getMenuInflater().inflate(R.menu.menu_add, menu);
 
+        // ambil komponen tombol search
         MenuItem searchItem = menu.findItem(R.id.search_item);
 
+        // tampilkan search view
         SearchView searchView = (SearchView) searchItem.getActionView();
+
+        // handle event ketika user melakukan pencarian
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            // event untuk jenis pencariannya akan dilakukan ketika user menekan tombol cari
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
 
+            // event untuk jenis pencariannya akan dilakukan ketika user sedang mengetik text
+            // di form pencarian
             @Override
             public boolean onQueryTextChange(String newText) {
                 mAdapter.getFilter().filter(newText);
@@ -124,22 +134,6 @@ public class BuyerActivity extends AppCompatActivity {
         });
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-    /**
-     * Contoh data untuk pembeli
-     * @return ArrayList<BuyerItem>
-     */
-    private ArrayList<BuyerItem> exampleBuyerData() {
-        ArrayList<BuyerItem> exBuyers = new ArrayList<>();
-
-        BuyerItem buyer1 = new BuyerItem(1, 1, "John Terkapar Sukses", "+62-858-6733-1231");
-        BuyerItem buyer2 = new BuyerItem(1, 1, "Barian Ogo", "+62-858-6733-2123");
-
-        exBuyers.add(buyer1);
-        exBuyers.add(buyer2);
-
-        return exBuyers;
     }
 
     /**
@@ -154,9 +148,16 @@ public class BuyerActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("status")) {
+                            // clear buyer data
                             buyerList.clear();
+
+                            // menambahkan data ke buyer list
                             for(int i = 0; i < response.getJSONArray("data").length(); i++) {
+
+                                // ambil item data berdasarkan indeks ke-i
                                 JSONObject item = response.getJSONArray("data").getJSONObject(i);
+
+                                // buat data object / orm
                                 BuyerItem buyer = new BuyerItem(
                                         Integer.parseInt(item.getString("id")),
                                         Integer.parseInt(item.getString("user_id")),
@@ -165,27 +166,45 @@ public class BuyerActivity extends AppCompatActivity {
                                 );
                                 buyer.setCreatedAt(item.getString("created_at"));
                                 buyer.setDeletedAt(item.getString("deleted_at"));
+
+                                // masukkan ke buyerList
                                 buyerList.add(buyer);
                             }
+
+                            // jalankan recyclerview
                             initRecyclerView();
+
+                            // beri notifikasi ke adapter bahwa ada data baru yang di tambahkan
                             mAdapter.notifyDataSetChanged();
 
                         } else {
                             alert.setMessage(response.getJSONObject("data")
                                     .getString("message")).show();
                         }
-                        swipeRefreshLayout.setRefreshing(false);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         alert.setMessage(e.getMessage()).show();
                     }
-                }, error -> alert.setMessage(error.getMessage()).show()) {
+
+                    // hilangkan ikon refresh ketika proses request ke API sudah selesai dijalankan
+                    swipeRefreshLayout.setRefreshing(false);
+
+                }, error -> {
+
+            // tampilkan pesan error
+            alert.setMessage(error.getMessage()).show();
+
+            // hilangkan ikon refresh ketika proses request ke API sudah selesai dijalankan
+            swipeRefreshLayout.setRefreshing(false);
+
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 return RequestGlobalHeaders.get(getApplicationContext());
             }
         };
 
+        // tambahkan request ke daftar tunggu
         requestQueue.add(request);
     }
 }

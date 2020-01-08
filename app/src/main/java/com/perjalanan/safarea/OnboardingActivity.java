@@ -34,6 +34,7 @@ public class OnboardingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_onboarding);
 
         onboardingLocalStore = new OnboardingLocalStore(this);
 
@@ -45,8 +46,6 @@ public class OnboardingActivity extends AppCompatActivity {
             finish();
 
         }
-
-        setContentView(R.layout.activity_onboarding);
 
         //Initialize Indicator View, Buttons, and Animation
         btnNext = findViewById(R.id.btn_next);
