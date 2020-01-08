@@ -1,58 +1,74 @@
 package com.perjalanan.safarea;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.perjalanan.safarea.adapters.CatalogImageAdapter;
 import com.perjalanan.safarea.data.CatalogItem;
 import com.perjalanan.safarea.dialogs.AddStockDialog;
 import com.perjalanan.safarea.dialogs.SuccessAddStockDialog;
 
+import android.bluetooth.BluetoothClass;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
+import com.perjalanan.safarea.repositories.ServerAPI;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class SupplierCatalogDetailActivity extends AppCompatActivity
         implements AddStockDialog.AddStockDialogListener,
         SuccessAddStockDialog.SuccessAddStockDialogListener {
 
     private Toolbar toolbar;
+    private int itemId;
+    private ArrayList<String[]> images;
+    private RequestQueue requestQueue;
+    private CatalogImageAdapter imageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supplier_catalog_detail);
 
+
+        //toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        //Init Volley
+        requestQueue = Volley.newRequestQueue(this);
+
+        //Init Page
         Intent intent = getIntent();
-
         CatalogItem catalogItem = intent.getParcelableExtra("Catalog Item");
-        catalogItem.setDescription("Donec at eros sagittis, porta erat scelerisque, tincidunt est. Vivamus quis imperdiet ante, eu bibendum nibh. Suspendisse potenti. Nulla non mollis libero. In euismod eros eget lacus commodo congue. Praesent a finibus enim. Nunc sit amet neque sit amet dolor blandit consectetur mattis in purus. Donec ut tellus enim. Duis at iaculis tellus. Nulla condimentum facilisis mauris vel ullamcorper. Suspendisse sed dignissim turpis.");
-        catalogItem.getImages().add(new String[]{
-                "https://i.picsum.photos/id/357/360/300.jpg",
-                "Satu"
-        });
-        catalogItem.getImages().add(new String[]{
-                "https://i.picsum.photos/id/1041/360/300.jpg",
-                "Dua"
-        });
-        catalogItem.getImages().add(new String[]{
-                "https://i.picsum.photos/id/882/360/300.jpg",
-                "Tiga"
-        });
+        System.out.println("Images " + catalogItem.getImages().size());
+        itemId = catalogItem.getId();
 
+
+        images = catalogItem.getImages();
         TabLayout dottedIndicator = findViewById(R.id.dottedIndicator);
         ViewPager imagePager = findViewById(R.id.productDetailImage);
-        CatalogImageAdapter imageAdapter = new CatalogImageAdapter(this, catalogItem.getImages());
+        imageAdapter = new CatalogImageAdapter(this, images);
         imagePager.setAdapter(imageAdapter);
         dottedIndicator.setupWithViewPager(imagePager);
 
@@ -64,8 +80,8 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
         toolbar.setTitle(catalogItem.getTitle());
         titleCatalog.setText(catalogItem.getTitle());
         textStock.setText(getString(R.string.text_stock_available, catalogItem.getStock()));
-        textDesc.setText(catalogItem.getDescription());
         textPrice.setText(catalogItem.getPrice().toString());
+        textDesc.setText(Html.fromHtml(catalogItem.getDescription()));
 
         Button btnAddStock = findViewById(R.id.btnAddStock);
         btnAddStock.setOnClickListener(l -> {
@@ -85,7 +101,7 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
     public void onButtonClicked(Integer stock, Integer profit, String type) {
         String alertMessage = getString(R.string.text_stock_message_take);
 
-        if(type == "send")
+        if (type == "send")
             alertMessage = getString(R.string.text_stock_message_send);
 
         SuccessAddStockDialog sasd = new SuccessAddStockDialog(alertMessage);
@@ -99,5 +115,46 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
         Intent intent = new Intent(this, StockActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    //API
+    public void getDetails() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
+
+        String supplyDetailsUrl = ServerAPI.SUPPLIER_CATALOG + "/" + itemId;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, supplyDetailsUrl, null,
+                response -> {
+                    try {
+                        if(!response.getBoolean("status")){
+                            alert.setMessage(response.getJSONObject("data").getString("message"))
+                                    .show();
+                        }else{
+                            JSONObject details = response.getJSONObject("data");
+                            TextView itemDesc = findViewById(R.id.textDescription);
+                            itemDesc.setText(
+                                    Html.fromHtml(details.getString("description"))
+                            );
+                            Integer.parseInt(details.getString("stock"));
+
+                            for(int i = 0; i < details.getJSONArray("images").length(); i++) {
+                                JSONObject image = details.getJSONArray("images").getJSONObject(i);
+                                images.add(new String[]{
+                                        ServerAPI.BASE_URL + image.getString("path"),
+                                        image.getString("name")
+                                });
+                            }
+                            imageAdapter.notifyDataSetChanged();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }, error -> alert.setMessage(error.getMessage()).show()) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return super.getHeaders();
+            }
+        };
+        requestQueue.add(request);
     }
 }

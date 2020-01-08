@@ -35,6 +35,8 @@ public class CatalogImageAdapter extends PagerAdapter {
                 .load(images.get(position)[0])
                 .into(imageItem);
 
+        imageItem.setContentDescription(images.get(position)[1]);
+
         container.addView(view);
 
         return view;
