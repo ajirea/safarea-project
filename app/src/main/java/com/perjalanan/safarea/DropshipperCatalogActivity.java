@@ -3,15 +3,30 @@ package com.perjalanan.safarea;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 
 import java.util.ArrayList;
+import java.util.Map;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.perjalanan.safarea.adapters.DropshipperCatalogListAdapter;
 import com.perjalanan.safarea.data.CatalogItem;
 import com.perjalanan.safarea.helpers.ToolbarHelper;
+import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
+import com.perjalanan.safarea.repositories.ServerAPI;
+import com.perjalanan.safarea.repositories.UserLocalStore;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DropshipperCatalogActivity extends AppCompatActivity {
 
@@ -20,6 +35,9 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private DropshipperCatalogListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private RequestQueue requestQueue;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private UserLocalStore userLocalStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +48,25 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
         toolbarHelper.initToolbar(true);
         toolbarHelper.setToolbarTitle("Katalog Produk");
 
+        //Inisiasi request volley
+        requestQueue = Volley.newRequestQueue(this);
+
+        //component
+        swipeRefreshLayout = findViewById(R.id.swipeLayout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.setOnRefreshListener(this::getDropshipperCatalog);
+
+        //Inisiasi Data
+        userLocalStore = new UserLocalStore(getBaseContext());
+
         // recycler view
-        catalogList = new ArrayList<>(exampleCatalogData());
+        catalogList = new ArrayList<>();
+        getDropshipperCatalog();
+
+        catalogList = new ArrayList<>();
+        getDropshipperCatalog();
+
         mRecyclerView = findViewById(R.id.dropshipperCatalogRecyclerView);
         mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         mAdapter = new DropshipperCatalogListAdapter(catalogList);
@@ -40,6 +75,7 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new GridItemDecoration(2, 30, true));
 
+        //event handling
         mAdapter.setOnItemClickListener(position -> {
             Intent intent = new Intent(DropshipperCatalogActivity.this,
                     DropshipperCatalogDetailActivity.class);
@@ -58,30 +94,46 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
         return super.onSupportNavigateUp();
     }
 
-    /**
-     * Contoh data untuk catalog items
-     * @return ArrayList<CatalogItem>
+    /**catalog items
+
      */
-    private ArrayList<CatalogItem> exampleCatalogData() {
-        ArrayList<CatalogItem> exCatalog = new ArrayList<>();
+    private void getDropshipperCatalog () {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
 
-        CatalogItem item1 = new CatalogItem(
-                1,
-                null,
-                "Kids Pajama Short Sleeves",
-                80000D
-        );
+        String dropshipperUrl = ServerAPI.DROPSHIPPER_CATALOG + userLocalStore.getLoggedInUser().getId();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, dropshipperUrl, null,
+                response -> {
+                    try {
+                        if (response.getBoolean("status")){
+                            catalogList.clear();
+                            for(int i = 0; i < response.getJSONArray("data").length(); i ++){
+                                JSONObject item = response.getJSONArray("data").getJSONObject(i);
+                                CatalogItem catalog = new CatalogItem
+                                        (
+                                                Integer.parseInt(item.getString("id")),
+                                                ServerAPI.BASE_URL + item.getString("thumbnail"),
+                                                item.getString("name"),
+                                                Double.parseDouble(item.getString("price"))
+                                        );
+                                catalogList.add(catalog);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }else {
+                            alert.setMessage(response.getJSONObject("data")
+                                    .getString("message")).show();
+                        }
+                        swipeRefreshLayout.setRefreshing(false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        alert.setMessage(e.getMessage()).show();
+                    }
+                },error -> alert.setMessage(error.getMessage()).show()){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return RequestGlobalHeaders.get(getApplicationContext());
+            }
+        };
 
-        CatalogItem item2 = new CatalogItem(
-                2,
-                null,
-                "Kids Pajama Long Sleeves",
-                90000D
-        );
-
-        exCatalog.add(item1);
-        exCatalog.add(item2);
-
-        return exCatalog;
+        requestQueue.add(request);
     }
 }
