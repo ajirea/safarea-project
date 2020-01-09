@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.perjalanan.safarea">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -12,28 +12,59 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TransactionActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".TransactionAddActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".TransactionDetaiActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".DropshipperCatalogDetailActivity" android:screenOrientation="portrait" />
-        <activity android:name=".DropshipperCatalogActivity" android:screenOrientation="portrait" />
-        <activity android:name=".SupplierCatalogDetailActivity" android:screenOrientation="portrait" />
-        <activity android:name=".SupplierCatalogActivity" android:screenOrientation="portrait" />
-        <activity android:name=".OnboardingActivity" android:screenOrientation="portrait">
+        <activity android:name=".ImageViewActivity"></activity>
+        <activity
+            android:name=".TransactionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TransactionAddActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TransactionDetaiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DropshipperCatalogDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DropshipperCatalogActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SupplierCatalogDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SupplierCatalogActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OnboardingActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StockActivity" android:screenOrientation="portrait" />
-        <activity android:name=".BuyerEditActivity" android:screenOrientation="portrait" />
-        <activity android:name=".BuyerAddActivity" android:screenOrientation="portrait" />
-        <activity android:name=".BuyerActivity" android:screenOrientation="portrait" />
-        <activity android:name=".SettingActivity" android:screenOrientation="portrait"
+        <activity
+            android:name=".StockActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BuyerEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BuyerAddActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BuyerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".LoginActivity" android:screenOrientation="portrait" />
-        <activity android:name=".MainActivity" android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

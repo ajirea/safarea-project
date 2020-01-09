@@ -7,50 +7,40 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.PhotoView;
+import com.perjalanan.safarea.R;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
-import com.perjalanan.safarea.R;
 
-public class CatalogImageAdapter extends PagerAdapter {
+public class ImageViewAdapter extends PagerAdapter {
 
     private Context context;
     private ArrayList<String[]> images;
-    private ImageClickListener mListener;
 
-    public CatalogImageAdapter(Context context, ArrayList<String[]> images) {
+    public ImageViewAdapter(Context context, ArrayList<String[]> images) {
         this.context = context;
         this.images = images;
-    }
-
-    public void onImageClickListener(CatalogImageAdapter.ImageClickListener listener) {
-        mListener = listener;
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.image_gallery_item, null);
+        View view = inflater.inflate(R.layout.image_view_adapter, null);
 
-        ImageView imageItem = view.findViewById(R.id.imageItem);
-        Glide.with(imageItem.getContext())
+        PhotoView imageItem = view.findViewById(R.id.photoView);
+        Glide.with(imageItem)
                 .load(images.get(position)[0])
                 .into(imageItem);
 
         imageItem.setContentDescription(images.get(position)[1]);
 
-        imageItem.setOnClickListener(v -> mListener.onClickListener(v));
-
         container.addView(view);
 
         return view;
-    }
-
-    public interface ImageClickListener {
-        void onClickListener(View view);
     }
 
     @Override

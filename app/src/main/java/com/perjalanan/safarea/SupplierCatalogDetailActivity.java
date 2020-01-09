@@ -62,7 +62,6 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
         //Init Page
         Intent intent = getIntent();
         CatalogItem catalogItem = intent.getParcelableExtra("Catalog Item");
-        System.out.println("Images " + catalogItem.getImages().size());
         itemId = catalogItem.getId();
 
 
@@ -89,6 +88,12 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
             AddStockDialog addStockDialog = new AddStockDialog();
             addStockDialog.show(getSupportFragmentManager(), "addStockDialog");
         });
+
+        imageAdapter.onImageClickListener(l -> {
+            Intent imageIntent = new Intent(this, ImageViewActivity.class);
+            imageIntent.putExtra("catalogItem", catalogItem);
+            startActivity(imageIntent);
+        });
     }
 
     @Override
@@ -100,9 +105,10 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
     // pada fragment dialog_add_stock.xml
     @Override
     public void onButtonClicked(Integer stock, Integer profit, String type) {
+
         String alertMessage = getString(R.string.text_stock_message_take);
 
-        if (type == "send")
+        if (type.equals("sending"))
             alertMessage = getString(R.string.text_stock_message_send);
 
         SuccessAddStockDialog sasd = new SuccessAddStockDialog(alertMessage);
