@@ -6,11 +6,11 @@ import android.os.Parcelable;
 
 public class TransactionItem implements Parcelable {
 
-    private int image, id, userid, qty;
-    private String name, product, phone, orderedAt, orderDesc;
+    private int id, userid, qty;
+    private String name, product, phone, orderedAt, orderDesc, image;
     private double price, totalPrice;
 
-    public TransactionItem(int image, int id, int userid, int qty, String name, String product,
+    public TransactionItem(String image, int id, int userid, int qty, String name, String product,
                            String phone, String orderedAt, String orderDesc, double price,
                            double totalPrice)
     {
@@ -29,7 +29,7 @@ public class TransactionItem implements Parcelable {
 
 
     protected TransactionItem(Parcel in) {
-        image = in.readInt();
+        image = in.readString();
         id = in.readInt();
         userid = in.readInt();
         qty = in.readInt();
@@ -62,11 +62,11 @@ public class TransactionItem implements Parcelable {
         this.id = id;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -149,7 +149,7 @@ public class TransactionItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(image);
+        dest.writeString(image);
         dest.writeInt(id);
         dest.writeInt(userid);
         dest.writeInt(qty);

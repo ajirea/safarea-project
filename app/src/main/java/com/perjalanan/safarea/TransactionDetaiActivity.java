@@ -30,10 +30,11 @@ public class TransactionDetaiActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        //parcelable
         TransactionItem transactionItem = intent.getParcelableExtra("Detail Transaksi");
         transactionItem.setOrderDesc("Donec at eros sagittis, porta erat scelerisque, tincidunt est. Vivamus quis imperdiet ante, eu bibendum nibh. Suspendisse potenti. Nulla non mollis libero. In euismod eros eget lacus commodo congue. Praesent a finibus enim. Nunc sit amet neque sit amet dolor blandit consectetur mattis in purus. Donec ut tellus enim. Duis at iaculis tellus. Nulla condimentum facilisis mauris vel ullamcorper. Suspendisse sed dignissim turpis.");
 
-        int imageRes = transactionItem.getImage();
+        String imageRes = transactionItem.getImage();
         int id = transactionItem.getId();
         int userid = transactionItem.getUserid();
         String name = transactionItem.getName();

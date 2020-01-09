@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import com.bumptech.glide.Glide;
 import com.perjalanan.safarea.R;
 import com.perjalanan.safarea.data.TransactionItem;
 
@@ -85,7 +86,10 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
         holder.pemesan.setText(
                 context.getString(R.string.text_buyer_name, transaction.getName())
         );
-        holder.images.setImageDrawable(context.getResources().getDrawable(transaction.getImage()));
+        //holder.images.setImageDrawable(context.getResources().getDrawable(transaction.getImage()));
+        Glide.with(context).load(transaction.getImage())
+                .centerCrop()
+                .into(holder.images);
         holder.product.setText(transaction.getProduct());
         holder.qty.setText(String.valueOf(transaction.getQty()));
         holder.tglDipesan.setText(transaction.getOrderedAt());

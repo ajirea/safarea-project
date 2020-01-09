@@ -10,6 +10,7 @@ public interface ServerAPI {
     String CHANGE_ADDRESS_ACCOUNT = API_URL.concat("user/address");
     String SUPPLIER_CATALOG = API_URL.concat("product");
     String DROPSHIPPER = API_URL.concat("product/dropshipper/");
+    String ORDER = API_URL.concat("order");
 
     String BUYER_ALL_DATA = API_URL.concat("buyers");
 

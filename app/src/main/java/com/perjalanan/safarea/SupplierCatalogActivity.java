@@ -55,8 +55,8 @@ public class SupplierCatalogActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(this::getSupCatalog);
 
         //Inisiasi Data
-        catalogList = new ArrayList<>();
-        getSupCatalog();
+//        catalogList = new ArrayList<>();
+//        getSupCatalog();
 
         // recycler view
         catalogList = new ArrayList<>();
