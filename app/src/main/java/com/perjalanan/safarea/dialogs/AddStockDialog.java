@@ -19,10 +19,6 @@ public class AddStockDialog extends BottomSheetDialogFragment {
 
     private AddStockDialogListener mListener;
 
-    public interface AddStockDialogListener {
-        void onButtonClicked(Integer stock, Integer profit, String type);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,12 +38,27 @@ public class AddStockDialog extends BottomSheetDialogFragment {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickAction(view, "send");
+                onClickAction(view, "sending");
                 dismiss();
             }
         });
 
         return view;
+    }
+
+    private void onClickAction(View view, String type) {
+        TextView fieldQty = view.findViewById(R.id.fieldQty);
+        TextView fieldProfit = view.findViewById(R.id.fieldProfit);
+        try {
+            mListener.onButtonClicked(
+                    Integer.parseInt(fieldQty.getText().toString()),
+                    Double.parseDouble(fieldProfit.getText().toString()),
+                    type
+            );
+        } catch (NumberFormatException e) {
+            Toast.makeText(view.getContext(), "Silahkan isi terlebih dahulu",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -62,18 +73,7 @@ public class AddStockDialog extends BottomSheetDialogFragment {
         }
     }
 
-    private void onClickAction(View view, String type) {
-        TextView fieldQty = view.findViewById(R.id.fieldQty);
-        TextView fieldProfit = view.findViewById(R.id.fieldProfit);
-        try {
-            mListener.onButtonClicked(
-                    Integer.parseInt(fieldQty.getText().toString()),
-                    Integer.parseInt(fieldProfit.getText().toString()),
-                    type
-            );
-        } catch (NumberFormatException e) {
-            Toast.makeText(view.getContext(), "Silahkan isi terlebih dahulu",
-                    Toast.LENGTH_SHORT).show();
-        }
+    public interface AddStockDialogListener {
+        void onButtonClicked(Integer stock, Double profitPrice, String type);
     }
 }

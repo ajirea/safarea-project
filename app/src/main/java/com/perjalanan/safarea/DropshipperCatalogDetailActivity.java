@@ -16,9 +16,7 @@ import com.perjalanan.safarea.data.CatalogItem;
 import com.perjalanan.safarea.dialogs.AddStockDialog;
 import com.perjalanan.safarea.dialogs.SuccessAddStockDialog;
 
-public class DropshipperCatalogDetailActivity extends AppCompatActivity
-        implements AddStockDialog.AddStockDialogListener,
-        SuccessAddStockDialog.SuccessAddStockDialogListener {
+public class DropshipperCatalogDetailActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
 
@@ -79,26 +77,5 @@ public class DropshipperCatalogDetailActivity extends AppCompatActivity
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
-    }
-
-    // pada fragment dialog_add_stock.xml
-    @Override
-    public void onButtonClicked(Integer stock, Integer profit, String type) {
-        String alertMessage = getString(R.string.text_stock_message_take);
-
-        if(type == "send")
-            alertMessage = getString(R.string.text_stock_message_send);
-
-        SuccessAddStockDialog sasd = new SuccessAddStockDialog(alertMessage);
-        sasd.show(getSupportFragmentManager(), "successAddStockDialog");
-    }
-
-    // pada fragment success_dialog_add_stock.xml
-    // untuk handle ketika tombol di pesan sukses di klik
-    @Override
-    public void onButtonClicked() {
-        Intent intent = new Intent(this, StockActivity.class);
-        startActivity(intent);
-        finish();
     }
 }
