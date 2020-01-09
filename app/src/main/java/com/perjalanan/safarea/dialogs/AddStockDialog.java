@@ -20,7 +20,7 @@ public class AddStockDialog extends BottomSheetDialogFragment {
     private AddStockDialogListener mListener;
 
     public interface AddStockDialogListener {
-        void onButtonClicked(Integer stock, Integer profit, String type);
+        void onButtonClicked(Integer stock, Double profitPrice, String type);
     }
 
     @Nullable
@@ -68,7 +68,7 @@ public class AddStockDialog extends BottomSheetDialogFragment {
         try {
             mListener.onButtonClicked(
                     Integer.parseInt(fieldQty.getText().toString()),
-                    Integer.parseInt(fieldProfit.getText().toString()),
+                    Double.parseDouble(fieldProfit.getText().toString()),
                     type
             );
         } catch (NumberFormatException e) {

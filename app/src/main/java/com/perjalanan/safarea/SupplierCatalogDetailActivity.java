@@ -9,9 +9,11 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.perjalanan.safarea.adapters.CatalogImageAdapter;
 import com.perjalanan.safarea.data.CatalogItem;
+import com.perjalanan.safarea.data.User;
 import com.perjalanan.safarea.dialogs.AddStockDialog;
 import com.perjalanan.safarea.dialogs.SuccessAddStockDialog;
 
@@ -21,14 +23,20 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
 import com.perjalanan.safarea.repositories.ServerAPI;
+import com.perjalanan.safarea.repositories.UserLocalStore;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SupplierCatalogDetailActivity extends AppCompatActivity
@@ -40,6 +48,8 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
     private ArrayList<String[]> images;
     private RequestQueue requestQueue;
     private CatalogImageAdapter imageAdapter;
+    private User user;
+    private EditText fieldProfit, fieldQty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,14 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        //comps
+        fieldProfit = findViewById(R.id.fieldProfit);
+        fieldQty = findViewById(R.id.fieldQty);
+
+        // mengambil data user yang login
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        user = userLocalStore.getLoggedInUser();
 
         //Init Volley
         requestQueue = Volley.newRequestQueue(this);
@@ -83,6 +101,7 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
         textPrice.setText(catalogItem.getPrice().toString());
         textDesc.setText(Html.fromHtml(catalogItem.getDescription()));
 
+        //Event handling
         Button btnAddStock = findViewById(R.id.btnAddStock);
         btnAddStock.setOnClickListener(l -> {
             AddStockDialog addStockDialog = new AddStockDialog();
@@ -97,8 +116,11 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
     }
 
     // pada fragment dialog_add_stock.xml
+
+
     @Override
-    public void onButtonClicked(Integer stock, Integer profit, String type) {
+    public void onButtonClicked(Integer stock, Double profitPrice, String type) {
+        addStock(stock, profitPrice, type);
         String alertMessage = getString(R.string.text_stock_message_take);
 
         if (type == "send")
@@ -118,43 +140,50 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
     }
 
     //API
-    public void getDetails() {
+    public void addStock(Integer stock, Double profitPrice, String type) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
 
-        String supplyDetailsUrl = ServerAPI.SUPPLIER_CATALOG + "/" + itemId;
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, supplyDetailsUrl, null,
-                response -> {
-                    try {
-                        if(!response.getBoolean("status")){
-                            alert.setMessage(response.getJSONObject("data").getString("message"))
-                                    .show();
-                        }else{
-                            JSONObject details = response.getJSONObject("data");
-                            TextView itemDesc = findViewById(R.id.textDescription);
-                            itemDesc.setText(
-                                    Html.fromHtml(details.getString("description"))
-                            );
-                            Integer.parseInt(details.getString("stock"));
+        String addStockUrl = ServerAPI.DROPSHIPPER_CATALOG + user.getId() + "/" + itemId + "/stock";
+        StringRequest request = new StringRequest(Request.Method.POST, addStockUrl, response -> {
+            try {
+                JSONObject resp = new JSONObject(response);
 
-                            for(int i = 0; i < details.getJSONArray("images").length(); i++) {
-                                JSONObject image = details.getJSONArray("images").getJSONObject(i);
-                                images.add(new String[]{
-                                        ServerAPI.BASE_URL + image.getString("path"),
-                                        image.getString("name")
-                                });
-                            }
-                            imageAdapter.notifyDataSetChanged();
-                        }
+                if(resp.getBoolean("status")) {
+                    alert.setTitle("Sukses!")
+                            .setMessage(resp.getJSONObject("data").getString("message"))
+                            .show();
+                    clearAllFields();
+                } else {
+                    alert.setMessage(resp.getJSONObject("data")
+                            .getString("message")).show();
+                }
+            } catch (JSONException e) {
+                e.getStackTrace();
+                alert.setMessage(e.getMessage()).show();
+            }
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }, error -> alert.setMessage(error.getMessage()).show()) {
+        }, error -> {
+            alert.setMessage(error.getMessage()).show();
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return super.getHeaders();
+                return RequestGlobalHeaders.get(getApplicationContext());
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("type",type);
+                params.put("profit_price",profitPrice.toString());
+                params.put("qty", stock.toString());
+                return params;
             }
         };
+
         requestQueue.add(request);
+    }
+    public void clearAllFields(){
+        fieldProfit.setText("");
+        fieldQty.setText("");
     }
 }
