@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.perjalanan.safarea.R;
 import com.perjalanan.safarea.data.CatalogItem;
+import com.perjalanan.safarea.helpers.FormatHelper;
 
 public class SupplierCatalogListAdapter extends RecyclerView.Adapter<SupplierCatalogListAdapter.SupplierCatalogItem> {
 
@@ -54,7 +55,7 @@ public class SupplierCatalogListAdapter extends RecyclerView.Adapter<SupplierCat
                 .into(holder.thumbnailCatalog);
 
         holder.titleCatalog.setText(item.getTitle());
-        holder.priceCatalog.setText(item.getPrice().toString());
+        holder.priceCatalog.setText(FormatHelper.priceFormat(item.getPrice()));
     }
 
     @Override

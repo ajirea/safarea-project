@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,14 +7,21 @@
     android:orientation="vertical"
     tools:context=".StockActivity">
 
-    <include layout="@layout/toolbar_menu"/>
+    <include
+        android:id="@+id/toolbarMenu"
+        layout="@layout/toolbar_menu" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/stockListRecyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMenu">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/stockListRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

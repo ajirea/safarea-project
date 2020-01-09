@@ -25,6 +25,7 @@
     <string name="text_alert_stock_delete_desc">Silahkan mengembalikan barang jika sudah diambil.</string>
     <string name="text_add_stock">Tambah Stock</string>
     <string name="text_look_stock">Lihat Stok Barang</string>
+    <string name="text_accept_goods">Terima Barang</string>
     <string name="text_stock_message_take">Silahkan ambil barang anda di supplier terdekat</string>
     <string name="text_stock_message_send">Supplier akan mengirim barang ke alamat anda. Silahkan konfirmasi penerimaan barang di halaman stok barang</string>
     <string name="text_saving">Menyimpan</string>

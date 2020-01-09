@@ -1,19 +1,20 @@
 package com.perjalanan.safarea.data;
 
 public class StockItem {
-    private Integer id, productId, userId, qty, thumbnail;
-    private Float profitPrice;
-    private String name, status;
+    private Integer id, productId, userId, qty;
+    private Double profitPrice;
+    private String name, thumbnail, status, statusDescription;
 
     public StockItem(
             Integer id,
             Integer productId,
             Integer userId,
             Integer qty,
-            Integer thumbnail,
-            Float profitPrice,
+            String thumbnail,
+            Double profitPrice,
             String name,
-            String status
+            String status,
+            String statusDescription
     ) {
         this.id = id;
         this.productId = productId;
@@ -23,6 +24,7 @@ public class StockItem {
         this.profitPrice = profitPrice;
         this.name = name;
         this.status = status;
+        this.statusDescription = statusDescription;
     }
 
     public Integer getId() {
@@ -41,11 +43,11 @@ public class StockItem {
         return qty;
     }
 
-    public Integer getThumbnail() {
+    public String getThumbnail() {
         return thumbnail;
     }
 
-    public Float getProfitPrice() {
+    public Double getProfitPrice() {
         return profitPrice;
     }
 
@@ -55,5 +57,13 @@ public class StockItem {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getStatusDescription() {
+        return statusDescription;
+    }
+
+    public void setStatusDescription(String statusDescription) {
+        this.statusDescription = statusDescription;
     }
 }
