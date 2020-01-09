@@ -42,7 +42,7 @@ public class AddStockDialog extends BottomSheetDialogFragment {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickAction(view, "send");
+                onClickAction(view, "sending");
                 dismiss();
             }
         });

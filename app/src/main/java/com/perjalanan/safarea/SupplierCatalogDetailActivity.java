@@ -121,10 +121,10 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
 
     @Override
     public void onButtonClicked(Integer stock, Double profitPrice, String type) {
-        addStock(stock, profitPrice, type);
         String alertMessage = getString(R.string.text_stock_message_take);
+        addStock(stock, profitPrice, type);
 
-        if (type == "send")
+        if (type == "sending")
             alertMessage = getString(R.string.text_stock_message_send);
 
         SuccessAddStockDialog sasd = new SuccessAddStockDialog(alertMessage);
@@ -153,7 +153,6 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
                     alert.setTitle("Sukses!")
                             .setMessage(resp.getJSONObject("data").getString("message"))
                             .show();
-                    clearAllFields();
                 } else {
                     alert.setMessage(resp.getJSONObject("data")
                             .getString("message")).show();
@@ -174,7 +173,7 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("type",type);
+                params.put("status",type);
                 params.put("profit_price",profitPrice.toString());
                 params.put("qty", stock.toString());
                 return params;
@@ -183,8 +182,5 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
 
         requestQueue.add(request);
     }
-    public void clearAllFields(){
-        fieldProfit.setText("");
-        fieldQty.setText("");
-    }
+
 }
