@@ -8,7 +8,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.perjalanan.safarea.adapters.CatalogImageAdapter;
@@ -17,19 +16,15 @@ import com.perjalanan.safarea.data.User;
 import com.perjalanan.safarea.dialogs.AddStockDialog;
 import com.perjalanan.safarea.dialogs.SuccessAddStockDialog;
 
-import android.bluetooth.BluetoothClass;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
-import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
 import com.perjalanan.safarea.helpers.FormatHelper;
+import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
 import com.perjalanan.safarea.repositories.ServerAPI;
 import com.perjalanan.safarea.repositories.UserLocalStore;
 
@@ -50,7 +45,6 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
     private RequestQueue requestQueue;
     private CatalogImageAdapter imageAdapter;
     private User user;
-    private EditText fieldProfit, fieldQty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +59,6 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
-        //comps
-        fieldProfit = findViewById(R.id.fieldProfit);
-        fieldQty = findViewById(R.id.fieldQty);
 
         // mengambil data user yang login
         UserLocalStore userLocalStore = new UserLocalStore(this);
@@ -104,6 +94,11 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
 
         //Event handling
         Button btnAddStock = findViewById(R.id.btnAddStock);
+        imageAdapter.onImageClickListener(l -> {
+            Intent imageIntent = new Intent(this, ImageViewActivity.class);
+            imageIntent.putExtra("catalogItem", catalogItem);
+            startActivity(imageIntent);
+        });
         btnAddStock.setOnClickListener(l -> {
             AddStockDialog addStockDialog = new AddStockDialog();
             addStockDialog.show(getSupportFragmentManager(), "addStockDialog");
@@ -117,14 +112,11 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
     }
 
     // pada fragment dialog_add_stock.xml
-
-
     @Override
     public void onButtonClicked(Integer stock, Double profitPrice, String type) {
         String alertMessage = getString(R.string.text_stock_message_take);
         addStock(stock, profitPrice, type);
-
-        if (type == "sending")
+        if (type.equals("send"))
             alertMessage = getString(R.string.text_stock_message_send);
 
         SuccessAddStockDialog sasd = new SuccessAddStockDialog(alertMessage);
@@ -149,7 +141,7 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
             try {
                 JSONObject resp = new JSONObject(response);
 
-                if(resp.getBoolean("status")) {
+                if (resp.getBoolean("status")) {
                     alert.setTitle("Sukses!")
                             .setMessage(resp.getJSONObject("data").getString("message"))
                             .show();
@@ -173,8 +165,8 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("status",type);
-                params.put("profit_price",profitPrice.toString());
+                params.put("status", type);
+                params.put("profit_price", profitPrice.toString());
                 params.put("qty", stock.toString());
                 return params;
             }
@@ -182,5 +174,4 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
 
         requestQueue.add(request);
     }
-
 }

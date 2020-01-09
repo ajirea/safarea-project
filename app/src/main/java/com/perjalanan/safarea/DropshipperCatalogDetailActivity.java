@@ -16,8 +16,7 @@ import com.perjalanan.safarea.data.CatalogItem;
 import com.perjalanan.safarea.dialogs.AddStockDialog;
 import com.perjalanan.safarea.dialogs.SuccessAddStockDialog;
 
-public class DropshipperCatalogDetailActivity extends AppCompatActivity
-        {
+public class DropshipperCatalogDetailActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
 

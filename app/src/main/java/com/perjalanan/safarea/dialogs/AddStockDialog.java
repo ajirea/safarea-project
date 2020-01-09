@@ -19,10 +19,6 @@ public class AddStockDialog extends BottomSheetDialogFragment {
 
     private AddStockDialogListener mListener;
 
-    public interface AddStockDialogListener {
-        void onButtonClicked(Integer stock, Double profitPrice, String type);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,18 +46,6 @@ public class AddStockDialog extends BottomSheetDialogFragment {
         return view;
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        try {
-            mListener = (AddStockDialogListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() +
-                    " must implement AddStockDialogListener");
-        }
-    }
-
     private void onClickAction(View view, String type) {
         TextView fieldQty = view.findViewById(R.id.fieldQty);
         TextView fieldProfit = view.findViewById(R.id.fieldProfit);
@@ -75,5 +59,21 @@ public class AddStockDialog extends BottomSheetDialogFragment {
             Toast.makeText(view.getContext(), "Silahkan isi terlebih dahulu",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        try {
+            mListener = (AddStockDialogListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() +
+                    " must implement AddStockDialogListener");
+        }
+    }
+
+    public interface AddStockDialogListener {
+        void onButtonClicked(Integer stock, Double profitPrice, String type);
     }
 }
