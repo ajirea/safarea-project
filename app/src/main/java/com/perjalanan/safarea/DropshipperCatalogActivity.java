@@ -100,7 +100,7 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
     private void getDropshipperCatalog () {
         AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
 
-        String dropshipperUrl = ServerAPI.DROPSHIPPER_CATALOG + userLocalStore.getLoggedInUser().getId();
+        String dropshipperUrl = ServerAPI.DROPSHIPPER + userLocalStore.getLoggedInUser().getId();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, dropshipperUrl, null,
                 response -> {
                     try {

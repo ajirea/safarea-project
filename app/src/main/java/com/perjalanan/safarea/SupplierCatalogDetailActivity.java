@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
+import com.perjalanan.safarea.helpers.FormatHelper;
 import com.perjalanan.safarea.repositories.ServerAPI;
 
 import org.json.JSONObject;
@@ -80,7 +81,7 @@ public class SupplierCatalogDetailActivity extends AppCompatActivity
         toolbar.setTitle(catalogItem.getTitle());
         titleCatalog.setText(catalogItem.getTitle());
         textStock.setText(getString(R.string.text_stock_available, catalogItem.getStock()));
-        textPrice.setText(catalogItem.getPrice().toString());
+        textPrice.setText(FormatHelper.priceFormat(catalogItem.getPrice()));
         textDesc.setText(Html.fromHtml(catalogItem.getDescription()));
 
         Button btnAddStock = findViewById(R.id.btnAddStock);

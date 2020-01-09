@@ -1,83 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="25dp"
-    android:paddingRight="25dp"
     android:paddingStart="25dp"
+    android:paddingLeft="25dp"
     android:paddingEnd="25dp"
-    android:paddingTop="10dp">
+    android:paddingRight="25dp">
+
     <ImageView
         android:id="@+id/thumbnailProduct"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        tools:src="@tools:sample/avatars"/>
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/titleProduct"
         style="@style/TextViewTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:text="Kids Pajama Short Sleeves Kids Pajama Short Sleeves"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_toLeftOf="@+id/btnRemove"
-        android:layout_toStartOf="@+id/btnRemove"
-        android:layout_toRightOf="@+id/thumbnailProduct"
-        android:layout_toEndOf="@+id/thumbnailProduct"/>
+        android:layout_marginRight="8dp"
+        android:lineSpacingExtra="8sp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/btnRemove"
+        app:layout_constraintStart_toEndOf="@+id/thumbnailProduct"
+        app:layout_constraintTop_toTopOf="@+id/thumbnailProduct"
+        tools:text="Kids Pajama Short Sleeves Kids Pajama Short Sleeves" />
 
     <TextView
         android:id="@+id/textProfit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="+30.000 Keuntungan"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:textSize="12sp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
         android:layout_below="@+id/titleProduct"
-        android:layout_toRightOf="@+id/thumbnailProduct"
-        android:layout_toEndOf="@+id/thumbnailProduct"
-        />
+        android:layout_marginTop="4dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textStock"
+        app:layout_constraintTop_toBottomOf="@+id/textStock"
+        tools:text="+30.000 Keuntungan" />
 
     <TextView
         android:id="@+id/textStock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="5 Barang Tersisa"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:textSize="12sp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:layout_below="@+id/textProfit"
-        android:layout_toRightOf="@+id/thumbnailProduct"
-        android:layout_toEndOf="@+id/thumbnailProduct"
-        />
+        android:layout_marginTop="4dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/titleProduct"
+        app:layout_constraintTop_toBottomOf="@+id/titleProduct"
+        tools:text="5 Barang Tersisa" />
+
+    <TextView
+        android:id="@+id/textStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textProfit"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/colorGray3"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textProfit"
+        app:layout_constraintTop_toBottomOf="@+id/textProfit"
+        tools:text="Belum di ambil" />
+
+    <Button
+        android:id="@+id/btnAccept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_green_light"
+        android:minHeight="1dp"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="5dp"
+        android:text="@string/text_accept_goods"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textStatus"
+        app:layout_constraintTop_toBottomOf="@+id/textStatus" />
 
     <ImageButton
         android:id="@+id/btnRemove"
-        android:contentDescription="@string/text_delete_stock"
         android:layout_width="30dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="?attr/actionBarItemBackground"
+        android:contentDescription="@string/text_delete_stock"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_delete_black_17dp" />
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:background="@color/colorGray5"
-        android:layout_below="@+id/textStock"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAccept" />
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

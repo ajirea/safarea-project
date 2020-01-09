@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import com.bumptech.glide.Glide;
 import com.perjalanan.safarea.R;
 import com.perjalanan.safarea.data.CatalogItem;
+import com.perjalanan.safarea.helpers.FormatHelper;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -45,9 +47,14 @@ public class DropshipperCatalogListAdapter extends RecyclerView.Adapter<Dropship
     @Override
     public void onBindViewHolder(@NonNull DropshipperCatalogListAdapter.DropshipperCatalogItem holder, int position) {
         CatalogItem item = catalogList.get(holder.getAdapterPosition());
-        holder.thumbnailCatalog.setImageResource(R.drawable.sample_product);
+
+        Glide.with(holder.thumbnailCatalog)
+                .load(item.getThumbnail())
+                .centerCrop()
+                .into(holder.thumbnailCatalog);
+
         holder.titleCatalog.setText(item.getTitle());
-        holder.priceCatalog.setText(item.getPrice().toString());
+        holder.priceCatalog.setText(FormatHelper.priceFormat(item.getPrice()));
     }
 
     @Override
@@ -67,14 +74,11 @@ public class DropshipperCatalogListAdapter extends RecyclerView.Adapter<Dropship
             titleCatalog = itemView.findViewById(R.id.titleCatalog);
             priceCatalog = itemView.findViewById(R.id.priceCatalog);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener != null) {
-                        Integer position = getAdapterPosition();
-                        if(position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
-                        }
+            itemView.setOnClickListener(v -> {
+                if(listener != null) {
+                    Integer position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(position);
                     }
                 }
             });
