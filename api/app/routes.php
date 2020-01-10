@@ -24,6 +24,5 @@ $app->group('/api', function(RouteCollectorProxy $route) {
     require __DIR__ . '/routing/product.php';
     require __DIR__ . '/routing/buyers.php';
     require __DIR__ . '/routing/order.php';
-    require __DIR__ . '/routing/recent-order.php';
     
 });
