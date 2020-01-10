@@ -49,7 +49,7 @@ $route->get('/order/{dropshipper_id}/{order_id}', function (Request $request, Re
     return $response
         ->withHeader('Content-Type', 'application/json');
 
-});	
+});
 
 //Add order , harus ada ID dropshipper
 $route->post('/order/{dropshipper_id}', function(Request $request, Response $response, $args) {
@@ -100,3 +100,40 @@ $route->post('/order/{dropshipper_id}', function(Request $request, Response $res
         
 });
 
+//Tampil order terkini berdasarkan dropshipper ID
+$route->get('/recent-order/{dropshipper_id}', function (Request $request, Response $response, $args) {
+
+    $query = $this->get('db')->prepare("SELECT A.*, B.name, B.thumbnail FROM orders AS A INNER JOIN products AS B ON B.id=A.product_id WHERE A.user_id=? ORDER BY created_at DESC LIMIT 7");
+    $query->bindParam(1, $args['dropshipper_id']);
+    $query->execute();
+
+    $order = $query->fetchAll(PDO::FETCH_OBJ);
+
+    $results = [
+        'status' => true,
+        'data' => $order
+    ];
+
+    $response->getBody()->write(json_encode($results));
+
+    return $response
+        ->withHeader('Content-Type', 'application/json');
+});
+
+$route->get('/profit/{dropshipper_id}', function(Request $request, Response $response, $args) {
+    $query = $this->get('db')->prepare("SELECT IFNULL(SUM(profit_price*qty), 0) AS net_profit FROM orders WHERE user_id = ?");
+    $query->bindParam(1, $args['dropshipper_id']);
+    $query->execute();
+
+    $profit = $query->fetch(PDO::FETCH_OBJ);
+
+    $result = [
+        'status' => true,
+        'data' => $profit
+    ];
+
+    $response->getBody()->write(json_encode($result));
+
+    return $response
+        ->withHeader('Content-Type', 'application/json');
+});
