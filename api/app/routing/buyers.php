@@ -6,7 +6,7 @@ use Slim\Psr7\Response;
 //Tampil semua buyers berdasarkan dropshipper
 $route->get('/buyers/{dropshipper_id}', function (Request $request, Response $response, $args) {
 
-    $query = $this->get('db')->prepare("SELECT * FROM buyers WHERE user_id=? AND deleted_at is null");
+    $query = $this->get('db')->prepare("SELECT * FROM buyers WHERE user_id=? AND deleted_at is null ORDER BY `name` ASC");
     $query->bindParam(1, $args['dropshipper_id']);
     $query->execute();
 
