@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView.LayoutManager mLayoutManager;
     private RequestQueue requestQueue;
     private ArrayList<TransactionItem> transactionList;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -77,6 +80,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Init Volley
         requestQueue = Volley.newRequestQueue(this);
+
+        // swipeRefresh
+        swipeRefreshLayout = findViewById(R.id.swipeLayout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.setOnRefreshListener(this::getRecent);
 
         //Recycler View
         transactionList = new ArrayList<>();
@@ -247,13 +256,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //API
     public void getRecent() {
-        //swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.setRefreshing(true);
         AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
 
         String orderUrl = ServerAPI.RECENT + "/" + user.getId();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, orderUrl, null,
                 response -> {
-                    //swipeRefreshLayout.setRefreshing(false);
+                    swipeRefreshLayout.setRefreshing(false);
                     try {
                         if(response.getBoolean("status")){
                             transactionList.clear();

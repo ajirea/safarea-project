@@ -22,233 +22,245 @@
         android:fitsSystemWindows="true"
         app:itemHorizontalPadding="24dp" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/my_toolbar"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            android:textColorPrimary="@color/colorGray6"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Light"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="#fff">
+            android:layout_height="match_parent"
+            tools:context=".MainActivity">
 
-            <LinearLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/my_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:gravity="end|center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textUsername"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:textColor="@color/colorGray3"
-                    android:textStyle="bold"
-                    tools:text="username" />
-
-                <com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout
-                    android:id="@+id/roundKornerFrameLayout"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    app:corner_radius="15dp">
-
-                    <ImageView
-                        android:id="@+id/imageAvatar"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@color/colorGray5" />
-
-                </com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout>
-            </LinearLayout>
-        </androidx.appcompat.widget.Toolbar>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/topInformation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="100dp"
-            app:cardBackgroundColor="@color/colorPrimary"
-            app:cardCornerRadius="3dp"
-            app:cardElevation="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="@color/colorWhite"
+                android:textColorPrimary="@color/colorGray6"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Light"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:titleTextColor="#fff">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPrimaryDark"
-                    android:orientation="horizontal"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp">
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:gravity="end|center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/textUsername"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="Pendapatan Bersih"
-                        android:textColor="@color/colorWhite"
-                        android:textStyle="bold" />
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:textColor="@color/colorGray3"
+                        android:textStyle="bold"
+                        tools:text="username" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="Rp850.000"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/colorWhite"
-                        android:textStyle="bold" />
+                    <com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout
+                        android:id="@+id/roundKornerFrameLayout"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        app:corner_radius="15dp">
+
+                        <ImageView
+                            android:id="@+id/imageAvatar"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@color/colorGray5" />
+
+                    </com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout>
                 </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
 
-                <androidx.gridlayout.widget.GridLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/topInformation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="100dp"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:columnCount="3"
-                    app:rowCount="2"
-                    app:useDefaultMargins="true">
+                    android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/menuSupplier"
-                        style="@style/BtnMainItem"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableTop="@drawable/icons8_box_white"
-                        android:text="Pemasok"
-                        app:layout_columnWeight="1"
-                        app:layout_rowWeight="1" />
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
 
-                    <Button
-                        android:id="@+id/menuDropshipper"
-                        style="@style/BtnMainItem"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="Pendapatan Bersih"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="Rp850.000"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <androidx.gridlayout.widget.GridLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableTop="@drawable/icons8_tags_white"
-                        android:text="Dropshipper"
-                        app:layout_columnWeight="1"
-                        app:layout_rowWeight="1" />
+                        app:columnCount="3"
+                        app:rowCount="2"
+                        app:useDefaultMargins="true">
 
-                    <Button
-                        android:id="@+id/menuStock"
-                        style="@style/BtnMainItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableTop="@drawable/icons8_empty_box_white"
-                        android:text="Stok"
-                        app:layout_columnWeight="1"
-                        app:layout_rowWeight="1" />
+                        <Button
+                            android:id="@+id/menuSupplier"
+                            style="@style/BtnMainItem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/icons8_box_white"
+                            android:text="Pemasok"
+                            app:layout_columnWeight="1"
+                            app:layout_rowWeight="1" />
 
-                    <Button
-                        android:id="@+id/menuBuyer"
-                        style="@style/BtnMainItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableTop="@drawable/icons8_rent_white"
-                        android:text="Pembeli"
-                        app:layout_columnWeight="1"
-                        app:layout_rowWeight="1" />
+                        <Button
+                            android:id="@+id/menuDropshipper"
+                            style="@style/BtnMainItem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/icons8_tags_white"
+                            android:text="Dropshipper"
+                            app:layout_columnWeight="1"
+                            app:layout_rowWeight="1" />
 
-                    <Button
-                        android:id="@+id/menuTransaction"
-                        style="@style/BtnMainItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableTop="@drawable/icons8_money_white"
-                        android:text="Transaksi"
-                        app:layout_columnWeight="1"
-                        app:layout_rowWeight="1" />
+                        <Button
+                            android:id="@+id/menuStock"
+                            style="@style/BtnMainItem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/icons8_empty_box_white"
+                            android:text="Stok"
+                            app:layout_columnWeight="1"
+                            app:layout_rowWeight="1" />
 
-                    <Button
-                        android:id="@+id/menuSetting"
-                        style="@style/BtnMainItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableTop="@drawable/icons8_settings_white"
-                        android:text="Pengaturan"
-                        app:layout_columnWeight="1"
-                        app:layout_rowWeight="1" />
+                        <Button
+                            android:id="@+id/menuBuyer"
+                            style="@style/BtnMainItem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/icons8_rent_white"
+                            android:text="Pembeli"
+                            app:layout_columnWeight="1"
+                            app:layout_rowWeight="1" />
 
-                </androidx.gridlayout.widget.GridLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                        <Button
+                            android:id="@+id/menuTransaction"
+                            style="@style/BtnMainItem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/icons8_money_white"
+                            android:text="Transaksi"
+                            app:layout_columnWeight="1"
+                            app:layout_rowWeight="1" />
 
-        <TextView
-            android:id="@+id/textView3"
-            style="@style/TextViewTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="24dp"
-            android:text="Transaksi Terbaru"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topInformation" />
+                        <Button
+                            android:id="@+id/menuSetting"
+                            style="@style/BtnMainItem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/icons8_settings_white"
+                            android:text="Pengaturan"
+                            app:layout_columnWeight="1"
+                            app:layout_rowWeight="1" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardAlert"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="1dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3">
+                    </androidx.gridlayout.widget.GridLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/alertText"
+                android:id="@+id/textView3"
+                style="@style/TextViewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Transaksi Terbaru"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topInformation" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardAlert"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                style="@style/label.labelDanger"
-                android:text="@string/alert_no_transaction"
-                android:textColor="@color/colorGray3" />
-        </androidx.cardview.widget.CardView>
+                app:cardCornerRadius="5dp"
+                app:cardElevation="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                android:visibility="gone">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/transactionRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                <TextView
+                    android:id="@+id/alertText"
+                    style="@style/label.labelDanger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/alert_no_transaction"
+                    android:textColor="@color/colorGray3" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/transactionRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
