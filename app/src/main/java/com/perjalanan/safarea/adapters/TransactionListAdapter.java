@@ -8,14 +8,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-
 import com.bumptech.glide.Glide;
 import com.perjalanan.safarea.R;
 import com.perjalanan.safarea.data.TransactionItem;
+import com.perjalanan.safarea.helpers.FormatHelper;
+
+import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class TransactionListAdapter extends RecyclerView.Adapter<TransactionListAdapter.TransactionItemViewHolder>{
 
@@ -86,15 +87,17 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
         holder.pemesan.setText(
                 context.getString(R.string.text_buyer_name, transaction.getName())
         );
-        //holder.images.setImageDrawable(context.getResources().getDrawable(transaction.getImage()));
+        holder.transactionNumber.setText(
+                context.getString(R.string.label_transaction_number, String.valueOf(transaction.getId()))
+        );
         Glide.with(context).load(transaction.getImage())
                 .centerCrop()
                 .into(holder.images);
         holder.product.setText(transaction.getProduct());
         holder.qty.setText(String.valueOf(transaction.getQty()));
         holder.tglDipesan.setText(transaction.getOrderedAt());
-        holder.harga.setText(String.valueOf(transaction.getPrice()));
-        holder.totHarga.setText(String.valueOf(transaction.getTotalPrice()));
+        holder.harga.setText(FormatHelper.priceFormat(transaction.getPrice()));
+        holder.totHarga.setText(FormatHelper.priceFormat(transaction.getTotalPrice()));
     }
 
 

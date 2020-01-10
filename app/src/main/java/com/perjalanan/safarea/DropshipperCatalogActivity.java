@@ -3,16 +3,6 @@ package com.perjalanan.safarea;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-
-import java.util.ArrayList;
-import java.util.Map;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,6 +18,15 @@ import com.perjalanan.safarea.repositories.UserLocalStore;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 public class DropshipperCatalogActivity extends AppCompatActivity {
 
     private ToolbarHelper toolbarHelper;
@@ -38,15 +37,22 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserLocalStore userLocalStore;
+    private Boolean isSelectingProduct = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dropshipper_catalog);
 
+        Intent dropshipperCatalogIntent = getIntent();
+        isSelectingProduct = dropshipperCatalogIntent.getBooleanExtra("isSelectingProduct", false);
+
         toolbarHelper = new ToolbarHelper(this);
         toolbarHelper.initToolbar(true);
         toolbarHelper.setToolbarTitle("Katalog Produk");
+
+        if (isSelectingProduct)
+            toolbarHelper.setToolbarTitle(getString(R.string.text_select_product));
 
         //Inisiasi request volley
         requestQueue = Volley.newRequestQueue(this);
@@ -77,10 +83,17 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
 
         //event handling
         mAdapter.setOnItemClickListener(position -> {
-            Intent intent = new Intent(DropshipperCatalogActivity.this,
-                    DropshipperCatalogDetailActivity.class);
-            intent.putExtra("Catalog Item", catalogList.get(position));
-            startActivity(intent);
+            if (!isSelectingProduct) {
+                Intent intent = new Intent(DropshipperCatalogActivity.this,
+                        DropshipperCatalogDetailActivity.class);
+                intent.putExtra("Catalog Item", catalogList.get(position));
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent();
+                intent.putExtra("productItem", catalogList.get(position));
+                setResult(RESULT_OK, intent);
+                finish();
+            }
         });
     }
 
@@ -110,7 +123,7 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
                                 JSONObject item = response.getJSONArray("data").getJSONObject(i);
                                 CatalogItem catalog = new CatalogItem
                                         (
-                                                Integer.parseInt(item.getString("id")),
+                                                Integer.parseInt(item.getString("product_id")),
                                                 ServerAPI.BASE_URL + item.getString("thumbnail"),
                                                 item.getString("name"),
                                                 Double.parseDouble(item.getString("price"))

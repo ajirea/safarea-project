@@ -1,12 +1,9 @@
 package com.perjalanan.safarea;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -17,12 +14,6 @@ import com.perjalanan.safarea.adapters.BuyerListAdapter;
 import com.perjalanan.safarea.data.BuyerItem;
 import com.perjalanan.safarea.data.User;
 import com.perjalanan.safarea.helpers.ToolbarHelper;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-
 import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
 import com.perjalanan.safarea.repositories.ServerAPI;
 import com.perjalanan.safarea.repositories.UserLocalStore;
@@ -33,6 +24,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 public class BuyerActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -42,16 +41,22 @@ public class BuyerActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private BuyerListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private Boolean isSelectingBuyer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buyer);
 
+        Intent intent = getIntent();
+        isSelectingBuyer = intent.getBooleanExtra("isSelectingBuyer", false);
+
         // atur custom toolbar
         ToolbarHelper toolbarHelper = new ToolbarHelper(this);
         toolbarHelper.initToolbar(true);
         toolbarHelper.setToolbarTitle(getString(R.string.text_buyer_lists));
+
+        if (isSelectingBuyer) toolbarHelper.setToolbarTitle(getString(R.string.text_select_buyer));
 
         // mengambil data user yang login
         UserLocalStore userLocalStore = new UserLocalStore(this);
@@ -78,9 +83,25 @@ public class BuyerActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.buyerListRecyclerView);
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new BuyerListAdapter(buyerList);
+        mAdapter.setHideBtnEdit(isSelectingBuyer);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        // cek apakah activity dalam status sedang memilih pembeli
+        if (isSelectingBuyer) {
+
+            // jika ya, maka kembali ke activity sebelumnya sambil mengirim buyer item
+            mAdapter.setOnClickListener(this::returnBuyerItem);
+        }
+    }
+
+    private void returnBuyerItem(Integer position) {
+        BuyerItem buyer = buyerList.get(position);
+        Intent intent = new Intent();
+        intent.putExtra("buyerItem", buyer);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override
@@ -107,7 +128,9 @@ public class BuyerActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
-        getMenuInflater().inflate(R.menu.menu_add, menu);
+
+        if (!isSelectingBuyer)
+            getMenuInflater().inflate(R.menu.menu_add, menu);
 
         // ambil komponen tombol search
         MenuItem searchItem = menu.findItem(R.id.search_item);

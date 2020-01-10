@@ -5,13 +5,16 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.perjalanan.safarea.data.TransactionItem;
+import com.perjalanan.safarea.helpers.FormatHelper;
+import com.perjalanan.safarea.helpers.ToolbarHelper;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.perjalanan.safarea.data.TransactionItem;
-import com.perjalanan.safarea.helpers.ToolbarHelper;
-
-public class TransactionDetaiActivity extends AppCompatActivity {
+public class
+TransactionDetaiActivity extends AppCompatActivity {
 
     private ToolbarHelper toolbarHelper;
 
@@ -32,19 +35,6 @@ public class TransactionDetaiActivity extends AppCompatActivity {
 
         //parcelable
         TransactionItem transactionItem = intent.getParcelableExtra("Detail Transaksi");
-        transactionItem.setOrderDesc("Donec at eros sagittis, porta erat scelerisque, tincidunt est. Vivamus quis imperdiet ante, eu bibendum nibh. Suspendisse potenti. Nulla non mollis libero. In euismod eros eget lacus commodo congue. Praesent a finibus enim. Nunc sit amet neque sit amet dolor blandit consectetur mattis in purus. Donec ut tellus enim. Duis at iaculis tellus. Nulla condimentum facilisis mauris vel ullamcorper. Suspendisse sed dignissim turpis.");
-
-        String imageRes = transactionItem.getImage();
-        int id = transactionItem.getId();
-        int userid = transactionItem.getUserid();
-        String name = transactionItem.getName();
-        String phone = transactionItem.getPhone();
-        String product = transactionItem.getProduct();
-        String date = transactionItem.getOrderedAt();
-        String desc = transactionItem.getOrderDesc();
-        double qty = transactionItem.getQty();
-        double price = transactionItem.getPrice();
-        double totPrice = transactionItem.getTotalPrice();
 
         ImageView imageView = findViewById(R.id.imageView);
         TextView labelBuyer = findViewById(R.id.lblPemesan);
@@ -57,6 +47,28 @@ public class TransactionDetaiActivity extends AppCompatActivity {
         TextView harga = findViewById(R.id.txtHarga);
         TextView totHarga = findViewById(R.id.txtTotHarga);
 
+        Glide.with(imageView).load(transactionItem.getImage())
+                .centerCrop()
+                .into(imageView);
+
+        labelTransactionNumber.setText(getString(
+                R.string.label_transaction_number, String.valueOf(transactionItem.getId())
+        ));
+
+        labelBuyer.setText(getString(
+                R.string.text_buyer_name, transactionItem.getName()
+        ));
+
+        labelPhoneNumber.setText(getString(
+                R.string.label_no_telp_format, transactionItem.getPhone()
+        ));
+
+        prodName.setText(transactionItem.getProduct());
+        ordDesc.setText(transactionItem.getOrderDesc());
+        ordDate.setText(transactionItem.getOrderedAt());
+        quantity.setText(String.valueOf(transactionItem.getQty()));
+        harga.setText(FormatHelper.priceFormat(transactionItem.getPrice()));
+        totHarga.setText(FormatHelper.priceFormat(transactionItem.getTotalPrice()));
 
     }
 

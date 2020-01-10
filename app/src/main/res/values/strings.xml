@@ -30,6 +30,8 @@
     <string name="text_stock_message_send">Supplier akan mengirim barang ke alamat anda. Silahkan konfirmasi penerimaan barang di halaman stok barang</string>
     <string name="text_saving">Menyimpan</string>
     <string name="text_search">Cari</string>
+    <string name="text_select_buyer">Pilih Pembeli</string>
+    <string name="text_select_product">Pilih Barang</string>
 
     <!-- String transaction -->
     <string name="text_buyer_name">Pemesan : %s</string>

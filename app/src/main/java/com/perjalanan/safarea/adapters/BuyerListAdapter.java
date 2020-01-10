@@ -9,40 +9,37 @@ import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.perjalanan.safarea.BuyerEditActivity;
+import com.perjalanan.safarea.R;
+import com.perjalanan.safarea.data.BuyerItem;
+
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.perjalanan.safarea.BuyerEditActivity;
-import com.perjalanan.safarea.R;
-import com.perjalanan.safarea.data.BuyerItem;
 
 public class BuyerListAdapter extends RecyclerView.Adapter<BuyerListAdapter.BuyerItemViewHolder> implements Filterable {
 
     private ArrayList<BuyerItem> buyerList;
     private ArrayList<BuyerItem> buyerListFull;
+    private Boolean hideBtnEdit = false;
+    private OnClickListener mListener;
 
-    public static class BuyerItemViewHolder extends RecyclerView.ViewHolder {
+    public void setOnClickListener(BuyerListAdapter.OnClickListener listener) {
+        mListener = listener;
+    }
 
-        public TextView textBuyerName;
-        public TextView textBuyerPhoneNumber;
-        public ImageButton btnEdit;
+    public Boolean getHideBtnEdit() {
+        return hideBtnEdit;
+    }
 
-        public BuyerItemViewHolder(@NonNull View itemView) {
-            super(itemView);
-            textBuyerName = itemView.findViewById(R.id.textBuyerName);
-            textBuyerPhoneNumber = itemView.findViewById(R.id.textBuyerPhoneNumber);
-            btnEdit = itemView.findViewById(R.id.btnEdit);
-        }
+    public void setHideBtnEdit(Boolean hideBtnEdit) {
+        this.hideBtnEdit = hideBtnEdit;
     }
 
     public BuyerListAdapter(ArrayList<BuyerItem> bList) {
         buyerList = bList;
         buyerListFull = new ArrayList<>(bList);
-    }
-
-    public void good() {
-        System.out.println("good");
     }
 
     @NonNull
@@ -52,7 +49,7 @@ public class BuyerListAdapter extends RecyclerView.Adapter<BuyerListAdapter.Buye
                 R.layout.buyer_list_item, parent, false
         );
 
-        return new BuyerItemViewHolder(view);
+        return new BuyerItemViewHolder(view, mListener);
     }
 
     @Override
@@ -68,6 +65,36 @@ public class BuyerListAdapter extends RecyclerView.Adapter<BuyerListAdapter.Buye
                 v.getContext().startActivity(intent);
             }
         });
+
+        if (hideBtnEdit)
+            holder.btnEdit.setVisibility(View.INVISIBLE);
+    }
+
+    public interface OnClickListener {
+        void onClick(Integer position);
+    }
+
+    public static class BuyerItemViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView textBuyerName;
+        public TextView textBuyerPhoneNumber;
+        public ImageButton btnEdit;
+
+        public BuyerItemViewHolder(@NonNull View itemView, final BuyerListAdapter.OnClickListener listener) {
+            super(itemView);
+            textBuyerName = itemView.findViewById(R.id.textBuyerName);
+            textBuyerPhoneNumber = itemView.findViewById(R.id.textBuyerPhoneNumber);
+            btnEdit = itemView.findViewById(R.id.btnEdit);
+
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    Integer position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        listener.onClick(position);
+                    }
+                }
+            });
+        }
     }
 
     @Override

@@ -9,16 +9,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-import java.util.Map;
-
 import com.perjalanan.safarea.adapters.TransactionListAdapter;
 import com.perjalanan.safarea.data.TransactionItem;
 import com.perjalanan.safarea.data.User;
@@ -27,8 +17,17 @@ import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
 import com.perjalanan.safarea.repositories.ServerAPI;
 import com.perjalanan.safarea.repositories.UserLocalStore;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class TransactionActivity extends AppCompatActivity {
 
@@ -39,6 +38,7 @@ public class TransactionActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private ArrayList<TransactionItem> transactionList;
     private User user;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +56,12 @@ public class TransactionActivity extends AppCompatActivity {
 
         //Inisiasi request volley
         requestQueue = Volley.newRequestQueue(this);
+
+        // components
+        swipeRefreshLayout = findViewById(R.id.swipeLayout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.setOnRefreshListener(this::getTransaction);
 
         //Recycle view
         transactionList = new ArrayList<>();
@@ -90,13 +96,16 @@ public class TransactionActivity extends AppCompatActivity {
 
     //API
     public void getTransaction() {
+        swipeRefreshLayout.setRefreshing(true);
         AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
 
         String orderUrl = ServerAPI.ORDER + "/" + user.getId();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, orderUrl, null,
                 response -> {
+                    swipeRefreshLayout.setRefreshing(false);
                     try {
                         if(response.getBoolean("status")){
+                            transactionList.clear();
                             for(int i = 0; i < response.getJSONArray("data").length(); i ++) {
                                 JSONObject item = response.getJSONArray("data").getJSONObject(i);
                                 TransactionItem order = new TransactionItem
@@ -134,86 +143,4 @@ public class TransactionActivity extends AppCompatActivity {
         };
         requestQueue.add(request);
     }
-
-//    private ArrayList<TransactionItem> exampleTransactionData() {
-//        ArrayList<TransactionItem> exTransaction = new ArrayList<>();
-//
-//        TransactionItem transaction1 = new TransactionItem(
-//                R.drawable.sample_product,
-//                1,
-//                1,
-//                3,
-//                "Asep 1",
-//                "Pajama 1",
-//                "088392931848",
-//                "01/01/2020",
-//                "Contoh Order",
-//                80000.00,
-//                240000.00
-//        );
-//
-//        TransactionItem transaction2 = new TransactionItem(
-//                R.drawable.sample_product,
-//                1,
-//                1,
-//                3,
-//                "Asep 2",
-//                "Pajama 2",
-//                "088392931848",
-//                "01/01/2020",
-//                "Contoh Order",
-//                70000.00,
-//                210000.00
-//        );
-//
-//        TransactionItem transaction3 = new TransactionItem(
-//                R.drawable.sample_product,
-//                1,
-//                1,
-//                3,
-//                "Asep 3",
-//                "Pajama 3",
-//                "088392931848",
-//                "01/01/2020",
-//                "Contoh Order",
-//                60000.00,
-//                180000.00
-//        );
-//
-//        TransactionItem transaction4 = new TransactionItem(
-//                R.drawable.sample_product,
-//                1,
-//                1,
-//                3,
-//                "Asep 4",
-//                "Pajama 4",
-//                "088392931848",
-//                "01/01/2020",
-//                "Contoh Order",
-//                50000.00,
-//                150000.00
-//        );
-//
-//        TransactionItem transaction5 = new TransactionItem(
-//                R.drawable.sample_product,
-//                1,
-//                1,
-//                3,
-//                "Asep 5",
-//                "Pajama 5",
-//                "088392931848",
-//                "01/01/2020",
-//                "Contoh Order",
-//                100000.00,
-//                300000.00
-//        );
-//
-//        exTransaction.add(transaction1);
-//        exTransaction.add(transaction2);
-//        exTransaction.add(transaction3);
-//        exTransaction.add(transaction4);
-//        exTransaction.add(transaction5);
-//
-//        return exTransaction;
-//    }
 }
