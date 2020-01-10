@@ -7,7 +7,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.perjalanan.safarea.adapters.TransactionListAdapter;
+import com.perjalanan.safarea.data.TransactionItem;
 import com.perjalanan.safarea.data.User;
+import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
 import com.perjalanan.safarea.repositories.ServerAPI;
 import com.perjalanan.safarea.repositories.UserLocalStore;
 
@@ -23,6 +34,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * The type Main activity.
  */
@@ -32,6 +48,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private NavigationView navigationView;
     private UserLocalStore userLocalStore;
     private User user;
+    private RecyclerView mRecyclerView;
+    private TransactionListAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RequestQueue requestQueue;
+    private ArrayList<TransactionItem> transactionList;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -50,8 +71,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Mengambil Data User Login
         userLocalStore = new UserLocalStore(this);
         user = userLocalStore.getLoggedInUser();
+
+        //Init Volley
+        requestQueue = Volley.newRequestQueue(this);
+
+        //Recycler View
+        transactionList = new ArrayList<>();
+        getRecent();
+        mRecyclerView = findViewById(R.id.transactionRecyclerView);
+        mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new TransactionListAdapter(this, transactionList);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new TransactionListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Integer position) {
+                Intent intent = new Intent(MainActivity.this, TransactionDetaiActivity.class);
+                intent.putExtra("Detail Transaksi", transactionList.get(position));
+                startActivity(intent);
+            }
+        });
 
         initNavigationAndDrawer();
         initMainBtnEvent();
@@ -200,5 +243,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         eventListener(null, v);
+    }
+
+    //API
+    public void getRecent() {
+        //swipeRefreshLayout.setRefreshing(true);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
+
+        String orderUrl = ServerAPI.RECENT + "/" + user.getId();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, orderUrl, null,
+                response -> {
+                    //swipeRefreshLayout.setRefreshing(false);
+                    try {
+                        if(response.getBoolean("status")){
+                            transactionList.clear();
+                            for(int i = 0; i < response.getJSONArray("data").length(); i ++) {
+                                JSONObject item = response.getJSONArray("data").getJSONObject(i);
+                                TransactionItem order = new TransactionItem
+                                        (
+                                                ServerAPI.BASE_URL + item.getString("thumbnail"),
+                                                Integer.parseInt(item.getString("id")),
+                                                Integer.parseInt(item.getString("user_id")),
+                                                Integer.parseInt(item.getString("qty")),
+                                                item.getString("buyer_name"),
+                                                item.getString("name"),
+                                                item.getString("phone"),
+                                                item.getString("created_at"),
+                                                item.getString("description"),
+                                                Double.parseDouble(item.getString("price")),
+                                                Double.parseDouble(item.getString("total"))
+                                        );
+                                transactionList.add(order);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }else {
+                            alert.setMessage(response.getJSONObject("data")
+                                    .getString("message")).show();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        alert.setMessage(e.getMessage()).show();
+                    }
+
+                }, error -> alert.setMessage(error.getMessage()).show()) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return RequestGlobalHeaders.get(getApplicationContext());
+            }
+        };
+        requestQueue.add(request);
     }
 }

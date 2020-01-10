@@ -11,6 +11,7 @@ public interface ServerAPI {
     String SUPPLIER_CATALOG = API_URL.concat("product");
     String DROPSHIPPER = API_URL.concat("product/dropshipper/");
     String ORDER = API_URL.concat("order");
+    String RECENT = API_URL.concat("recent-order");
 
     String BUYER_ALL_DATA = API_URL.concat("buyers");
 
