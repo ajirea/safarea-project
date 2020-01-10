@@ -1,6 +1,8 @@
 package com.perjalanan.safarea.adapters;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.perjalanan.safarea.BuyerEditActivity;
 import com.perjalanan.safarea.R;
 import com.perjalanan.safarea.data.BuyerItem;
+import com.perjalanan.safarea.helpers.ValidationHelper;
 
 import java.util.ArrayList;
 
@@ -57,17 +60,26 @@ public class BuyerListAdapter extends RecyclerView.Adapter<BuyerListAdapter.Buye
         BuyerItem buyer = buyerList.get(holder.getAdapterPosition());
         holder.textBuyerName.setText(buyer.getName());
         holder.textBuyerPhoneNumber.setText(buyer.getPhone());
-        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), BuyerEditActivity.class);
-                intent.putExtra("buyerId", buyer.getId());
-                v.getContext().startActivity(intent);
-            }
+        holder.btnEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), BuyerEditActivity.class);
+            intent.putExtra("buyerId", buyer.getId());
+            v.getContext().startActivity(intent);
+        });
+        holder.btnWhatsApp.setOnClickListener(v -> {
+            String url = "https://api.whatsapp.com/send?phone=" + buyer.getPhone();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            v.getContext().startActivity(intent);
         });
 
-        if (hideBtnEdit)
-            holder.btnEdit.setVisibility(View.INVISIBLE);
+        if (hideBtnEdit) {
+            holder.btnEdit.setVisibility(View.GONE);
+            holder.btnWhatsApp.setVisibility(View.GONE);
+        }
+
+        if (!ValidationHelper.hasInstalledPackage(holder.context, "com.whatsapp") ||
+                !ValidationHelper.hasInstalledPackage(holder.context, "com.whatsapp.w4b"))
+            holder.btnWhatsApp.setVisibility(View.GONE);
     }
 
     public interface OnClickListener {
@@ -78,13 +90,16 @@ public class BuyerListAdapter extends RecyclerView.Adapter<BuyerListAdapter.Buye
 
         public TextView textBuyerName;
         public TextView textBuyerPhoneNumber;
-        public ImageButton btnEdit;
+        public ImageButton btnEdit, btnWhatsApp;
+        public Context context;
 
         public BuyerItemViewHolder(@NonNull View itemView, final BuyerListAdapter.OnClickListener listener) {
             super(itemView);
             textBuyerName = itemView.findViewById(R.id.textBuyerName);
             textBuyerPhoneNumber = itemView.findViewById(R.id.textBuyerPhoneNumber);
             btnEdit = itemView.findViewById(R.id.btnEdit);
+            btnWhatsApp = itemView.findViewById(R.id.btnWhatsApp);
+            context = itemView.getContext();
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {

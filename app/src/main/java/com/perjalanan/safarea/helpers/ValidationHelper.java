@@ -1,6 +1,7 @@
 package com.perjalanan.safarea.helpers;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,6 +30,17 @@ public abstract class ValidationHelper {
 
     public static void showToast(String message, Context context) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static Boolean hasInstalledPackage(Context context, String packageName) {
+        try {
+            PackageManager pkg = context.getPackageManager();
+            pkg.getPackageGids(packageName);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

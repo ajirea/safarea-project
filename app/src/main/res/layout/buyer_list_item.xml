@@ -14,6 +14,12 @@
         style="@style/TextViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toStartOf="@+id/btnWhatsApp"
+        android:layout_toLeftOf="@+id/btnWhatsApp"
         tools:text="Tenang Salawasna" />
 
     <TextView
@@ -33,6 +39,19 @@
         android:layout_centerVertical="true"
         android:background="?attr/actionBarItemBackground"
         app:srcCompat="@drawable/ic_edit_gray_17dp" />
+
+    <ImageButton
+        android:id="@+id/btnWhatsApp"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toStartOf="@+id/btnEdit"
+        android:layout_toLeftOf="@+id/btnEdit"
+        android:background="?attr/actionBarItemBackground"
+        android:contentDescription="@string/text_edit_buyer"
+        app:srcCompat="@drawable/ic_icons8_whatsapp" />
 
     <View
         android:layout_width="match_parent"

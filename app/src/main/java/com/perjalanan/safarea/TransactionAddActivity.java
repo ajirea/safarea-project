@@ -85,13 +85,17 @@ public class TransactionAddActivity extends AppCompatActivity {
         fieldProduct.setClickable(true);
 
         // event handling
-        fieldName.setOnClickListener(l -> {
+        fieldName.setOnFocusChangeListener((l, hasFocus) -> {
+            if (!hasFocus) return;
+            l.clearFocus();
             Intent intent = new Intent(TransactionAddActivity.this, BuyerActivity.class);
             intent.putExtra("isSelectingBuyer", true);
             startActivityForResult(intent, REQUEST_BUYER_OK);
         });
 
-        fieldProduct.setOnClickListener(l -> {
+        fieldProduct.setOnFocusChangeListener((l, hasFocus) -> {
+            if (!hasFocus) return;
+            l.clearFocus();
             Intent intent = new Intent(TransactionAddActivity.this, DropshipperCatalogActivity.class);
             intent.putExtra("isSelectingProduct", true);
             startActivityForResult(intent, REQUEST_PRODUCT_OK);
