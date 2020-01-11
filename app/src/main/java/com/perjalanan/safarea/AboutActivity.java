@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.perjalanan.safarea.helpers.ToolbarHelper;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.perjalanan.safarea.helpers.ToolbarHelper;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -21,7 +21,7 @@ public class AboutActivity extends AppCompatActivity {
 
         // atur custom toolbar
         ToolbarHelper toolbarHelper = new ToolbarHelper(this);
-        toolbarHelper.initToolbar();
+        toolbarHelper.initToolbar(true);
         toolbarHelper.setToolbarTitle(getString(R.string.text_about_app_header));
 
         //Comps
@@ -30,7 +30,7 @@ public class AboutActivity extends AppCompatActivity {
         about = findViewById(R.id.txtAbout);
 
         image.setImageResource(R.drawable.logo);
-        appVer.setText(R.string.app_ver);
+        appVer.setText("Versi " + BuildConfig.VERSION_NAME);
         about.setText(R.string.about_app_desc);
 
     }
