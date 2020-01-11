@@ -69,6 +69,18 @@ $route->post('/order/{dropshipper_id}', function(Request $request, Response $res
         return dropshipperNotFound($response);
 
     $product = $query->fetch(PDO::FETCH_OBJ);
+
+    if($product->qty < 1) {
+        $response->getBody()->write(json_encode([
+            'status' => false,
+            'data' => [
+                'message' => 'Stok sudah habis'
+            ]
+        ]));
+        return $response
+            ->withHeader('Content-Type', 'application/json');
+    }
+
     $total = ($product->profit_price + $product->price) * $input['qty'];
     $query = $this->get('db')->prepare("INSERT INTO orders (user_id, buyer_id, product_id, price, profit_price, qty, total, description, created_at) VALUES (?,?,?,?,?,?,?,?,?)");
     $query->bindParam(1, $dropshipper->id);
@@ -82,6 +94,16 @@ $route->post('/order/{dropshipper_id}', function(Request $request, Response $res
     $query->bindParam(9, $input['created_at']);
 
     $order = $query->execute();
+
+    // update stok
+    if($order) {
+        $balanceQty = $product->qty - $input['qty'];
+        $query = $this->get('db')->prepare("UPDATE user_products SET qty = ? WHERE A.user_id=? AND A.product_id=?");
+        $query->bindParam(1, $balanceQty);
+        $query->bindParam(2, $product->user_id);
+        $query->bindParam(3, $product->product_id);
+        $query->execute();
+    }
 
     $result = [
         'status' => $order,

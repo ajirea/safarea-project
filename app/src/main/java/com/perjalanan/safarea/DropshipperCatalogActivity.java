@@ -84,9 +84,17 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
 
         //Event handling
         mAdapter.setOnItemClickListener(position -> {
-            Intent intent = new Intent(DropshipperCatalogActivity.this, DropshipperCatalogDetailActivity.class);
-            intent.putExtra("Catalog Item", catalogList.get(position));
-            startActivity(intent);
+            if (!isSelectingProduct) {
+                Intent intent = new Intent(DropshipperCatalogActivity.this,
+                        DropshipperCatalogDetailActivity.class);
+                intent.putExtra("Catalog Item", catalogList.get(position));
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent();
+                intent.putExtra("productItem", catalogList.get(position));
+                setResult(RESULT_OK, intent);
+                finish();
+            }
         });
     }
 
@@ -117,7 +125,7 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
                                 CatalogItem catalog = new CatalogItem
                                         (
 
-                                                Integer.parseInt(item.getString("id")),
+                                                Integer.parseInt(item.getString("product_id")),
                                                 ServerAPI.BASE_URL + item.getString("thumbnail"),
                                                 item.getString("name"),
                                                 Double.parseDouble(item.getString("price"))
