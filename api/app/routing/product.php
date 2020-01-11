@@ -132,9 +132,17 @@ $route->get('/product/dropshipper/{dropshipper_id}', function (Request $request,
     $query->bindParam(1, $dropshipper->id);
     $query->execute();
 
+    $products = $query->fetchAll(PDO::FETCH_OBJ);
+
+    foreach ($products as $index => $product) {
+        $query = $this->get('db')->query("SELECT * FROM product_images WHERE product_id=$product->id");
+        $images = $query->fetchAll(PDO::FETCH_OBJ);
+        $products[$index]->images = $images;
+    }
+    
     $results = [
         'status' => true,
-        'data' => $query->fetchAll(PDO::FETCH_OBJ)
+        'data' => $products
     ];
 
     $response->getBody()->write(json_encode($results));
@@ -150,7 +158,7 @@ $route->get('/product/dropshipper/{dropshipper_id}/stock', function (Request $re
     if (!$dropshipper)
         return dropshipperNotFound($response);
 
-    $query = $this->get('db')->prepare("SELECT A.*, B.name, B.price, B.thumbnail FROM user_products AS A INNER JOIN products AS B ON B.id = A.product_id WHERE A.user_id = ? ORDER BY A.status DESC");
+    $query = $this->get('db')->prepare("SELECT A.*, B.name, B.price, B.thumbnail, B.description FROM user_products AS A INNER JOIN products AS B ON B.id = A.product_id WHERE A.user_id = ? ORDER BY A.status DESC");
 
     $query->bindParam(1, $dropshipper->id);
     $query->execute();
