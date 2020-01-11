@@ -1,45 +1,44 @@
 package com.perjalanan.safarea;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.google.android.material.navigation.NavigationView;
 import com.perjalanan.safarea.adapters.TransactionListAdapter;
 import com.perjalanan.safarea.data.TransactionItem;
 import com.perjalanan.safarea.data.User;
-import com.perjalanan.safarea.helpers.FormatHelper;
 import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
 import com.perjalanan.safarea.repositories.ServerAPI;
 import com.perjalanan.safarea.repositories.UserLocalStore;
-
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
  * The type Main activity.
@@ -56,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RequestQueue requestQueue;
     private ArrayList<TransactionItem> transactionList;
     private SwipeRefreshLayout swipeRefreshLayout;
-
+    private CardView cardAlert;
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -82,8 +82,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Init Volley
         requestQueue = Volley.newRequestQueue(this);
 
-        // swipeRefresh
+        // componets
+        cardAlert = findViewById(R.id.cardAlert);
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
+
+        cardAlert.setVisibility(View.GONE);
+
+        // swipeRefresh
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this::getRecent);
@@ -97,13 +102,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new TransactionListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Integer position) {
-                Intent intent = new Intent(MainActivity.this, TransactionDetaiActivity.class);
-                intent.putExtra("Detail Transaksi", transactionList.get(position));
-                startActivity(intent);
-            }
+        mAdapter.setOnItemClickListener(position -> {
+            Intent intent = new Intent(MainActivity.this, TransactionDetaiActivity.class);
+            intent.putExtra("Detail Transaksi", transactionList.get(position));
+            startActivity(intent);
         });
 
         initNavigationAndDrawer();
@@ -173,9 +175,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawerLayout = findViewById(R.id.drawerLayout);
         View header = navigationView.getHeaderView(0);
 
-        header.setOnClickListener(l -> {
-            runActivity(SettingActivity.class);
-        });
+        header.setOnClickListener(l -> runActivity(SettingActivity.class));
 
         ImageView drawerAvatar = header.findViewById(R.id.imageAvatar);
         TextView drawerUsername = header.findViewById(R.id.textUsername);
@@ -211,12 +211,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             navigationView.bringToFront();
 
             // set event click listener
-            imageAvatar.setOnClickListener(l -> {
-                runActivity(SettingActivity.class);
-            });
-            textUsername.setOnClickListener(l -> {
-                runActivity(SettingActivity.class);
-            });
+            imageAvatar.setOnClickListener(l -> runActivity(SettingActivity.class));
+            textUsername.setOnClickListener(l -> runActivity(SettingActivity.class));
         }
     }
 
@@ -233,23 +229,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setCancelable(true);
         alertDialog.setTitle("Yakin ingin keluar?");
-        alertDialog.setPositiveButton(R.string.alert_yes_btn, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                userLocalStore.setUserLoggedIn(false);
-                runActivity(LoginActivity.class);
-                userLocalStore.clearUserData();
-                Glide.get(getApplicationContext()).clearMemory();
-                finish();
-                dialog.dismiss();
-            }
+        alertDialog.setPositiveButton(R.string.alert_yes_btn, (dialog, which) -> {
+            userLocalStore.setUserLoggedIn(false);
+            runActivity(LoginActivity.class);
+            userLocalStore.clearUserData();
+            Glide.get(getApplicationContext()).clearMemory();
+            finish();
+            dialog.dismiss();
         });
-        alertDialog.setNegativeButton(R.string.alert_no_btn, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        alertDialog.setNegativeButton(R.string.alert_no_btn, (dialog, which) -> dialog.dismiss());
         alertDialog.create();
         alertDialog.show();
     }
@@ -257,6 +245,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         eventListener(null, v);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Tekan lagi untuk keluar", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
     //API
@@ -289,6 +290,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         );
                                 transactionList.add(order);
                             }
+                            if (transactionList.size() < 1) cardAlert.setVisibility(View.VISIBLE);
                             mAdapter.notifyDataSetChanged();
                         }else {
                             alert.setMessage(response.getJSONObject("data")
