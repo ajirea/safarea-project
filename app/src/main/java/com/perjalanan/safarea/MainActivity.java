@@ -87,8 +87,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cardAlert = findViewById(R.id.cardAlert);
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
 
-        cardAlert.setVisibility(View.GONE);
-
         // swipeRefresh
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setRefreshing(true);
@@ -323,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void getProfit(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
-
+        cardAlert.setVisibility(View.GONE);
         String url = ServerAPI.PROFIT + "/" + user.getId();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
