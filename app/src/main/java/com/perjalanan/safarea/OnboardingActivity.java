@@ -66,26 +66,26 @@ public class OnboardingActivity extends AppCompatActivity {
 
         //Third Page
         listOnboarding.add(new OnboardingItem("Tentukan Barang", "Dropshipper menentukan barang yang" +
-                "akan di stok melalui aplikasi" , R.drawable.bg_auth_shape_1x,
+                " akan di stok melalui aplikasi" , R.drawable.bg_auth_shape_1x,
                 R.drawable.onboarding_step_3));
 
         //Fourth Page
         listOnboarding.add(new OnboardingItem("Dapatkan Barang", "Supplier mengirim barang jika jarak" +
-                "dropshipper dengan supplier jauh",R.drawable.bg_auth_shape_1x,
+                " dropshipper dengan supplier jauh",R.drawable.bg_auth_shape_1x,
                 R.drawable.onboarding_step_4));
 
         //Fifth Page
         listOnboarding.add(new OnboardingItem("Tawarkan Barang", "Dropshipper menawarkan barang kepada" +
-                "pelanggan melalui manual ataupun aplikasi",R.drawable.bg_auth_shape_1x,
+                " pelanggan melalui manual ataupun aplikasi",R.drawable.bg_auth_shape_1x,
                 R.drawable.onboarding_step_5));
 
         //Sixth Page
         listOnboarding.add(new OnboardingItem("Catat Transaksi", "Dropshipper mencatat transaksi" +
-                "di aplikasi",R.drawable.bg_auth_shape_1x, R.drawable.onboarding_step_6));
+                " di aplikasi",R.drawable.bg_auth_shape_1x, R.drawable.onboarding_step_6));
 
         //Seventh Page
         listOnboarding.add(new OnboardingItem("Laporan Transaksi", "Hasil transaksi dikirim ke" +
-                "supplier",R.drawable.bg_auth_shape_1x, R.drawable.onboarding_step_7));
+                " supplier",R.drawable.bg_auth_shape_1x, R.drawable.onboarding_step_7));
 
 
         //Setting up the Viewpager

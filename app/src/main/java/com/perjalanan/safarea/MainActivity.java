@@ -148,6 +148,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 runActivity(SettingActivity.class);
                 break;
             }
+            case R.id.menuAbout: {
+                runActivity(AboutActivity.class);
+                break;
+            }
             case R.id.menuLogout: {
                 logoutDialog();
                 break;
