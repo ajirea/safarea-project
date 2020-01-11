@@ -127,7 +127,7 @@ $route->get('/product/dropshipper/{dropshipper_id}', function (Request $request,
     if(!$dropshipper)
         return dropshipperNotFound($response);
 
-    $query = $this->get('db')->prepare("SELECT A.*, B.name, B.slug, B.thumbnail, B.price FROM user_products AS A INNER JOIN products AS B ON B.id=A.product_id WHERE A.user_id=? AND A.status='active'");
+    $query = $this->get('db')->prepare("SELECT A.*, B.name, B.slug, B.thumbnail, B.price, B.description FROM user_products AS A INNER JOIN products AS B ON B.id=A.product_id WHERE A.user_id=? AND A.status='active'");
 
     $query->bindParam(1, $dropshipper->id);
     $query->execute();
@@ -135,7 +135,7 @@ $route->get('/product/dropshipper/{dropshipper_id}', function (Request $request,
     $products = $query->fetchAll(PDO::FETCH_OBJ);
 
     foreach ($products as $index => $product) {
-        $query = $this->get('db')->query("SELECT * FROM product_images WHERE product_id=$product->id");
+        $query = $this->get('db')->query("SELECT * FROM product_images WHERE product_id=$product->product_id");
         $images = $query->fetchAll(PDO::FETCH_OBJ);
         $products[$index]->images = $images;
     }
