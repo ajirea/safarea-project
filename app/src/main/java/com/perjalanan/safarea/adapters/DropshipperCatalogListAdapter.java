@@ -1,5 +1,6 @@
 package com.perjalanan.safarea.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,36 +17,34 @@ import com.perjalanan.safarea.R;
 import com.perjalanan.safarea.data.CatalogItem;
 import com.perjalanan.safarea.helpers.FormatHelper;
 
-import org.jetbrains.annotations.NotNull;
-
 public class DropshipperCatalogListAdapter extends RecyclerView.Adapter<DropshipperCatalogListAdapter.DropshipperCatalogItem> {
 
     private ArrayList<CatalogItem> catalogList;
-    private DropshipperCatalogListAdapter.OnItemClickListener mListener;
+    private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
         void onItemClick(Integer position);
     }
 
-    public void setOnItemClickListener(DropshipperCatalogListAdapter.OnItemClickListener listener) {
-        mListener = listener;
-    }
+    public void setOnItemClickListener(OnItemClickListener listener) {  mListener = listener; }
 
     public DropshipperCatalogListAdapter(ArrayList<CatalogItem> list) {
         catalogList = list;
     }
 
-
-    @NotNull
-    public DropshipperCatalogListAdapter.DropshipperCatalogItem onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    @NonNull
+    @Override
+    public DropshipperCatalogItem onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.catalog_item, parent, false
         );
 
-        return new DropshipperCatalogListAdapter.DropshipperCatalogItem(view, mListener);    }
+        DropshipperCatalogItem sci = new DropshipperCatalogItem(view, mListener);
+        return sci;
+    }
 
     @Override
-    public void onBindViewHolder(@NonNull DropshipperCatalogListAdapter.DropshipperCatalogItem holder, int position) {
+    public void onBindViewHolder(@NonNull DropshipperCatalogItem holder, int position) {
         CatalogItem item = catalogList.get(holder.getAdapterPosition());
 
         Glide.with(holder.thumbnailCatalog)
@@ -68,17 +67,20 @@ public class DropshipperCatalogListAdapter extends RecyclerView.Adapter<Dropship
         TextView titleCatalog;
         TextView priceCatalog;
 
-        public DropshipperCatalogItem(@NonNull View itemView, final DropshipperCatalogListAdapter.OnItemClickListener listener) {
+        public DropshipperCatalogItem(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             thumbnailCatalog = itemView.findViewById(R.id.thumbnailCatalog);
             titleCatalog = itemView.findViewById(R.id.titleCatalog);
             priceCatalog = itemView.findViewById(R.id.priceCatalog);
 
-            itemView.setOnClickListener(v -> {
-                if(listener != null) {
-                    Integer position = getAdapterPosition();
-                    if(position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(position);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null) {
+                        Integer position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
                     }
                 }
             });

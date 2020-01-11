@@ -37,6 +37,7 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserLocalStore userLocalStore;
+    private ArrayList<String[]> images;
     private Boolean isSelectingProduct = false;
 
     @Override
@@ -81,19 +82,11 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new GridItemDecoration(2, 30, true));
 
-        //event handling
+        //Event handling
         mAdapter.setOnItemClickListener(position -> {
-            if (!isSelectingProduct) {
-                Intent intent = new Intent(DropshipperCatalogActivity.this,
-                        DropshipperCatalogDetailActivity.class);
-                intent.putExtra("Catalog Item", catalogList.get(position));
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent();
-                intent.putExtra("productItem", catalogList.get(position));
-                setResult(RESULT_OK, intent);
-                finish();
-            }
+            Intent intent = new Intent(DropshipperCatalogActivity.this, DropshipperCatalogDetailActivity.class);
+            intent.putExtra("Catalog Item", catalogList.get(position));
+            startActivity(intent);
         });
     }
 
@@ -123,11 +116,23 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
                                 JSONObject item = response.getJSONArray("data").getJSONObject(i);
                                 CatalogItem catalog = new CatalogItem
                                         (
-                                                Integer.parseInt(item.getString("product_id")),
+
+                                                Integer.parseInt(item.getString("id")),
                                                 ServerAPI.BASE_URL + item.getString("thumbnail"),
                                                 item.getString("name"),
                                                 Double.parseDouble(item.getString("price"))
                                         );
+                                catalog.setStock(Integer.parseInt(item.getString("qty")));
+                                catalog.setDescription(item.getString("description"));
+                                images = new ArrayList<>();
+                                for(int j = 0; j < item.getJSONArray("images").length(); j++) {
+                                    JSONObject image = item.getJSONArray("images").getJSONObject(j);
+                                    images.add(new String[]{
+                                            ServerAPI.BASE_URL + image.getString("path"),
+                                            image.getString("name")
+                                    });
+                                }
+                                catalog.setImages(images);
                                 catalogList.add(catalog);
                             }
                             mAdapter.notifyDataSetChanged();
