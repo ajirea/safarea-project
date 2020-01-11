@@ -6,7 +6,7 @@ use Slim\Psr7\Response;
 //Tampil order berdasarkan id dropshipper
 $route->get('/order/{dropshipper_id}', function (Request $request, Response $response, $args) {
 
-    $query = $this->get('db')->prepare("SELECT A.*, B.thumbnail, B.name, C.name AS buyer_name, C.phone FROM orders AS A INNER JOIN products AS B ON B.id=A.product_id INNER JOIN buyers AS C ON C.id=A.buyer_id WHERE A.user_id=?");
+    $query = $this->get('db')->prepare("SELECT A.*, B.thumbnail, B.name, C.name AS buyer_name, C.phone FROM orders AS A INNER JOIN products AS B ON B.id=A.product_id INNER JOIN buyers AS C ON C.id=A.buyer_id WHERE A.user_id=? ORDER BY A.id DESC");
     $query->bindParam(1, $args['dropshipper_id']);
     $query->execute();
 
@@ -60,7 +60,7 @@ $route->post('/order/{dropshipper_id}', function(Request $request, Response $res
     if(!$dropshipper)
         return dropshipperNotFound($response);
 
-    $query = $this->get('db')->prepare("SELECT B.price, A.profit_price FROM user_products AS A INNER JOIN products AS B ON B.id=A.product_id WHERE A.user_id=? AND A.product_id=?");
+    $query = $this->get('db')->prepare("SELECT B.price, A.profit_price, A.qty, A.id FROM user_products AS A INNER JOIN products AS B ON B.id=A.product_id WHERE A.user_id=? AND A.product_id=?");
     $query->bindParam(1, $dropshipper->id);
     $query->bindParam(2, $input['product_id']);
     $query->execute();
@@ -70,11 +70,11 @@ $route->post('/order/{dropshipper_id}', function(Request $request, Response $res
 
     $product = $query->fetch(PDO::FETCH_OBJ);
 
-    if($product->qty < 1) {
+    if($product->qty < $input['qty']) {
         $response->getBody()->write(json_encode([
             'status' => false,
             'data' => [
-                'message' => 'Stok sudah habis'
+                'message' => 'Stok barang tidak mencukupi'
             ]
         ]));
         return $response
@@ -97,11 +97,10 @@ $route->post('/order/{dropshipper_id}', function(Request $request, Response $res
 
     // update stok
     if($order) {
-        $balanceQty = $product->qty - $input['qty'];
-        $query = $this->get('db')->prepare("UPDATE user_products SET qty = ? WHERE A.user_id=? AND A.product_id=?");
+        $balanceQty = $product->qty - (int)$input['qty'];
+        $query = $this->get('db')->prepare("UPDATE user_products SET qty = ? WHERE id=?");
         $query->bindParam(1, $balanceQty);
-        $query->bindParam(2, $product->user_id);
-        $query->bindParam(3, $product->product_id);
+        $query->bindParam(2, $product->id);
         $query->execute();
     }
 

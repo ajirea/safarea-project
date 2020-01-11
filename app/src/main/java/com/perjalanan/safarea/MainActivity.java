@@ -92,12 +92,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // swipeRefresh
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setRefreshing(true);
-        swipeRefreshLayout.setOnRefreshListener(this::getRecent);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            getRecent();
+            getProfit();
+        });
 
         //Recycler View
         transactionList = new ArrayList<>();
-        getRecent();
-        getProfit();
         mRecyclerView = findViewById(R.id.transactionRecyclerView);
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new TransactionListAdapter(this, transactionList);
@@ -109,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intent.putExtra("Detail Transaksi", transactionList.get(position));
             startActivity(intent);
         });
-
 
         initNavigationAndDrawer();
         initMainBtnEvent();
@@ -246,6 +246,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        getRecent();
+        getProfit();
+    }
+
+    @Override
     public void onClick(View v) {
         eventListener(null, v);
     }
@@ -315,33 +322,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void getProfit(){
-    AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
+        AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
 
-    String url = ServerAPI.PROFIT + "/" + user.getId();
-    JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-            response -> {
-                try {
-                    if(response.getBoolean("status")){
-                        {
-                            TextView txtProfit = findViewById(R.id.textNetProfit);
-                            txtProfit.setText(FormatHelper.priceFormat(Double.parseDouble(response.getJSONObject("data").getString("net_profit"))));
+        String url = ServerAPI.PROFIT + "/" + user.getId();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        if (response.getBoolean("status")) {
+                            {
+                                TextView txtProfit = findViewById(R.id.textNetProfit);
+                                txtProfit.setText(FormatHelper.priceFormat(
+                                        Double.parseDouble(response.getJSONObject("data")
+                                                .getString("net_profit"))
+                                ));
+                            }
+                        } else {
+                            alert.setMessage(response.getJSONObject("data")
+                                    .getString("message")).show();
                         }
-                    }else {
-                        alert.setMessage(response.getJSONObject("data")
-                                .getString("message")).show();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        alert.setMessage(e.getMessage()).show();
                     }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    alert.setMessage(e.getMessage()).show();
-                }
-
-            }, error -> alert.setMessage(error.getMessage()).show()) {
-        @Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
-            return RequestGlobalHeaders.get(getApplicationContext());
-        }
-    };
-    requestQueue.add(request);
+                }, error -> alert.setMessage(error.getMessage()).show()) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return RequestGlobalHeaders.get(getApplicationContext());
+            }
+        };
+        requestQueue.add(request);
     }
 }

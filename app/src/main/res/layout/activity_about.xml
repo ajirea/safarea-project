@@ -45,8 +45,8 @@
         app:layout_constraintTop_toBottomOf="@+id/aboutLogo"
         tools:text="AppVer" />
 
-    <TextView
-        android:id="@+id/txtAbout"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -54,11 +54,17 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        android:lineSpacingExtra="8sp"
-        android:text="Test"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtAppVer" />
+        app:layout_constraintTop_toBottomOf="@+id/txtAppVer">
+
+        <TextView
+            android:id="@+id/txtAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="8sp"
+            android:text="Test" />
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

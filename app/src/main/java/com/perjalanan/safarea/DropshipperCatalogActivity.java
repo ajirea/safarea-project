@@ -124,7 +124,6 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
                                 JSONObject item = response.getJSONArray("data").getJSONObject(i);
                                 CatalogItem catalog = new CatalogItem
                                         (
-
                                                 Integer.parseInt(item.getString("product_id")),
                                                 ServerAPI.BASE_URL + item.getString("thumbnail"),
                                                 item.getString("name"),
