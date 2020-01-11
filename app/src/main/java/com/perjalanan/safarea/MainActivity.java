@@ -19,6 +19,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.perjalanan.safarea.adapters.TransactionListAdapter;
 import com.perjalanan.safarea.data.TransactionItem;
 import com.perjalanan.safarea.data.User;
+import com.perjalanan.safarea.helpers.FormatHelper;
 import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
 import com.perjalanan.safarea.repositories.ServerAPI;
 import com.perjalanan.safarea.repositories.UserLocalStore;
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Recycler View
         transactionList = new ArrayList<>();
         getRecent();
+        getProfit();
         mRecyclerView = findViewById(R.id.transactionRecyclerView);
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new TransactionListAdapter(this, transactionList);
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intent.putExtra("Detail Transaksi", transactionList.get(position));
             startActivity(intent);
         });
+
 
         initNavigationAndDrawer();
         initMainBtnEvent();
@@ -260,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
-    //API
+    //API Recent Transaction
     public void getRecent() {
         swipeRefreshLayout.setRefreshing(true);
         AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
@@ -309,5 +312,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         requestQueue.add(request);
+    }
+
+    public void getProfit(){
+    AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Error!");
+
+    String url = ServerAPI.PROFIT + "/" + user.getId();
+    JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+            response -> {
+                try {
+                    if(response.getBoolean("status")){
+                        {
+                            TextView txtProfit = findViewById(R.id.textNetProfit);
+                            txtProfit.setText(FormatHelper.priceFormat(Double.parseDouble(response.getJSONObject("data").getString("net_profit"))));
+                        }
+                    }else {
+                        alert.setMessage(response.getJSONObject("data")
+                                .getString("message")).show();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    alert.setMessage(e.getMessage()).show();
+                }
+
+            }, error -> alert.setMessage(error.getMessage()).show()) {
+        @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            return RequestGlobalHeaders.get(getApplicationContext());
+        }
+    };
+    requestQueue.add(request);
     }
 }
