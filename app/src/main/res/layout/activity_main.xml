@@ -115,6 +115,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/textNetProfit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="16dp"
