@@ -1,6 +1,5 @@
 package com.perjalanan.safarea;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,7 +19,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.perjalanan.safarea.adapters.TransactionListAdapter;
 import com.perjalanan.safarea.data.TransactionItem;
 import com.perjalanan.safarea.data.User;
-import com.perjalanan.safarea.helpers.FormatHelper;
 import com.perjalanan.safarea.repositories.RequestGlobalHeaders;
 import com.perjalanan.safarea.repositories.ServerAPI;
 import com.perjalanan.safarea.repositories.UserLocalStore;
@@ -104,13 +102,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new TransactionListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Integer position) {
-                Intent intent = new Intent(MainActivity.this, TransactionDetaiActivity.class);
-                intent.putExtra("Detail Transaksi", transactionList.get(position));
-                startActivity(intent);
-            }
+        mAdapter.setOnItemClickListener(position -> {
+            Intent intent = new Intent(MainActivity.this, TransactionDetaiActivity.class);
+            intent.putExtra("Detail Transaksi", transactionList.get(position));
+            startActivity(intent);
         });
 
         initNavigationAndDrawer();
@@ -176,9 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawerLayout = findViewById(R.id.drawerLayout);
         View header = navigationView.getHeaderView(0);
 
-        header.setOnClickListener(l -> {
-            runActivity(SettingActivity.class);
-        });
+        header.setOnClickListener(l -> runActivity(SettingActivity.class));
 
         ImageView drawerAvatar = header.findViewById(R.id.imageAvatar);
         TextView drawerUsername = header.findViewById(R.id.textUsername);
@@ -214,12 +207,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             navigationView.bringToFront();
 
             // set event click listener
-            imageAvatar.setOnClickListener(l -> {
-                runActivity(SettingActivity.class);
-            });
-            textUsername.setOnClickListener(l -> {
-                runActivity(SettingActivity.class);
-            });
+            imageAvatar.setOnClickListener(l -> runActivity(SettingActivity.class));
+            textUsername.setOnClickListener(l -> runActivity(SettingActivity.class));
         }
     }
 
@@ -236,23 +225,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setCancelable(true);
         alertDialog.setTitle("Yakin ingin keluar?");
-        alertDialog.setPositiveButton(R.string.alert_yes_btn, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                userLocalStore.setUserLoggedIn(false);
-                runActivity(LoginActivity.class);
-                userLocalStore.clearUserData();
-                Glide.get(getApplicationContext()).clearMemory();
-                finish();
-                dialog.dismiss();
-            }
+        alertDialog.setPositiveButton(R.string.alert_yes_btn, (dialog, which) -> {
+            userLocalStore.setUserLoggedIn(false);
+            runActivity(LoginActivity.class);
+            userLocalStore.clearUserData();
+            Glide.get(getApplicationContext()).clearMemory();
+            finish();
+            dialog.dismiss();
         });
-        alertDialog.setNegativeButton(R.string.alert_no_btn, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        alertDialog.setNegativeButton(R.string.alert_no_btn, (dialog, which) -> dialog.dismiss());
         alertDialog.create();
         alertDialog.show();
     }
@@ -272,9 +253,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Tekan lagi untuk keluar", Toast.LENGTH_SHORT).show();
 
-        new Handler().postDelayed(() -> {
-            doubleBackToExitPressedOnce = false;
-        }, 2000);
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
     //API
