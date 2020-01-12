@@ -1,0 +1,23 @@
+{% extends "layouts/app.twig" %}
+
+{% block header %}
+    {% include "partials/main-header.twig" %}
+{% endblock %}
+
+{% block content %}
+<div class="product-list">
+    {% for product in products %}
+        <a href="{{ route('catalog-detail', {username: product.username, slug: product.slug}) }}">
+            <div class="product-item">
+                <div class="thumbnail">
+                    <img src="{{ url(product.thumbnail) }}" alt="thumbnail">
+                </div>
+                <div class="description">
+                    <h3>{{ product.name }}</h3>
+                    <span class="price">{{ price_format(product.profited_price) }}</span>
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+</div>
+{% endblock %}

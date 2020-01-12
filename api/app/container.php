@@ -3,10 +3,12 @@
 use Slim\Views\Twig;
 
 // set view renderer to the container
-$container->set('view', function() {
+$container->set('view', function($container) {
     $view = new Twig(__DIR__ . '/../templates', [
         // 'cache' => 'path/to/cache'
     ]);
+
+    $view->addExtension(new \App\ViewTwigExtension($container));
 
     return $view;
 });
@@ -25,3 +27,5 @@ $container->set('random_string', function() {
     }
     return $string;
 });
+
+$container->set('routeParser', $app->getRouteCollector()->getRouteParser());

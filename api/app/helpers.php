@@ -146,3 +146,51 @@ function getStockStatus($status)
 
     return $result;
 }
+
+
+if (!function_exists('url')) {
+    /**
+     * @param  Fungsi untuk mendapatkan url path
+     * @return string
+     */
+    function url(string $path = '')
+    {
+        global $app;
+        $scheme = isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http';
+        $host = $_SERVER['SERVER_NAME'];
+        
+        if($app->getBasePath() !== '') {
+            $basePath = $app->getBasePath();
+            if(substr($path, 0, (strlen($basePath))) !== $basePath)
+                $path = $basePath . '/' . $path;
+        }
+        if(strlen($path) > 0) {
+            if(substr($path, 0, 1) == '/' || substr($path, 0, 1) == '\\') {
+                $path = substr($path, 1, ( strlen($path) - 1 ));
+            }
+        }
+        return sprintf('%s://%s/%s', $scheme, $host, htmlspecialchars($path, ENT_QUOTES, 'UTF-8'));
+    }
+}
+
+
+if (!function_exists('route')) {
+    /**
+     * @param  Fungsi untuk mendapatkan full url berdasarkan route name dan argumen
+     * @param  array $routeName
+     * @param  array $data
+     * @return string
+     */
+    function route(string $routeName, array $data = [], array $params = [])
+    {
+        global $app;
+        return $app->getContainer()->get('routeParser')->urlFor($routeName, $data, $params);
+    }
+}
+
+if(!function_exists('priceFormat')) {
+    function priceFormat($price)
+    {
+        return 'Rp ' . number_format($price, 0, ',', '.');
+    }
+}

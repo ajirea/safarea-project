@@ -1,0 +1,58 @@
+{% extends "layouts/app.twig" %}
+
+
+{% block header %}
+	{% include "partials/inner-header.twig" %}
+{% endblock %}
+
+{% block content %}
+	<div class="product-detail">
+		<div class="thumbnail" id="product-images">
+            {% for image in product.images %}
+                <a href="{{ url(image.path) }}" class="thumbnail-item">
+                    <img src="{{ url(image.path) }}" alt="{{ image.name }}">
+                </a>
+            {% endfor %}
+		</div>
+		<div class="product-description">
+			<h3>{{ product.name }}</h3>
+			<span class="price">{{ price_format(product.profited_price) }}</span>
+            <span class="price stock">{{ product.qty }} Stok Tersedia</span>
+            <div class="desc">
+                {{ product.description | raw }}
+            </div>
+		</div>
+	</div>
+    <div class="buy-section">
+        <a href="http://wa.me/{{ dropshipper.phone }}?message=Saya%20minat%20beli%0A%0D{{ product.name }}" class="btn-buy">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 30 30">
+                <path d="M15 3C8.371 3 3 8.371 3 15c0 2.25.633 4.352 1.71 6.152L3.11 27l5.972-1.566A11.947 11.947 0 0015 27c6.629 0 12-5.371 12-12S21.629 3 15 3zm-4.11 6.402c.196 0 .4 0 .57.008.216.004.446.02.669.512.266.59.844 2.058.918 2.207.074.148.125.324.023.52-.097.199-.148.32-.293.496-.148.175-.312.386-.449.515-.148.152-.3.313-.129.61.172.3.77 1.273 1.653 2.058 1.136 1.016 2.093 1.324 2.39 1.473.297.152.469.129.645-.07.175-.196.742-.868.941-1.165.195-.296.395-.246.664-.148.274.098 1.735.816 2.035.969.297.148.493.222.567.343.078.125.078.72-.172 1.41-.246.696-1.457 1.364-2 1.41-.55.055-1.063.25-3.57-.738-3.024-1.19-4.93-4.289-5.082-4.488-.149-.195-1.207-1.61-1.207-3.07 0-1.465.765-2.184 1.035-2.48.273-.297.593-.372.793-.372z" />
+            </svg>
+            Beli Sekarang
+        </a>
+    </div>
+{% endblock %}
+
+{% block header_scripts %}
+	<link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.css">
+	<link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+{% endblock %}
+
+{% block footer %}
+	<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/jquery.magnific-popup.min.js"></script>
+	<script>
+		$(function () {
+            $('#product-images').slick({arrows: false, infinite: false, dots: true});
+            $('.thumbnail-item').magnificPopup({
+                type: 'image',
+                gallery: {
+                    enabled: true
+                }
+                // other options
+            });
+        });
+	</script>
+{% endblock %}

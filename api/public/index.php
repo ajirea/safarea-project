@@ -27,11 +27,11 @@ $app->addBodyParsingMiddleware();
 // Add Error Middleware
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
-// Set container injection
-require __DIR__ . '/../app/container.php';
-
 // load helpers
 require __DIR__ . '/../app/helpers.php';
+
+// Set container injection
+require __DIR__ . '/../app/container.php';
 
 // App Middleware for API
 $app->add(function(Request $request, RequestHandler $handler) {
