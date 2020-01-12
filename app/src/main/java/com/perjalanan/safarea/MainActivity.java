@@ -1,10 +1,14 @@
 package com.perjalanan.safarea;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -86,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // componets
         cardAlert = findViewById(R.id.cardAlert);
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
+        Button btnCopy = findViewById(R.id.btnCopy);
 
         // swipeRefresh
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
@@ -107,6 +113,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(MainActivity.this, TransactionDetaiActivity.class);
             intent.putExtra("Detail Transaksi", transactionList.get(position));
             startActivity(intent);
+        });
+
+        btnCopy.setOnClickListener(v -> {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("Link Toko",
+                    ServerAPI.STORE_URL + user.getUsername());
+            Objects.requireNonNull(clipboard).setPrimaryClip(clip);
+            Toast.makeText(getApplicationContext(), "Link berhasil disalin", Toast.LENGTH_SHORT).show();
         });
 
         initNavigationAndDrawer();

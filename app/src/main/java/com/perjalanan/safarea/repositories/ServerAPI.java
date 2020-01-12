@@ -13,6 +13,7 @@ public interface ServerAPI {
     String ORDER = API_URL.concat("order");
     String RECENT = API_URL.concat("recent-order");
     String PROFIT = API_URL.concat("profit");
+    String STORE_URL = BASE_URL.concat("/store/");
 
     String BUYER_ALL_DATA = API_URL.concat("buyers");
 

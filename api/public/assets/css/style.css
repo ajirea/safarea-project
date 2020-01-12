@@ -72,6 +72,7 @@ a:hover {
   display: block;
   margin: 0 auto;
   position: relative;
+  padding: 0 15px;
 }
 .navbar-header {
   position: fixed;
@@ -128,7 +129,7 @@ a:hover {
 }
 .product-item .description h3, .product-description h3.title {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: var(--color-secondary);
   margin: 0;
 }

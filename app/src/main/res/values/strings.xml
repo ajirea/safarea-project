@@ -33,6 +33,8 @@
     <string name="text_select_buyer">Pilih Pembeli</string>
     <string name="text_select_product">Pilih Barang</string>
     <string name="text_about_app_header">Tentang Safarea</string>
+    <string name="text_share">Bagikan</string>
+    <string name="text_copy_store">Salin Link Toko</string>
     <string name="about_app_desc">Aplikasi Safarea merupakan aplikasi kolaborasi antara Supplier dengan Dropshipper yang berbasis Android. Safarea akan Menampilkan katalog milik Supplier untuk memudahkan Dropshipper dalam mengecek stock milik Supplier, Safarea juga dapat menampilkan katalog milik Dropshipper agar bisa dibagikan secara manual atau melalui social media kepada pembeli. Tujuan Safarea ini untuk memudahkan Supplier dan Dropshipper dalam management barang dan data.</string>
 
     <!-- String transaction -->
