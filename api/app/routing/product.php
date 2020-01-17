@@ -127,7 +127,7 @@ $route->get('/product/dropshipper/{dropshipper_id}', function (Request $request,
     if(!$dropshipper)
         return dropshipperNotFound($response);
 
-    $query = $this->get('db')->prepare("SELECT A.*, B.name, B.slug, B.thumbnail, B.price, B.description FROM user_products AS A INNER JOIN products AS B ON B.id=A.product_id WHERE A.user_id=? AND A.status='active'");
+    $query = $this->get('db')->prepare("SELECT A.*, B.name, B.slug, B.thumbnail, B.price, B.description FROM user_products AS A INNER JOIN products AS B ON B.id=A.product_id WHERE A.user_id=? AND A.status='active' ORDER BY A.created_at DESC");
 
     $query->bindParam(1, $dropshipper->id);
     $query->execute();
@@ -158,7 +158,7 @@ $route->get('/product/dropshipper/{dropshipper_id}/stock', function (Request $re
     if (!$dropshipper)
         return dropshipperNotFound($response);
 
-    $query = $this->get('db')->prepare("SELECT A.*, B.name, B.price, B.thumbnail, B.description FROM user_products AS A INNER JOIN products AS B ON B.id = A.product_id WHERE A.user_id = ? ORDER BY A.status DESC");
+    $query = $this->get('db')->prepare("SELECT A.*, B.name, B.price, B.thumbnail, B.description FROM user_products AS A INNER JOIN products AS B ON B.id = A.product_id WHERE A.user_id = ? ORDER BY A.status DESC, A.created_at DESC");
 
     $query->bindParam(1, $dropshipper->id);
     $query->execute();
