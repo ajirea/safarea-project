@@ -152,7 +152,8 @@ public class DropshipperCatalogActivity extends AppCompatActivity {
                                                 Integer.parseInt(item.getString("product_id")),
                                                 ServerAPI.BASE_URL + item.getString("thumbnail"),
                                                 item.getString("name"),
-                                                Double.parseDouble(item.getString("price"))
+                                                Double.parseDouble(item.getString("price")),
+                                                Double.parseDouble(item.getString("profit_price"))
                                         );
                                 catalog.setStock(Integer.parseInt(item.getString("qty")));
                                 catalog.setDescription(item.getString("description"));

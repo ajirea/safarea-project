@@ -9,7 +9,7 @@ public class CatalogItem implements Parcelable {
 
     private Integer id, stock;
     private String title, thumbnail, description;
-    private Double price;
+    private Double price, profitPrice;
     private ArrayList<String[]> images;
 
     public CatalogItem(Integer id, String thumbnail, String title, Double price) {
@@ -17,6 +17,14 @@ public class CatalogItem implements Parcelable {
         this.thumbnail = thumbnail;
         this.title = title;
         this.price = price;
+    }
+
+    public CatalogItem(Integer id, String thumbnail, String title, Double price, Double profitPrice) {
+        this.id = id;
+        this.thumbnail = thumbnail;
+        this.title = title;
+        this.price = price;
+        this.profitPrice = profitPrice;
     }
 
     // parcelable implementation constructor
@@ -43,6 +51,11 @@ public class CatalogItem implements Parcelable {
             price = null;
         } else {
             price = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            profitPrice = null;
+        } else {
+            profitPrice = in.readDouble();
         }
 
         images = in.readArrayList(null);
@@ -93,6 +106,10 @@ public class CatalogItem implements Parcelable {
         return price;
     }
 
+    public Double getProfitedPrice() {
+        return price + profitPrice;
+    }
+
     public ArrayList<String[]> getImages() {
         if(images == null)
             images = new ArrayList<>();
@@ -135,6 +152,12 @@ public class CatalogItem implements Parcelable {
         } else {
             dest.writeByte((byte) 1);
             dest.writeDouble(price);
+        }
+        if (profitPrice == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(profitPrice);
         }
 
         dest.writeList(images);

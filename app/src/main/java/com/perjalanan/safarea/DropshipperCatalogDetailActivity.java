@@ -85,7 +85,7 @@ public class DropshipperCatalogDetailActivity extends AppCompatActivity {
         toolbar.setTitle(catalogItem.getTitle());
         titleCatalog.setText(catalogItem.getTitle());
         textStock.setText(getString(R.string.text_stock_available, catalogItem.getStock()));
-        textPrice.setText(FormatHelper.priceFormat(catalogItem.getPrice()));
+        textPrice.setText(FormatHelper.priceFormat(catalogItem.getProfitedPrice()));
         textDesc.setText(Html.fromHtml(catalogItem.getDescription()));
 
         imageAdapter.onImageClickListener(l -> {

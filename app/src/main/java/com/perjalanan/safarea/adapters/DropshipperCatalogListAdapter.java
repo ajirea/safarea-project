@@ -53,7 +53,7 @@ public class DropshipperCatalogListAdapter extends RecyclerView.Adapter<Dropship
                 .into(holder.thumbnailCatalog);
 
         holder.titleCatalog.setText(item.getTitle());
-        holder.priceCatalog.setText(FormatHelper.priceFormat(item.getPrice()));
+        holder.priceCatalog.setText(FormatHelper.priceFormat(item.getProfitedPrice()));
     }
 
     @Override
