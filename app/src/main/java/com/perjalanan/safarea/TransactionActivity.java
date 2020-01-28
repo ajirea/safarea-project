@@ -60,7 +60,6 @@ public class TransactionActivity extends AppCompatActivity {
         // components
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this::getTransaction);
 
         //Recycle view
@@ -86,6 +85,12 @@ public class TransactionActivity extends AppCompatActivity {
             startActivity(new Intent(this, TransactionAddActivity.class));
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getTransaction();
     }
 
     @Override
